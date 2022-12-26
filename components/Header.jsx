@@ -44,7 +44,7 @@ const Header = () => {
               <li>
                 <Link
                   href="/pedidos"
-                  className={ router.pathname === '/pedidos' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/pedidos' || router.pathname === '/pedidos/nuevo' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
                 >
                   Pedidos
                 </Link>
