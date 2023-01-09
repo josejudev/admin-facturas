@@ -6,7 +6,7 @@ const nuevo_pedido = () => {
     <>
     <Layout title={"Nuevo pedido"} description="This is the nuevo pedido page">
         <div className="container flex flex-wrap items-center mx-auto">
-            <h1 className="text-5xl my-5 font-semibold text-gray-800">
+            <h1 className=" my-5 min-[320px]:text-3xl font-semibold text-gray-800 md:text-5xl">
                 Nuevo pedido
             </h1>
         </div>

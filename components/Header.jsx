@@ -35,20 +35,21 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  href="/ingresos"
-                  className={ router.pathname === '/ingresos' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
-                >
-                  Ingresos
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/pedidos"
                   className={ router.pathname === '/pedidos' || router.pathname === '/pedidos/nuevo' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
                 >
                   Pedidos
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/ingresos"
+                  className={ router.pathname === '/ingresos' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                >
+                  Ingresos
+                </Link>
+              </li>
+
               <li>
                 <a
                   href="#"

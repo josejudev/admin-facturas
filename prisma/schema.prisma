@@ -10,10 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model client {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
   name      String
+  offers    offer[]
+}
+//A offer can have a client
+model offer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  client_id Int
+  client    client   @relation(fields: [client_id], references: [id])
 }
