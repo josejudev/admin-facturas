@@ -1,14 +1,15 @@
 import Layout from "../../components/Layout";
+import Link from "next/link";
 import Header_Table from "../../components/Header_Table";
 
-const pedidos = () => {
+const index = () => {
   return (
-    <>
-      <Layout title={"Pedidos"} description="This is the pedidos page">
+    <> 
+        <>
+      <Layout title={"Clientes"} description="This is the pedidos page">
         <Header_Table 
-          title="Pedidos"
-          href="pedidos/nuevo"
-          modalState={false}
+          title="Clientes"
+          modalState={true}
         />
         <div className="container mx-auto bg-white h-full p-5 rounded-lg">
           <div className="container grid grid-cols-2 flex-wrap items-center mx-auto">
@@ -21,8 +22,7 @@ const pedidos = () => {
                 type="text"
                 name="search"
                 placeholder="Buscar"
-          href="clientes/nuevo"
-          className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
+                className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
               />
               <input
                 type="date"
@@ -132,7 +132,8 @@ const pedidos = () => {
         </div>
       </Layout>
     </>
-  );
-};
+      </>
+  )
+}
 
-export default pedidos;
+export default index

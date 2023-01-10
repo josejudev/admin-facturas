@@ -20,7 +20,8 @@
     "material-react-table": "^1.5.2",
     "next": "13.0.7",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-modal": "^3.16.1"
   },
   "devDependencies": {
     "@prisma/client": "^4.8.0",

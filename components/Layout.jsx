@@ -2,6 +2,7 @@ import Head from "next/head"
 import Header from "./Header"
 
 function Layout({ children, title='', description = '' }) {
+  
   return (
     <>
       <Head>
