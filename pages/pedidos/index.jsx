@@ -47,10 +47,10 @@ const pedidos = () => {
               </button>
             </div>
           </div>
-          <table class="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
+          <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
             <thead>
               <tr>
-                <th class="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+                <th className="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
                   <input
                     id="default-checkbox"
                     type="checkbox"
@@ -58,41 +58,41 @@ const pedidos = () => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Fecha de pedido
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Pedido
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Cantidad
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Tipo
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Clase
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   N° de pagos
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Factura
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Fecha de Factura
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Status
                 </th>
-                <th class="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                   Acciones
                 </th>
               </tr>
             </thead>
             <tbody className="text-center">
-              <tr class="text-gray-700">
-                <td class="border-b-2 p-4 dark:border-dark-5">
+              <tr className="text-gray-700">
+                <td className="border-b-2 p-4 dark:border-dark-5">
                   <input
                     id="default-checkbox"
                     type="checkbox"
@@ -100,16 +100,16 @@ const pedidos = () => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                 </td>
-                <td class="border-b-2 p-4 dark:border-dark-5">5/5/2021</td>
-                <td class="border-b-2 p-4">88991</td>
-                <td class="border-b-2 p-4">$3000.00</td>
-                <td class="border-b-2 p-4">Recurrente</td>
-                <td class="border-b-2 p-4">Produccion</td>
-                <td class="border-b-2 p-4">4</td>
-                <td class="border-b-2 p-4">11-ATYP-0001</td>
-                <td class="border-b-2 p-4">Fecha de factura</td>
-                <td class="border-b-2 p-4 ">Status</td>
-                <td class="border-b-2 p-4 ">
+                <td className="border-b-2 p-4 dark:border-dark-5">5/5/2021</td>
+                <td className="border-b-2 p-4">88991</td>
+                <td className="border-b-2 p-4">$3000.00</td>
+                <td className="border-b-2 p-4">Recurrente</td>
+                <td className="border-b-2 p-4">Produccion</td>
+                <td className="border-b-2 p-4">4</td>
+                <td className="border-b-2 p-4">11-ATYP-0001</td>
+                <td className="border-b-2 p-4">Fecha de factura</td>
+                <td className="border-b-2 p-4 ">Status</td>
+                <td className="border-b-2 p-4 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
