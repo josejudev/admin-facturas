@@ -7,7 +7,7 @@ const pedidos = () => {
       <Layout title={"Pedidos"} description="This is the pedidos page">
         <Header_Table 
           title="Pedidos"
-          href="pedidos/nuevo"
+          href="pedidos/nuevo-pedido"
           modalState={false}
         />
         <div className="container mx-auto bg-white h-full p-5 rounded-lg">

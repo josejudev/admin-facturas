@@ -27,13 +27,12 @@ export default async function handler(req, res) {
             return res.status(200).json('Nothing')        
     }
 
- 
 
 }
 
 const listClients = async (req, res) => {
-    const client = await prisma.client.findMany()
-    return res.json(client)
+    const clients = await prisma.client.findMany()
+    return res.json(clients)
 }
 
 const createClient = async (req, res) => {
@@ -46,9 +45,9 @@ const createClient = async (req, res) => {
             email,
             address,
             contact_phone,
-            contact_email
-            
+            contact_email   
         }
+        
     })
     return res.json(client)
 }

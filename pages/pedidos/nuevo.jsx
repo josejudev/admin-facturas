@@ -1,5 +1,4 @@
 import Layout from "../../components/Layout";
-import Form_Order from "../../components/Form_Order";
 
 const nuevo_pedido = () => {
   return (
@@ -10,7 +9,6 @@ const nuevo_pedido = () => {
                 Nuevo pedido
             </h1>
         </div>
-            <Form_Order />
 
     </Layout>
     </>

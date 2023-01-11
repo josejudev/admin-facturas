@@ -12,11 +12,12 @@ datasource db {
 
 model client {
   id             Int    @id @default(autoincrement())
-  name           String @db.VarChar(100)
+  name           String @db.VarChar(100) 
   rfc            String @db.Char(15)
   fiscal_address String @db.VarChar(100)
   email          String @db.VarChar(50)
   address        String @db.VarChar(100)
+  //not null
   contact_phone  String? @db.VarChar(30)
   contact_email  String? @db.VarChar(50)
 

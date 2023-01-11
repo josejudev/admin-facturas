@@ -1,13 +1,13 @@
 import axios from "axios";
+
 import { useState } from "react";
 import { useRouter } from "next/router";
-
 
 const FormModal = () => {
   const [client, setClient] = useState({
     name: "",
     rfc: "",
-  fiscal_address: "",
+    fiscal_address: "",
     address: "",
     email: "",
     contact_phone: "",
@@ -27,11 +27,9 @@ const FormModal = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/clients", client);
-      
     } catch (error) {
       console.log(error);
     }
- 
   };
 
   return (
@@ -62,7 +60,7 @@ const FormModal = () => {
                 RFC
               </label>
               <input
-              maxLength={15}
+                maxLength={15}
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 onChange={handleChange}
                 id="grid-rfc"

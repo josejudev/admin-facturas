@@ -2,10 +2,23 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Link from 'next/link'
 import Layout from '../components/Layout'
+import axios from 'axios'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+
+export const getServerSideProps = async (context) => {
+  const { data: clients } = await axios.get(
+    "http://localhost:3000/api/clients"
+  );
+  return {
+    props: {
+      clients,
+    },
+  };
+};
+
+export default function Home({ clients }) {
   return (
     <>
       <Head>
@@ -24,7 +37,9 @@ export default function Home() {
         </h1>
         
       </Layout>
+
       </main>
+      
     </>
   )
 }
