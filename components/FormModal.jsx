@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -27,6 +28,8 @@ const FormModal = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/clients", client);
+      router.reload();
+
     } catch (error) {
       console.log(error);
     }
@@ -159,7 +162,10 @@ const FormModal = () => {
           </div>
           <div className="-mx-3 md:flex mt-3 justify-center ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <button 
+  
+              
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Agregar
               </button>
             </div>
