@@ -11,12 +11,12 @@ datasource db {
 }
 
 model client {
-  id             Int    @id @default(autoincrement())
-  name           String @db.VarChar(100) 
-  rfc            String @db.Char(15)
-  fiscal_address String @db.VarChar(100)
-  email          String @db.VarChar(50)
-  address        String @db.VarChar(100)
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(100)
+  rfc            String  @db.Char(15)
+  fiscal_address String  @db.VarChar(100)
+  email          String  @db.VarChar(50)
+  address        String  @db.VarChar(100)
   //not null
   contact_phone  String? @db.VarChar(30)
   contact_email  String? @db.VarChar(50)
@@ -26,8 +26,11 @@ model client {
 
 //A offer can have a client
 model offer {
-  id        Int    @id @default(autoincrement())
-  name      String
-  client_id Int
-  client    client @relation(fields: [client_id], references: [id])
+  id           Int      @id @default(autoincrement())
+  project_name String? 
+  fileName     String?
+  final_client String?
+  date         DateTime @default(now())
+  client_id    Int
+  client       client   @relation(fields: [client_id], references: [id])
 }

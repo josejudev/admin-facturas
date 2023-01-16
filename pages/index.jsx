@@ -1,24 +1,15 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import Link from 'next/link'
 import Layout from '../components/Layout'
-import axios from 'axios'
+import Link from 'next/link'
+import Header_Table from '../components/TableHeader'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 
-export const getServerSideProps = async (context) => {
-  const { data: clients } = await axios.get(
-    "http://localhost:3000/api/clients"
-  );
-  return {
-    props: {
-      clients,
-    },
-  };
-};
 
-export default function Home({ clients }) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -29,12 +20,11 @@ export default function Home({ clients }) {
       </Head>
       <main>
       <Layout
-        title={'Home'}
-        description='This is the home page'
+        title={'Ofertas'}
+        description='This is the offert page'
       >
-        <h1 className='text-5xl font-semibold text-indigo-500 my-5 flex-grow inline-block'>Ofertas
-        
-        </h1>
+        <Header_Table title="Ofertas" onClick={true} />
+
         
       </Layout>
 

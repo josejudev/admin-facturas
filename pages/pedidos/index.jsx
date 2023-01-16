@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import Header_Table from "../../components/Header_Table";
+import Header_Table from "../../components/TableHeader";
 
 const pedidos = () => {
   return (
@@ -8,7 +8,6 @@ const pedidos = () => {
         <Header_Table 
           title="Pedidos"
           href="pedidos/nuevo-pedido"
-          modalState={false}
         />
         <div className="container mx-auto bg-white h-full p-5 rounded-lg">
           <div className="container grid grid-cols-2 flex-wrap items-center mx-auto">

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const FormModal = () => {
+const ClientModal = () => {
   const [client, setClient] = useState({
     name: "",
     rfc: "",
@@ -176,4 +176,4 @@ const FormModal = () => {
   );
 };
 
-export default FormModal;
+export default ClientModal;
