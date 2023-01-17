@@ -1,10 +1,10 @@
-import React from "react";
+import { format } from "date-fns";
 
-const Clientsi = ({ clients }) => {
+const OffersList = ({ offers }) => {
   return (
     <>
-      {clients?.map((client) => (
-        <tr key={client.id} className="text-gray-700">
+      {offers?.map((offer) => (
+        <tr key={offer.id} className="text-gray-700">
           <td className="border-b-2 p-4 dark:border-dark-5">
             <input
               id="default-checkbox"
@@ -13,13 +13,11 @@ const Clientsi = ({ clients }) => {
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
           </td>
-          <td className="border-b-2 p-4">{client.name}</td>
-          <td className="border-b-2 p-4">{client.rfc}</td>
-          <td className="border-b-2 p-4">{client.fiscal_address}</td>
-          <td className="border-b-2 p-4">{client.address}</td>
-          <td className="border-b-2 p-4">{client.email}</td>
-          <td className="border-b-2 p-4">{client.contact_phone}</td>
-          <td className="border-b-2 p-4">{client.contact_email}</td>
+          <td className="border-b-2 p-4">{offer.date}</td>
+          <td className="border-b-2 p-4">{offer.project_name}</td>
+          <td className="border-b-2 p-4">{offer.client.name}</td>
+          <td className="border-b-2 p-4">{offer.final_client}</td>
+          <td className="border-b-2 p-4">{offer.fileName}</td>
 
           <td className="border-b-2 p-4">
             <div className="flex justify-center items-center">
@@ -45,4 +43,4 @@ const Clientsi = ({ clients }) => {
   );
 };
 
-export default Clientsi;
+export default OffersList;
