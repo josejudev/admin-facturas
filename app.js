@@ -51,14 +51,16 @@ app.put("/client/:id", async (req, res) => {
 
 
 app.post("/offer", async (req, res) => {
-    const { name, client_id } = req.body
+    const {project_name,fileName,final_client,client_id } = req.body
     const offer = await prisma.offer.create({
         data: {
-            name,
-            client_id
+            project_name,
+            fileName,
+            final_client,
+            client_id: Number(client_id),
         }
     })
-    res.json(offer)
+    return res.json(offer)
 })
 
 //Show clients with id
@@ -93,4 +95,4 @@ app.get("/offer/:id", async (req, res) => {
     res.json(offer)
 })
 
-app.listen(3000, () => console.log("Server is running on port 3000"))
+app.listen(3001, () => console.log("Server is running on port 3001"))

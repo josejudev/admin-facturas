@@ -30,6 +30,7 @@ model offer {
   project_name String? 
   fileName     String?
   final_client String?
+  activity_resumen String?
   date         DateTime @default(now())
   client_id    Int
   client       client   @relation(fields: [client_id], references: [id])

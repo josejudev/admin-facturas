@@ -5,10 +5,7 @@ const pedidos = () => {
   return (
     <>
       <Layout title={"Pedidos"} description="This is the pedidos page">
-        <Header_Table 
-          title="Pedidos"
-          href="pedidos/nuevo-pedido"
-        />
+        <Header_Table title="Pedidos" href="pedidos/nuevo-pedido" />
         <div className="container mx-auto bg-white h-full p-5 rounded-lg">
           <div className="container grid grid-cols-2 flex-wrap items-center mx-auto">
             <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
@@ -20,8 +17,8 @@ const pedidos = () => {
                 type="text"
                 name="search"
                 placeholder="Buscar"
-          href="clientes/nuevo"
-          className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
+                href="clientes/nuevo"
+                className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
               />
               <input
                 type="date"
@@ -109,25 +106,24 @@ const pedidos = () => {
                 <td className="border-b-2 p-4">Fecha de factura</td>
                 <td className="border-b-2 p-4 ">Status</td>
                 <td className="border-b-2 p-4">
-            <div className="flex justify-center items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-8 h-8 flex"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                />
-              </svg>
-            </div>
-          </td>
+                  <div className="flex justify-center items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-8 h-8 flex"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                      />
+                    </svg>
+                  </div>
+                </td>
               </tr>
-
             </tbody>
           </table>
         </div>

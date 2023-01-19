@@ -32,6 +32,9 @@ const OffersTable = ({
               Cliente final
             </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+              Resumen de actividad
+            </th>
+            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Documento
             </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900 text">

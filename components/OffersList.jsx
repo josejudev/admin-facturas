@@ -17,6 +17,7 @@ const OffersList = ({ offers }) => {
           <td className="border-b-2 p-4">{offer.project_name}</td>
           <td className="border-b-2 p-4">{offer.client.name}</td>
           <td className="border-b-2 p-4">{offer.final_client}</td>
+          <td className="border-b-2 p-4">{offer.activity_resumen}</td>
           <td className="border-b-2 p-4">{offer.fileName}</td>
 
           <td className="border-b-2 p-4">

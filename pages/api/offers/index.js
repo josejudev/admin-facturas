@@ -1,12 +1,20 @@
-import axios from "axios"
-
 const express = require("express")
+const path = require("path");
+const multer = require("multer");
 const { PrismaClient } = require("@prisma/client")
+
 
 const prisma = new PrismaClient()
 const app = express()
 
 app.use(express.json())
+
+app.use(
+    multer({
+      dest: path.join("./public/offer/"),
+    }).single("fileName")
+  );
+ 
 
 export default async function handler(req, res) {
     
@@ -30,6 +38,9 @@ export default async function handler(req, res) {
 const listOffers = async (req, res) => {
     const offers = await prisma.offer.findMany(
         {
+            orderBy: {
+                id: 'desc'
+            },
             include: {
                 client: true
             }
@@ -39,14 +50,17 @@ const listOffers = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-    const {project_name,fileName,final_client,client_id } = req.body
+    const {project_name,fileName,final_client,client_id, activity_resumen } = req.body
     const offer = await prisma.offer.create({
+        
         data: {
             project_name,
             fileName,
             final_client,
+            activity_resumen,
             client_id: Number(client_id),
-        }
+        },
+        
     })
     return res.json(offer)
 }
