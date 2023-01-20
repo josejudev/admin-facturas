@@ -7,38 +7,34 @@ import { set } from "date-fns";
 const OfferModal = () => {
 
   const { clients } = useAdmin();
-  const router = useRouter();
-  const [name, setName] = useState("");
-  const [client, setClient] = useState("");
-  const [finalClient, setFinalClient] = useState("");
-  const [activity_resumen, setActivity] = useState("");
-  const  [fileName, setFileName] = useState(null);
 
 
-  const handleFile = (e) => {
-    console.log(e.target.files)
-    setFile(
-      e.target.files[0]
-    );
-  }
-
+  const [fileName, setFileName] = useState(null);
   const [offer, setOffer] = useState({
     project_name: "",
-    fileName: null,
+    fileName:"",
     final_client: "",
     activity_resumen: "",
     client_id: 1,
   });
 
-  const handleChange = ({ target: { name, value } }) => {
-    console.log(offer);
+  const handleFile = (e) => {
+    setFileName(e.target.files[0].name);
     setOffer({
       ...offer,
-      [name]: value,
-      //get file directly from the input
+      fileName: e.target.files[0].name
+    });
+  } 
+
+
+
+  const handleChange = ({ target: { name, value } }) => {
+    setOffer({
+      ...offer,
+      [name]: value
       
     });
-    
+     
   };
 
   const handleSubmit = async (e) => {
@@ -157,7 +153,7 @@ const OfferModal = () => {
                   *Solo archivos PDF
                 </p>
               </div>
-              <input id="dropzone-file" type="file" className="hidden" onChange={handleChange} name="fileName"/>
+              <input id="dropzone-file" type="file" className="hidden" onChange={handleFile} name="fileName"/>
             </label>
           </div>
 

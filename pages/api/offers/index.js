@@ -13,6 +13,8 @@ app.use(
     multer({
       dest: path.join("./public/offer/"),
     }).single("fileName")
+    
+    
   );
  
 
@@ -50,6 +52,7 @@ const listOffers = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
+    
     const {project_name,fileName,final_client,client_id, activity_resumen } = req.body
     const offer = await prisma.offer.create({
         
