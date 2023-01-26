@@ -5,49 +5,47 @@ import useAdmin from "../hooks/useAdmin";
 import { set } from "date-fns";
 
 const OfferModal = () => {
-
   const { clients } = useAdmin();
   const [fileName, setFileName] = useState(null);
   const [offer, setOffer] = useState({
     project_name: "",
-    fileName:"",
+    fileName: "",
     final_client: "",
     activity_resumen: "",
     client_id: 1,
   });
 
-  const handleFile = (e) => {
-    setFileName(e.target.files[0])
-    setOffer({
-      ...offer,
-      fileName: e.target.files[0]
-    });
-  } 
-
-
-
   const handleChange = ({ target: { name, value } }) => {
     setOffer({
       ...offer,
-      [name]: value
-      
+      [name]: value,
     });
-     
+  };
+
+  const handleFile = (e) => {
+    setFileName(e.target.files[0]);
+    setOffer({
+      ...offer,
+      fileName: e.target.files[0],
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const { data } = await axios.post("/api/upload", fileName);
-    }
-    catch(error){
-      console.log(error)
-      console.log(offer)
-    }
+    const body = new FormData();
+    body.append("fileName", fileName);
+    body.append("project_name", offer.project_name);
+    body.append("final_client", offer.final_client);
+    body.append("activity_resumen", offer.activity_resumen);
+    body.append("client_id", offer.client_id);
+    const response = await fetch("/api/example/", {
+      method: "POST",
+      body,
+    });
   };
   return (
     <div>
-      <form  onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3 mb-6 md:mb-0">
@@ -145,14 +143,19 @@ const OfferModal = () => {
                   ></path>
                 </svg>
                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click para subir</span> o arrastra
-                  y suelta
+                  <span className="font-semibold">Click para subir</span> o
+                  arrastra y suelta
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   *Solo archivos PDF
                 </p>
               </div>
-              <input id="dropzone-file" type="file"  onChange={handleFile} name="fileName"/>
+              <input
+                id="dropzone-file"
+                type="file"
+                onChange={handleFile}
+                name="fileName"
+              />
             </label>
           </div>
 

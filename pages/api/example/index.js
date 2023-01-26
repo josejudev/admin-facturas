@@ -31,7 +31,13 @@ export default async function handler(req, res) {
       console.log(err);
       return res.status(500).json({ error: err.message });
     }
-    const { project_name,fileName,final_client,client_id,activity_resumen} = req.body;
+    const {
+      project_name,
+      fileName,
+      final_client,
+      client_id,
+      activity_resumen,
+    } = req.body;
     const offer = await prisma.offer.create({
       data: {
         project_name,
@@ -41,8 +47,6 @@ export default async function handler(req, res) {
         activity_resumen,
       },
     });
-    console.log(req.file);
-    console.debug(offer);
 
     return res.json(offer);
   });
