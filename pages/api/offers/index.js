@@ -9,14 +9,25 @@ const app = express()
 
 app.use(express.json())
 
-app.use(
-    multer({
-      dest: path.join("./public/offer/"),
-    }).single("fileName")
-    
-    
-  );
- 
+export const config = {
+    api: {
+       bodyParser: false,
+    }
+};
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, path.join(process.cwd(), "public", "uploads"));
+        },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+    }),
+});
+
+
+
 
 export default async function handler(req, res) {
     

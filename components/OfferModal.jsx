@@ -7,8 +7,6 @@ import { set } from "date-fns";
 const OfferModal = () => {
 
   const { clients } = useAdmin();
-
-
   const [fileName, setFileName] = useState(null);
   const [offer, setOffer] = useState({
     project_name: "",
@@ -19,10 +17,10 @@ const OfferModal = () => {
   });
 
   const handleFile = (e) => {
-    setFileName(e.target.files[0].name);
+    setFileName(e.target.files[0])
     setOffer({
       ...offer,
-      fileName: e.target.files[0].name
+      fileName: e.target.files[0]
     });
   } 
 
@@ -39,16 +37,17 @@ const OfferModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post("/api/offers", offer);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+    try{
+      const { data } = await axios.post("/api/upload", fileName);
+    }
+    catch(error){
+      console.log(error)
+      console.log(offer)
     }
   };
   return (
     <div>
-      <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
+      <form  onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3 mb-6 md:mb-0">
@@ -153,7 +152,7 @@ const OfferModal = () => {
                   *Solo archivos PDF
                 </p>
               </div>
-              <input id="dropzone-file" type="file" className="hidden" onChange={handleFile} name="fileName"/>
+              <input id="dropzone-file" type="file"  onChange={handleFile} name="fileName"/>
             </label>
           </div>
 
