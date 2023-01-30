@@ -18,7 +18,18 @@ const OffersList = ({ offers }) => {
           <td className="border-b-2 p-4">{offer.client.name}</td>
           <td className="border-b-2 p-4">{offer.final_client}</td>
           <td className="border-b-2 p-4">{offer.activity_resumen}</td>
-          <td className="border-b-2 p-4">{offer.fileName}</td>
+          <td className="border-b-2 p-4"><span class="border border-yellow-200 text-yellow-500 font-medium  shadow-lg shadow-yellow-300/25 px-4 py-0.5 rounded">{offer.status}</span></td>
+          <td className="border-b-2 p-4">
+            <a
+              href={`/uploads/${offer.fileName}`}
+              alt="alt text"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 "
+            >
+              {offer.fileName}
+            </a>
+          </td>
 
           <td className="border-b-2 p-4">
             <div className="flex justify-center items-center">

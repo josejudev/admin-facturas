@@ -5,6 +5,7 @@ import useAdmin from "../hooks/useAdmin";
 import { set } from "date-fns";
 
 const OfferModal = () => {
+  const router = useRouter();
   const { clients } = useAdmin();
   const [fileName, setFileName] = useState(null);
   const [offer, setOffer] = useState({
@@ -32,16 +33,22 @@ const OfferModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const body = new FormData();
-    body.append("fileName", fileName);
-    body.append("project_name", offer.project_name);
-    body.append("final_client", offer.final_client);
-    body.append("activity_resumen", offer.activity_resumen);
-    body.append("client_id", offer.client_id);
-    const response = await fetch("/api/example/", {
-      method: "POST",
-      body,
-    });
+    try{
+      const body = new FormData();
+      body.append("fileName", fileName);
+      body.append("project_name", offer.project_name);
+      body.append("final_client", offer.final_client);
+      body.append("activity_resumen", offer.activity_resumen);
+      body.append("client_id", offer.client_id);
+      const response = await fetch("/api/offers/", {
+        method: "POST",
+        body,
+      });
+      router.push("/");
+      
+    }catch(err){
+      console.log(err)
+    }
   };
   return (
     <div>
@@ -153,6 +160,7 @@ const OfferModal = () => {
               <input
                 id="dropzone-file"
                 type="file"
+                className="hidden"
                 onChange={handleFile}
                 name="fileName"
               />

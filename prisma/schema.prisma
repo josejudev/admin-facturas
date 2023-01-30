@@ -32,6 +32,7 @@ model offer {
   final_client String?
   activity_resumen String?
   date         DateTime @default(now())
+  status       String?  @db.VarChar(50) @default("Pendiente")
   client_id    Int
   client       client   @relation(fields: [client_id], references: [id])
 }
