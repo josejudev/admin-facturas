@@ -26,9 +26,6 @@ export default async function handler(req, res) {
       return await createOffer(req, res);
       break;
 
-    case "PUT":
-      return res.status(200).json("Updating a product");
-
     default:
       return res.status(200).json("Nothing");
   }
@@ -36,9 +33,7 @@ export default async function handler(req, res) {
 
 const listOffers = async (req, res) => {
   const offers = await prisma.offer.findMany({
-    orderBy: {
-      id: "desc",
-    },
+
     include: {
       client: true,
     },
@@ -56,7 +51,7 @@ const createOffer = async (req, res) => {
       fileName,
       final_client,
       client_id,
-      activity_resumen,
+      activity_resumen
     } = req.body;
     const offer = await prisma.offer.create({
       data: {

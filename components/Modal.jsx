@@ -2,6 +2,8 @@ import ClientModal from "./ClientModal";
 import OfferModal from "./OfferModal";
 import { useRouter } from "next/router";
 
+
+
 const Modal = ({ isVisible, onClose }) => {
   const router = useRouter();
   if (!isVisible) return null;
