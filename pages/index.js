@@ -3,8 +3,8 @@ import { Inter } from "@next/font/google";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import axios from "axios";
-import Header_Table from "../components/TableHeader";
-import OffersTable from "../components/OffersTable";
+import Header_Table from "../components/HeaderTable";
+import OffersTable from "../components/Offers/OffersTable";
 
 const inter = Inter({ subsets: ["latin"] });
 

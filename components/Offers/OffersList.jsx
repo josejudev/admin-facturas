@@ -1,4 +1,4 @@
-import useAdmin from "../hooks/useAdmin";
+import useAdmin from "../../hooks/useAdmin";
 
 const OffersList = ({ offers }) => {
   const { handleSetOffer, handleChangeModal } = useAdmin();
@@ -22,7 +22,7 @@ const OffersList = ({ offers }) => {
           <td className="border-b-2 p-4">{offer.final_client}</td>
           <td className="border-b-2 p-4">{offer.activity_resumen}</td>
           <td className="border-b-2 p-4">
-            {offer.status === "Aceptado" ? <span className="border border-green-200 text-green-500 font-medium  shadow-lg shadow-green-300/25 px-4 py-0.5 rounded">{offer.status}</span> : offer.status === "Rechazado" ? <span className="border border-red-200 text-red-500 font-medium  shadow-lg shadow-red-300/25 px-4 py-0.5 rounded">{offer.status}</span> : <span className="border border-yellow-200 text-yellow-500 font-medium  shadow-lg shadow-yellow-300/25 px-4 py-0.5 rounded">{offer.status}</span> }
+            {offer.status === "Aceptado" ? <span className="border border-green-200 text-green-500 font-medium  shadow-lg shadow-green-300/10 px-4 py-0.5 rounded">{offer.status}</span> : offer.status === "Rechazado" ? <span className="border border-red-200 text-red-500 font-medium  shadow-lg shadow-red-300/10 px-4 py-0.5 rounded">{offer.status}</span> : <span className="border border-yellow-200 text-yellow-500 font-medium  shadow-lg shadow-yellow-300/10 px-4 py-0.5 rounded">{offer.status}</span> }
 
 
           </td>

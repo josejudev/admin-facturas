@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import Header_Table from "../../components/TableHeader";
+import Header_Table from "../../components/HeaderTable";
 
 const pedidos = () => {
   return (

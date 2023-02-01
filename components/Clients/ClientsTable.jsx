@@ -1,6 +1,6 @@
 import React from "react";
 import Clientsi from "./ClientsList";
-import Loader from "./Loader";
+import Loader from "../Loader";
 
 const ClientsTable = ({clients}) => {
 

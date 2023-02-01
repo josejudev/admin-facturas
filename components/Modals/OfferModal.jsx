@@ -1,67 +1,85 @@
-import useAdmin from "../hooks/useAdmin";
+import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const ModalOffer = () => {
-  const { offer, handleChangeModal, clients } = useAdmin();
+const OfferModal = () => {
   const router = useRouter();
+  const { clients, handleModalOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
-  const [editOffer, setEditOffer] = useState({
-    project_name: offer.project_name,
-    final_client: offer.final_client,
-    activity_resumen: offer.activity_resumen,
-    client_id: offer.client_id,
+  const [offer, setOffer] = useState({
+    project_name: "",
+    fileName: "",
+    final_client: "",
+    activity_resumen: "",
+    client_id: 1,
   });
 
-  const status = [
-    { id: 1, name: "Pendiente" },
-    { id: 2, name: "Aceptado" },
-    { id: 3, name: "Rechazado" },
-  ]
-
   const handleChange = ({ target: { name, value } }) => {
-    setEditOffer({
-      ...editOffer,
+    setOffer({
+      ...offer,
       [name]: value,
     });
-  }
+  };
 
-  const handleStatus = ({ target: { name, value } }) => {
-    setEditOffer({
-      ...editOffer,
-      [name]: value,
-    });
-  }
-
-  const handleChangeFile = (e) => {
-    setEditOffer({
-      ...editOffer,
+  const handleFile = (e) => {
+    setFileName(e.target.files[0]);
+    setOffer({
+      ...offer,
       fileName: e.target.files[0],
     });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const body = { ...editOffer };
-      const response = await fetch(`/api/offers/${offer.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+    try {
+      const body = new FormData();
+      body.append("fileName", fileName);
+      body.append("project_name", offer.project_name);
+      body.append("final_client", offer.final_client);
+      body.append("activity_resumen", offer.activity_resumen);
+      body.append("client_id", offer.client_id);
+      const response = await fetch("/api/offers/", {
+        method: "POST",
+        body,
       });
-      handleChangeModal();
+      handleModalOffer();
       router.push("/");
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
-
+  };
 
   return (
     <div className="w-[900px] flex flex-col">
-      <form  onSubmit={handleSubmit} encType="multipart/form-data">
+      <div className="grid grid-cols-2  px-8 pt-6">
+        <h1 className="text-4xl font-bold text-blue-700">Agregar oferta</h1>
+        <div className="flex justify-end">
+          <button
+            onClick={handleModalOffer}
+            type="button"
+            className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+          >
+            <span className="sr-only">Close menu</span>
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3 mb-6 md:mb-0">
@@ -76,7 +94,6 @@ const ModalOffer = () => {
                 id="project-name"
                 name="project_name"
                 type="text"
-                value={editOffer.project_name}
                 onChange={handleChange}
               />
             </div>
@@ -90,25 +107,18 @@ const ModalOffer = () => {
                 Cliente
               </label>
               <select
-                name="client_id"
                 onChange={handleChange}
+                name="client_id"
                 className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
-                defaultValue={offer.client_id}
               >
-                {clients.map((client) =>
-                  //verificar que el cliente seleccionado sea el mismo que el que se esta editando
-                  client.id === offer.client_id ? (
-                    <option key={client.id} value={client.id} >
-                      
-                      {client.name}
-                    </option>
-                  ) : (
+                {
+                  // Aqui va el map de los clientes
+                  clients.map((client) => (
                     <option key={client.id} value={client.id}>
-                      
                       {client.name}
                     </option>
-                  )
-                )}
+                  ))
+                }
               </select>
             </div>
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
@@ -123,15 +133,10 @@ const ModalOffer = () => {
                 id="final-client"
                 name="final_client"
                 onChange={handleChange}
-                value={editOffer.final_client}
                 type="text"
               />
             </div>
           </div>
-
-
-
-
 
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6">
@@ -146,41 +151,12 @@ const ModalOffer = () => {
                 id="final-client"
                 name="activity_resumen"
                 onChange={handleChange}
-                value={editOffer.activity_resumen}
                 type="text"
               />
-              
-            </div>
-            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="final-client"
-              >
-                Estado
-              </label>
-              <select
-                className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
-                onChange={handleStatus}
-                name="status"
-                defaultValue={offer.status}
-
-              >
-                {status.map((state) =>(
-                  <option key={state.id} value={state.name}> {state.name} </option>
-                ))}
-              </select>
             </div>
           </div>
 
-
-
-
-
-
-
-
-
-          {/*<div className="flex items-center justify-center w-full">
+          <div className="flex items-center justify-center w-full">
             <label
               htmlFor="dropzone-file"
               className="flex flex-col items-center justify-center w-full h-50 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -202,8 +178,10 @@ const ModalOffer = () => {
                   ></path>
                 </svg>
                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click para reemplazar archivo</span> o
-                  arrastra y suelta
+                  <span className="font-semibold">
+                    Click para reemplazar archivo
+                  </span>{" "}
+                  o arrastra y suelta
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   *Solo archivos PDF
@@ -211,20 +189,19 @@ const ModalOffer = () => {
               </div>
               <input
                 id="dropzone-file"
-                onChange={handleChangeFile}
+                onChange={handleFile}
                 type="file"
                 className="hidden"
                 name="fileName"
               />
             </label>
-                  </div>*/}
+          </div>
 
           <div className="-mx-3 md:flex mt-3 justify-center ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center">
+              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center">
                 Actualizar Datos
               </button>
-              <button onClick={handleChangeModal}>Cerrar</button>
             </div>
           </div>
         </div>
@@ -233,4 +210,4 @@ const ModalOffer = () => {
   );
 };
 
-export default ModalOffer;
+export default OfferModal;
