@@ -5,7 +5,11 @@ const pedidos = () => {
   return (
     <>
       <Layout title={"Pedidos"} description="This is the pedidos page">
-        <Header_Table title="Pedidos" href="pedidos/nuevo-pedido" />
+        
+        <Header_Table 
+        title="Pedidos" 
+        href="pedidos/nuevo-pedido" />
+
         <div className="container mx-auto bg-white h-full p-5 rounded-lg">
           <div className="container grid grid-cols-2 flex-wrap items-center mx-auto">
             <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">

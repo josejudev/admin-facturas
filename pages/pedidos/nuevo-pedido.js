@@ -24,7 +24,9 @@ const Form_Order = () => {
 
   return (
     <>
-      <Layout>
+      <Layout
+        title={"Nuevo Pedido"}
+      >
         <form>
           {/*
         Primer container

@@ -138,8 +138,8 @@ const OfferModal = () => {
             </div>
           </div>
 
-          <div className="-mx-3 md:flex mb-6">
-            <div className="md:w-1/2 px-3 mb-6">
+          <div className=" md:flex mb-3  items-center justify-center">
+            <div className="md:w-1/2 px-3 m-3">
               <label
                 className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
                 htmlFor="grid-client"
@@ -198,9 +198,14 @@ const OfferModal = () => {
           </div>
 
           <div className="-mx-3 md:flex mt-3 justify-center ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center">
-                Actualizar Datos
+            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-col items-center justify-center">
+              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Agregar
+              </button>
+              <button 
+              onClick={handleModalOffer}
+              className="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Cancelar
               </button>
             </div>
           </div>
