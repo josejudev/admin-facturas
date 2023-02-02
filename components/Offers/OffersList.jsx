@@ -1,7 +1,7 @@
 import useAdmin from "../../hooks/useAdmin";
 
 const OffersList = ({ offers }) => {
-  const { handleSetOffer, handleChangeModal } = useAdmin();
+  const { handleSetOffer, handleChangeModal, handleModalDelete } = useAdmin();
 
 
   return (
@@ -13,7 +13,7 @@ const OffersList = ({ offers }) => {
               id="default-checkbox"
               type="checkbox"
               
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 "
             />
           </td>
           <td className="border-b-2 p-4">{offer.date}</td>
@@ -34,7 +34,9 @@ const OffersList = ({ offers }) => {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 "
             >
-              {offer.fileName}
+              {
+                offer.id +"-"+ offer.project_name.slice(0, 3).toUpperCase() +"-"+ offer.activity_resumen.slice(0, 3).toUpperCase() +"-"+ offer.final_client.slice(0, 3).toUpperCase() +"-"+ offer.date.slice(0, 4)
+              }
             </a>
           </td>
 
@@ -80,12 +82,16 @@ const OffersList = ({ offers }) => {
                       </button>
                     </li>
                     <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 text-red-500"
+                    <button
+                        onClick={() => {
+                          handleModalDelete();
+                          handleSetOffer(offer);
+                        }}
+                        type="button"
+                        className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"
                       >
                         Eliminar
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </nav>

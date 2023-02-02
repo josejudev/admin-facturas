@@ -4,8 +4,9 @@ import Modal from "react-modal";
 import useAdmin from "../hooks/useAdmin";
 import ModalOffer from "./Modals/EditOffer";
 import { useRouter } from "next/router";
-import Modalito from "./Modals/OfferModal";
+import OfferModal from "./Modals/OfferModal";
 import ClientModal from "./Modals/ClientModal";
+import ModalDelete from "./Modals/ModalDelete";
 
 const customStyles = {
   content: {
@@ -22,8 +23,10 @@ const customStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.25)",
     //set blur
     backdropFilter: "blur(5px)",
-    ShadowRoot: "0 0 5px 0 rgba(0, 0, 0, 0.5)",
+    //Create a transition
+    transition: "all 0.2s ease-in-out",
   },
+
 };
 
 Modal.setAppElement("#__next");
@@ -31,7 +34,7 @@ Modal.setAppElement("#__next");
 function Layout({ children, title = "", description = "" }) {
   const router = useRouter();
 
-  const { modal, modalAddOffer, modalAddClient } = useAdmin();
+  const { modal, modalAddOffer, modalAddClient, modalDelete } = useAdmin();
 
   return (
     <>
@@ -42,8 +45,8 @@ function Layout({ children, title = "", description = "" }) {
       <Header />
       {children}
       {modalAddOffer && (
-        <Modal isOpen={modalAddOffer} style={customStyles}>
-          <Modalito />
+        <Modal isOpen={modalAddOffer} style={customStyles}   >
+          <OfferModal />
         </Modal>
       )}
       {modal && (
@@ -57,6 +60,14 @@ function Layout({ children, title = "", description = "" }) {
           <ClientModal />
         </Modal>
       )}
+
+      {modalDelete && (
+        <Modal isOpen={modalDelete} style={customStyles}>
+          <ModalDelete />
+        </Modal>
+      )}
+
+
     </>
   );
 }

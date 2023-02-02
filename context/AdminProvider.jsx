@@ -10,6 +10,7 @@ const AdminProvider = ({ children }) => {
     const [modal, setModal] = useState(false);
     const [modalAddOffer, setModalOffer] = useState(false);
     const [modalAddClient, setModalClient] = useState(false);
+    const [modalDelete, setModalDelete] = useState(false);
 
     const getClients = async () => {
         const { data } = await axios.get('/api/clients');
@@ -37,6 +38,10 @@ const AdminProvider = ({ children }) => {
         setModalClient(!modalAddClient);
     }
 
+    const handleModalDelete = () => {
+        setModalDelete(!modalDelete);
+    }
+
 
 
     
@@ -51,7 +56,9 @@ const AdminProvider = ({ children }) => {
             modalAddOffer,
             handleModalOffer,
             modalAddClient,
-            handleModalClient
+            handleModalClient,
+            modalDelete,
+            handleModalDelete
         }}>
             {children}
         </AdminContext.Provider>

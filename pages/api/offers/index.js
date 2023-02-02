@@ -73,7 +73,7 @@ const upload = multer({
       cb(null, path.join(process.cwd(), "public", "uploads"));
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname);
+      cb(null, Date.now() +"-"+ file.originalname);
     },
   }),
 });

@@ -52,4 +52,16 @@ const upload = multer({
       },
     }),
   });
+
+
+const deleteOffer = async (req, res) => {
+    const { id } = req.query;
+
+    const delete_offer = await prisma.offer.delete({
+        where: {
+            id: parseInt(id),
+        },
+    });
+    return res.json(delete_offer);
+}
   
