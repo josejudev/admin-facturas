@@ -20,6 +20,7 @@ model client {
   //not null
   contact_phone  String? @db.VarChar(30)
   contact_email  String? @db.VarChar(50)
+  contact_name   String? @db.VarChar(100)
 
   offers offer[]
 }

@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import OfferModal from "./Modals/OfferModal";
 import ClientModal from "./Modals/ClientModal";
 import ModalDelete from "./Modals/ModalDelete";
+import EditClient from "./Modals/EditClient";
 
 const customStyles = {
   content: {
@@ -34,7 +35,7 @@ Modal.setAppElement("#__next");
 function Layout({ children, title = "", description = "" }) {
   const router = useRouter();
 
-  const { modal, modalAddOffer, modalAddClient, modalDelete } = useAdmin();
+  const { modal, modalAddOffer, modalAddClient, modalDelete, modalEditClient } = useAdmin();
 
   return (
     <>
@@ -58,6 +59,12 @@ function Layout({ children, title = "", description = "" }) {
       {modalAddClient && (
         <Modal isOpen={modalAddClient} style={customStyles}>
           <ClientModal />
+        </Modal>
+      )}
+
+      {modalEditClient && (
+        <Modal isOpen={modalEditClient} style={customStyles}>
+          <EditClient />
         </Modal>
       )}
 

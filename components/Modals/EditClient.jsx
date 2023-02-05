@@ -1,47 +1,60 @@
-import axios from "axios";
+import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import useAdmin from "../../hooks/useAdmin";
+import axios from "axios";
 
-const ClientModal = () => {
+const EditClient = () => {
+  const { client, handleModalEditClient } = useAdmin();
   const router = useRouter();
-  const { handleModalClient } = useAdmin();
-  const [client, setClient] = useState({
-    name: "",
-    rfc: "",
-    fiscal_address: "",
-    address: "",
-    email: "",
-    contact_phone: "",
-    contact_email: "",
-    contact_name: "",
+  const [editClient, setEditClient] = useState({
+    name: client.name,
+    rfc: client.rfc,
+    fiscal_address: client.fiscal_address,
+    email: client.email,
+    address: client.address,
+    contact_phone: client.contact_phone,
+    contact_name: client.contact_name,
+    contact_email: client.contact_email,
   });
 
   const handleChange = ({ target: { name, value } }) => {
-    setClient({
-      ...client,
+    setEditClient({
+      ...editClient,
       [name]: value,
     });
-  };
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post("/api/clients", client);
-      router.reload();
 
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+    const body = { ...editClient };
+    const response = await axios.put(`/api/clients/${client.id}`, body);
+    handleModalEditClient();
+    router.push("/clientes");
+    // try {
+    //   const body = { ...editClient };
+    //   const response = await fetch(`/api/clients/${client.id}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(body),
+    //   });
+    //   handleChangeModal();
+    //   router.push("/");
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  }
 
   return (
     <div className="w-[900px] flex flex-col">
       <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-blue-700">Agregar Cliente</h1>
+        <h1 className="text-4xl font-bold text-blue-700">Editar Cliente</h1>
         <div className="flex justify-end">
           <button
-            onClick={handleModalClient}
+            onClick={handleModalEditClient}
             type="button"
             className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
@@ -79,6 +92,7 @@ const ClientModal = () => {
                 onChange={handleChange}
                 id="grid-first-name"
                 name="name"
+                value={editClient.name}
                 type="text"
               />
             </div>
@@ -95,6 +109,7 @@ const ClientModal = () => {
                 onChange={handleChange}
                 id="grid-rfc"
                 name="rfc"
+                value={editClient.rfc}
                 type="text"
               />
             </div>
@@ -112,6 +127,7 @@ const ClientModal = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
                 onChange={handleChange}
                 id="grid-dirfis"
+                value={editClient.fiscal_address}
                 type="text"
                 name="fiscal_address"
               />
@@ -128,6 +144,7 @@ const ClientModal = () => {
                 onChange={handleChange}
                 id="grid-email"
                 name="email"
+                value={editClient.email}
                 type="text"
               />
             </div>
@@ -146,6 +163,7 @@ const ClientModal = () => {
                 onChange={handleChange}
                 id="grid-direccion"
                 name="address"
+                value={editClient.address}
                 type="text"
               />
             </div>
@@ -155,7 +173,7 @@ const ClientModal = () => {
             Persona de contacto
           </p>
           <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
                 htmlFor="grid-phone"
@@ -166,6 +184,7 @@ const ClientModal = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 onChange={handleChange}
                 id="grid-phone"
+                value={editClient.contact_name}
                 name="contact_name"
                 type="text"
               />
@@ -182,6 +201,7 @@ const ClientModal = () => {
                 onChange={handleChange}
                 id="grid-phone"
                 name="contact_phone"
+                value={editClient.contact_phone}
                 type="text"
               />
             </div>
@@ -197,6 +217,7 @@ const ClientModal = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 onChange={handleChange}
                 id="grid-email"
+                value={editClient.contact_email}
                 name="contact_email"
                 type="text"
               />
@@ -205,7 +226,7 @@ const ClientModal = () => {
           <div className="-mx-3 md:flex mt-3 justify-center ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
               <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Agregar
+                Actualizar Datos
               </button>
             </div>
           </div>
@@ -215,4 +236,4 @@ const ClientModal = () => {
   );
 };
 
-export default ClientModal;
+export default EditClient;

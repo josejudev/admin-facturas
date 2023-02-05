@@ -38,7 +38,7 @@ const listClients = async (req, res) => {
 }
 
 const createClient = async (req, res) => {
-    const { name, rfc, fiscal_address, email, address, contact_phone, contact_email} = req.body
+    const { name, rfc, fiscal_address, email, address, contact_phone, contact_email, contact_name} = req.body
     const client = await prisma.client.create({
         data: {
             name,
@@ -47,7 +47,8 @@ const createClient = async (req, res) => {
             email,
             address,
             contact_phone,
-            contact_email   
+            contact_email,
+            contact_name
         }
         
     })

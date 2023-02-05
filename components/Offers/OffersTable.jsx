@@ -1,10 +1,30 @@
-import React from "react";
 import Loader from "../Loader";
 import OffersList from "./OffersList";
+import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate'
 
-const OffersTable = ({
-    offers
-}) => {
+const OffersTable = ({offers}) => {
+
+  const [currentItems, setCurrentItems] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 5;
+
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(offers.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(offers.length / itemsPerPage));
+  }, [
+    itemOffset,
+    offers,
+    itemsPerPage
+  ]);
+
+  const handlePageClick = (e) => {
+    const newOffset = (e.selected * itemsPerPage) % offers.length;
+    setItemOffset(newOffset);
+  }
+
   return (
     <>
       <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
@@ -46,9 +66,38 @@ const OffersTable = ({
           </tr>
         </thead>
         <tbody className="text-center">
-            {!Object.keys(offers).length ? <Loader/> : <OffersList offers={offers}/>}
+            {
+            offers ? <OffersList offers={currentItems} /> : <Loader />
+            }
+                  {/* {
+        offers.length === 0 && (
+          <div className="flex items-center justify-center p-4 mt-4">
+            <p className="text-gray-600">No hay ofertas</p>
+          </div>
+        )
+      } */}
         </tbody>
       </table>
+
+      <ReactPaginate
+        breakLabel="..."
+        //insert icon
+        disabledClassName="hidden"
+        nextLabel=">>"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        
+        previousLabel="<<"
+        renderOnZeroPageCount={null}
+        containerClassName=" w-full flex items-center justify-center p-2 mt-4"
+        pageClassName="mx-1"
+        pageLinkClassName="page-link relative block py-1.5 px-3 rounded border-0  outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+        nextLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+        previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+        activeLinkClassName="bg-sky-400 text-white hover:bg-sky-400 hover:text-white"
+      />
+
     </>
   );
 };

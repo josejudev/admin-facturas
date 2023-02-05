@@ -5,10 +5,12 @@ import Link from "next/link";
 import axios from "axios";
 import Header_Table from "../components/HeaderTable";
 import OffersTable from "../components/Offers/OffersTable";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home = ({ offers }) => {
+  const [search, setSearch] = useState("");
   return (
     <>
       <Head>
@@ -20,8 +22,10 @@ const Home = ({ offers }) => {
       <main>
         <Layout title={"Ofertas"} description="This is the offert page">
           <Header_Table title="Ofertas" onClick={true} />
-          <div className="container mx-auto bg-white h-full p-5 rounded-lg">
-            <div className="container grid grid-cols-2 flex-wrap items-center mx-auto">
+        <div className="px-2 sm:px-4 py-2.5">
+
+          <div className=" mx-auto bg-white h-full p-5 rounded-lg">
+            <div className=" grid grid-cols-2 flex-wrap items-center mx-auto">
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
                 <option value="UN"> Todos </option>
                 <option value="RE">Pendientes</option>
@@ -31,6 +35,8 @@ const Home = ({ offers }) => {
                   type="text"
                   name="search"
                   placeholder="Buscar"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   href="clientes/nuevo"
                   className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
                 />
@@ -57,10 +63,10 @@ const Home = ({ offers }) => {
                 </button>
               </div>
             </div>
-            <OffersTable
-              offers={offers}
-             />
+            <OffersTable offers={offers} />
+
           </div>
+        </div>
         </Layout>
       </main>
     </>

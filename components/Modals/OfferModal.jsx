@@ -11,7 +11,7 @@ const OfferModal = () => {
     fileName: "",
     final_client: "",
     activity_resumen: "",
-    client_id: 1,
+    client_id: clients[0].id,
   });
 
   const handleChange = ({ target: { name, value } }) => {
@@ -110,6 +110,7 @@ const OfferModal = () => {
                 onChange={handleChange}
                 name="client_id"
                 className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
+                defaultValue={1}
               >
                 {
                   // Aqui va el map de los clientes

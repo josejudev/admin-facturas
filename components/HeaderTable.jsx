@@ -6,8 +6,8 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   const router = useRouter();
   const { handleModalOffer, handleModalClient } = useAdmin();
   return (
-    <div>
-      <div className="container flex flex-wrap items-center gap-4 mx-auto">
+    <div className="px-2 sm:px-4 py-2.5">
+      <div className=" flex flex-wrap items-center gap-4 mx-auto">
         <h1 className="text-5xl my-5 font-semibold text-gray-800">
           {`Tabla de ${title}`}
         </h1>

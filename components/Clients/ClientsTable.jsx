@@ -1,5 +1,5 @@
 import React from "react";
-import Clientsi from "./ClientsList";
+import ClientsList from "./ClientsList";
 import Loader from "../Loader";
 
 const ClientsTable = ({clients}) => {
@@ -15,7 +15,6 @@ const ClientsTable = ({clients}) => {
               <input
                 id="default-checkbox"
                 type="checkbox"
-                value=""
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 
                       "
               />
@@ -36,6 +35,9 @@ const ClientsTable = ({clients}) => {
               Email
             </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+              Nombre de contacto
+            </th>
+            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Telefono de contacto
             </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
@@ -47,9 +49,9 @@ const ClientsTable = ({clients}) => {
           </tr>
         </thead>
         <tbody className="text-center">
-            {!Object.keys(clients).length ? <Loader/> : <Clientsi clients={clients}/>}
-
-            
+            {
+                clients ? <ClientsList clients={clients} /> : <Loader />
+            }
         </tbody>
       </table>
     </>
