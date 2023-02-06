@@ -4,8 +4,8 @@ import Modal from "react-modal";
 import useAdmin from "../hooks/useAdmin";
 import ModalOffer from "./Modals/EditOffer";
 import { useRouter } from "next/router";
-import OfferModal from "./Modals/OfferModal";
-import ClientModal from "./Modals/ClientModal";
+import AddOffer from "./Modals/AddOffer";
+import AddClient from "./Modals/AddClient";
 import ModalDelete from "./Modals/ModalDelete";
 import EditClient from "./Modals/EditClient";
 
@@ -47,7 +47,7 @@ function Layout({ children, title = "", description = "" }) {
       {children}
       {modalAddOffer && (
         <Modal isOpen={modalAddOffer} style={customStyles}   >
-          <OfferModal />
+          <AddOffer />
         </Modal>
       )}
       {modalEditOffer && (
@@ -58,7 +58,7 @@ function Layout({ children, title = "", description = "" }) {
 
       {modalAddClient && (
         <Modal isOpen={modalAddClient} style={customStyles}>
-          <ClientModal />
+          <AddClient />
         </Modal>
       )}
 

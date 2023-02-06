@@ -2,7 +2,7 @@ import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const OfferModal = () => {
+const AddOffer = () => {
   const router = useRouter();
   const { clients, handleModalOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
@@ -216,4 +216,4 @@ const OfferModal = () => {
   );
 };
 
-export default OfferModal;
+export default AddOffer;

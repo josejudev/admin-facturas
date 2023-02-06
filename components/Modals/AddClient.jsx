@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import useAdmin from "../../hooks/useAdmin";
 
-const ClientModal = () => {
+const AddClient = () => {
   const router = useRouter();
   const { handleModalClient } = useAdmin();
   const [client, setClient] = useState({
@@ -215,4 +215,4 @@ const ClientModal = () => {
   );
 };
 
-export default ClientModal;
+export default AddClient;
