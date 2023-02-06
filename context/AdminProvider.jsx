@@ -21,7 +21,7 @@ const AdminProvider = ({ children }) => {
     * ModalDelete: Delete offer
     * ModalEditClient: Edit client
      */
-    const [modal, setModal] = useState(false);
+    const [modalEditOffer, setModalEditOffer] = useState(false);
     const [modalEditClient, setModalEditClient] = useState(false);
     const [modalAddOffer, setModalOffer] = useState(false);
     const [modalAddClient, setModalClient] = useState(false);
@@ -48,8 +48,8 @@ const AdminProvider = ({ children }) => {
         setClient(client);
     }
 
-    const handleChangeModal = () => {
-        setModal(!modal);
+    const handleModalEditOffer = () => {
+        setModalEditOffer(!modalEditOffer);
     }
     
     const handleModalOffer = () => {
@@ -76,17 +76,25 @@ const AdminProvider = ({ children }) => {
         value={{
             clients,
             client,
+
             offer,
+            offers,
+
             handleSetOffer,
-            modal,
-            handleChangeModal,
+            handleSetClient,
+
+            modalEditOffer,
+            handleModalEditOffer,
+
             modalAddOffer,
             handleModalOffer,
+
             modalAddClient,
             handleModalClient,
+
             modalDelete,
             handleModalDelete,
-            handleSetClient,
+
             modalEditClient,
             handleModalEditClient,
         }}>

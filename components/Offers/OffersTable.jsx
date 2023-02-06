@@ -8,7 +8,7 @@ const OffersTable = ({offers}) => {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 5;
+  const itemsPerPage = 1;
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
@@ -66,16 +66,11 @@ const OffersTable = ({offers}) => {
           </tr>
         </thead>
         <tbody className="text-center">
-            {
-            offers ? <OffersList offers={currentItems} /> : <Loader />
-            }
-                  {/* {
-        offers.length === 0 && (
-          <div className="flex items-center justify-center p-4 mt-4">
-            <p className="text-gray-600">No hay ofertas</p>
-          </div>
-        )
-      } */}
+{
+        offers.length === 0 ?(
+          <Loader/>
+        ): (<OffersList offers={currentItems}></OffersList> )
+      } 
         </tbody>
       </table>
 

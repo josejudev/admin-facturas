@@ -35,7 +35,7 @@ Modal.setAppElement("#__next");
 function Layout({ children, title = "", description = "" }) {
   const router = useRouter();
 
-  const { modal, modalAddOffer, modalAddClient, modalDelete, modalEditClient } = useAdmin();
+  const { modalEditOffer, modalAddOffer, modalAddClient, modalDelete, modalEditClient } = useAdmin();
 
   return (
     <>
@@ -50,8 +50,8 @@ function Layout({ children, title = "", description = "" }) {
           <OfferModal />
         </Modal>
       )}
-      {modal && (
-        <Modal isOpen={modal} style={customStyles}>
+      {modalEditOffer && (
+        <Modal isOpen={modalEditOffer} style={customStyles}>
           <ModalOffer />
         </Modal>
       )}

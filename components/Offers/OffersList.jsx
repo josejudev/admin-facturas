@@ -1,7 +1,7 @@
 import useAdmin from "../../hooks/useAdmin";
 
 const OffersList = ({ offers }) => {
-  const { handleSetOffer, handleChangeModal, handleModalDelete } = useAdmin();
+  const { handleSetOffer, handleModalEditOffer, handleModalDelete } = useAdmin();
 
 
   return (
@@ -71,7 +71,7 @@ const OffersList = ({ offers }) => {
                     <li>
                       <button
                         onClick={() => {
-                          handleChangeModal();
+                          handleModalEditOffer()
                           handleSetOffer(offer);
                         }}
                         type="button"

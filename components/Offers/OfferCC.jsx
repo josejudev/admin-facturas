@@ -1,13 +1,13 @@
-import useAdmin from "../hooks/useAdmin";
+import useAdmin from "../../hooks/useAdmin";
 
-const OffersList = ({ offers }) => {
-  const { handleSetOffer, handleChangeModal, handleModalDelete } = useAdmin();
-  console.log(offers);
+const OffersList = ({ offer }) => {
+
+
 
 
   return (
     <>
-      {offers?.map((offer) => (
+
         <tr key={offer.id} className="text-gray-700">
           <td className="border-b-2 p-4 dark:border-dark-5">
             <input
@@ -100,7 +100,7 @@ const OffersList = ({ offers }) => {
             </div>
           </td>
         </tr>
-      ))}
+      ))
     </>
   );
 };

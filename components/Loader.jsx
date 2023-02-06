@@ -4,7 +4,7 @@ const Loader = () => {
   return (
     <div>
         <p>
-            Cargando...
+            No hay ofertas
         </p>
     </div>
   )
