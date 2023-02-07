@@ -1,8 +1,9 @@
 import Loader from "../Loader";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import OrdersList from "./OrdersList";
 
-const OrdersTable = () => {
+const OrdersTable = ({orders}) => {
 
 
   return (
@@ -57,9 +58,15 @@ const OrdersTable = () => {
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Fecha del pedido
             </th>
+            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+              Nombre
+            </th>
 
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Cantidad
+            </th>
+            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+              Valor en pesos
             </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Tipo
@@ -76,12 +83,19 @@ const OrdersTable = () => {
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
               Pedido
             </th>
+            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+              Estado
+            </th>
             <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900 text">
               Acciones
             </th>
           </tr>
         </thead>
-        <tbody className="text-center"></tbody>
+        <tbody className="text-center" >
+          {orders.length === 0 ? <Loader /> : <OrdersList orders={orders}/> }
+          
+
+        </tbody>
       </table>
 
     </>
