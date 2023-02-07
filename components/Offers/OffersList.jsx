@@ -7,7 +7,7 @@ const OffersList = ({ offers }) => {
   return (
     <>
       {offers?.map((offer) => (
-        <tr key={offer.id} className="text-gray-700">
+        <tr key={offer.id} className="text-gray-700  hover:bg-gray-50 hover:transition-all">
           <td className="border-b-2 p-4 dark:border-dark-5">
             <input
               id="default-checkbox"
