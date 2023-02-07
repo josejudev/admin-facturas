@@ -17,29 +17,42 @@ model client {
   fiscal_address String  @db.VarChar(100)
   email          String  @db.VarChar(50)
   address        String  @db.VarChar(100)
-  //not null
   contact_phone  String? @db.VarChar(30)
   contact_email  String? @db.VarChar(50)
   contact_name   String? @db.VarChar(100)
-
-  offers offer[]
+  offers         offer[]
 }
 
 //A offer can have a client
 model offer {
-  id           Int      @id @default(autoincrement())
-  project_name String? 
-  fileName     String?
-  final_client String?
+  id               Int      @id @default(autoincrement())
+  project_name     String?
+  fileName         String?
+  final_client     String?
   activity_resumen String?
-  date         DateTime @default(now())
-  status       String?  @db.VarChar(50) @default("Pendiente")
-  client_id    Int
-  client       client   @relation(fields: [client_id], references: [id])
+  date             DateTime @default(now())
+  status           String?  @default("Pendiente") @db.VarChar(50)
+  client_id        Int
+  client           client   @relation(fields: [client_id], references: [id])
+  orders           order[]
 }
 
-model filePath {
-  id        Int      @id @default(autoincrement())
-  fileName      String
-
+model order {
+  id            Int     @id @default(autoincrement())
+  date          String? @db.VarChar(30)
+  name          String? @db.VarChar(100)
+  fileName      String? @db.VarChar(100)
+  concept       String? @db.VarChar(100)
+  amount        Float?
+  final_amount  Float?
+  type          String? @db.VarChar(50)
+  class_type    String? @db.VarChar(50)
+  milestone     Int     @db.TinyInt
+  entity        String? @db.VarChar(20)
+  currency      String? @db.VarChar(10)
+  order_balance Float?
+  status        String? @default("Pendiente") @db.VarChar(50)
+  observations  String? @db.VarChar(100)
+  offer_id      Int?
+  offer         offer?  @relation(fields: [offer_id], references: [id])
 }

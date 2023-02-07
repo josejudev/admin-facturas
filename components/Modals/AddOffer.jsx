@@ -114,7 +114,7 @@ const AddOffer = () => {
               >
                 {
                   // Aqui va el map de los clientes
-                  clients.map((client) => (
+                  clients?.map((client) => (
                     <option key={client.id} value={client.id}>
                       {client.name}
                     </option>
