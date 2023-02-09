@@ -41,6 +41,16 @@ const Header = () => {
                   Pedidos
                 </Link>
               </li>
+
+              <li>
+                <Link
+                  href="/clientes"
+                  className={ router.pathname === '/clientes' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+
+                >
+                  Clientes
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/ingresos"
@@ -57,15 +67,6 @@ const Header = () => {
                 >
                   Pre-Factura
                 </a>
-              </li>
-              <li>
-                <Link
-                  href="/clientes"
-                  className={ router.pathname === '/clientes' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
-
-                >
-                  Clientes
-                </Link>
               </li>
               <li>
                 <a

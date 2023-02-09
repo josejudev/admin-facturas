@@ -31,6 +31,7 @@ const EditOffer = () => {
       ...editOffer,
       [name]: value,
     });
+    
   };
 
   const handleChangeFile = (e) => {

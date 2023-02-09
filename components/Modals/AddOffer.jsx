@@ -9,10 +9,12 @@ const AddOffer = () => {
   const [offer, setOffer] = useState({
     project_name: "",
     fileName: "",
-    final_client: "",
+    final_client: "", 
     activity_resumen: "",
     client_id: clients[0].id,
   });
+
+  console.log(offer);
 
   const handleChange = ({ target: { name, value } }) => {
     setOffer({
