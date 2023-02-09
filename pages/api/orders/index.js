@@ -40,58 +40,67 @@ const listOrders = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  upload.single("fileName")(req, res, async (err) => {
-    if (err) {
-      console.log(err);
-    }
-    const {
-      date,
-      name,
-      fileName,
-      concept,
-      amount,
-      final_amount,
-      type,
-      class_type,
-      milestone,
-      entity,
-      currency,
-      order_balance,
-      status,
-      observations,
-      offer_id,
-    } = req.body;
-
-    const order = await prisma.order.create({
-        data: {
-            date,
-            name,
-            fileName: req.file.filename,
-            concept,
-            amount: parseFloat(amount),
-            final_amount : parseFloat(final_amount),
-            type,
-            class_type,
-            milestone : parseInt(milestone),
-            entity,
-            currency,
-            order_balance : parseFloat(order_balance),
-            status,
-            observations,
-            offer_id: parseInt(offer_id)
-        }
+  try{
+    upload.single("fileName")(req, res, async (err) => {
+      if (err) {
+        console.log(err);
+      }
+      const {
+        date,
+        name,
+        fileName,
+        concept,
+        amount,
+        final_amount,
+        type,
+        class_type,
+        milestone,
+        entity,
+        currency,
+        order_balance,
+        status,
+        observations,
+        offer_id,
+      } = req.body;
+  
+      const order = await prisma.order.create({
+          data: {
+              date,
+              name,
+              fileName: req.file.filename,
+              concept,
+              amount: parseFloat(amount),
+              final_amount : parseFloat(final_amount),
+              type,
+              class_type,
+              milestone : parseInt(milestone),
+              entity,
+              currency,
+              order_balance : parseFloat(order_balance),
+              status,
+              observations,
+              offer_id: parseInt(offer_id)
+          }
+      });
+      return res.json(order);
     });
-    return res.json(order);
-  });
+  } catch (error) {
+    console.log("La orden no se pudo crear");
+  }
 };
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.join(process.cwd(), "public", "uploads"));
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + "-" + file.originalname);
-    },
-  }),
-});
+try{
+  const upload = multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, path.join(process.cwd(), "public", "uploads"));
+      },
+      filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+      },
+    }),
+  });
+  
+} catch (error) {
+  console.log("No se pudo subir el archivo");
+}

@@ -82,6 +82,7 @@ const Form_Order = () => {
     });
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
@@ -103,7 +104,7 @@ const Form_Order = () => {
       const res = await axios.post("/api/orders", body);
       router.push("/pedidos");
     } catch (error) {
-      console.log(error)
+      console.log("Hubo un error")
     }
 
   }
@@ -371,8 +372,9 @@ const Form_Order = () => {
                 <div className="flex justify-between">
                   <p className="text-lg font-bold">Total</p>
                   <div className="">
-                    <p className="mb-1 text-lg font-bold">$134.98 USD</p>
-                    <p className="text-sm text-gray-700">including VAT</p>
+                    <p className="mb-1 text-lg font-bold">{
+                      order.final_amount > 0 ? "$" + order.final_amount + " MXN" : "$0.00"
+                    }</p>
                   </div>
                 </div>
                 <button className="mt-6 w-full rounded-md bg-blue-500 py-3.5 font-bold text-md text-blue-50 hover:bg-blue-600">
