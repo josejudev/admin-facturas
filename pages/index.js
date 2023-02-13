@@ -10,6 +10,7 @@ import { useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 const Home = ({ offers }) => {
+
   const [search, setSearch] = useState("");
   return (
     <>
@@ -25,6 +26,7 @@ const Home = ({ offers }) => {
 
           <div className="px-2 sm:px-4 py-2.5">
             <div className=" mx-auto bg-white h-full p-5 rounded-lg">
+              
               <OffersTable offers={offers} />
             </div>
           </div>

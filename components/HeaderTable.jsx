@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const router = useRouter();
-  const { handleModalOffer, handleModalClient } = useAdmin();
+  const { handleModalOffer, handleModalClient,clients } = useAdmin();
   return (
     <div className="px-2 sm:px-4 py-2.5">
       <div className=" flex flex-wrap items-center gap-4 mx-auto">
@@ -21,6 +21,10 @@ const HeaderTable = ({ children, href='', title = ''}) => {
           >
             Agregar nuevo
           </button>
+
+          {
+            router.pathname === "/" && Object.keys(clients).length === 0 ? <button>NO hay clientes</button> : null
+          }
         </Link>
         <button
           type="button"

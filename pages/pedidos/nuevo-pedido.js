@@ -7,7 +7,10 @@ import { useRouter } from "next/router";
 const Form_Order = () => {
   const router = useRouter();
   const { offers } = useAdmin();
+  const{ offersEmpty } = useAdmin();
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente");
+
+
 
   const typeCurrency = [
     { id: 1, name: "USD" },
@@ -82,7 +85,7 @@ const Form_Order = () => {
     });
   }
 
-  const { id } = router.query;
+
 
 
   const handleSubmit = async (e) => {

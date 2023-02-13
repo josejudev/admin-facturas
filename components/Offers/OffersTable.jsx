@@ -1,9 +1,12 @@
-import Loader from "../Loader";
 import OffersList from "./OffersList";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import Loader from "../Loader";
 
 const OffersTable = ({ offers }) => {
+  if (Object.keys(offers).length === 0 ) {
+    return <Loader type={"ofertas registradas"}/>;
+  }
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);

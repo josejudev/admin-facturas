@@ -62,6 +62,8 @@ const createOrder = async (req, res) => {
         observations,
         offer_id,
       } = req.body;
+
+
   
       const order = await prisma.order.create({
           data: {
@@ -81,8 +83,16 @@ const createOrder = async (req, res) => {
               observations,
               offer_id: parseInt(offer_id)
           },
+      });
 
-          
+      await prisma.offer.update({
+        where: {
+          id: parseInt(offer_id),
+        },
+        data: {
+          status: "Aceptado",
+        }
+        
       });
 
 
