@@ -6,15 +6,17 @@ const AddOffer = () => {
   const router = useRouter();
   const { clients, handleModalOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
-  const [offer, setOffer] = useState({
-    project_name: "",
-    fileName: "",
-    final_client: "", 
-    activity_resumen: "",
-    client_id: clients[0].id,
-  });
 
-  console.log(offer);
+    const [offer, setOffer] = useState({
+      project_name: "",
+      fileName: "",
+      final_client: "", 
+      activity_resumen: "",
+      client_id: clients[0].id,
+    });
+  
+
+
 
   const handleChange = ({ target: { name, value } }) => {
     setOffer({

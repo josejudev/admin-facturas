@@ -80,8 +80,12 @@ const createOrder = async (req, res) => {
               status,
               observations,
               offer_id: parseInt(offer_id)
-          }
+          },
+
+          
       });
+
+
       return res.json(order);
     });
   } catch (error) {
@@ -89,7 +93,6 @@ const createOrder = async (req, res) => {
   }
 };
 
-try{
   const upload = multer({
     storage: multer.diskStorage({
       destination: function (req, file, cb) {
@@ -100,7 +103,3 @@ try{
       },
     }),
   });
-  
-} catch (error) {
-  console.log("No se pudo subir el archivo");
-}

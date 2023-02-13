@@ -92,7 +92,7 @@ const OrdersTable = ({orders}) => {
           </tr>
         </thead>
         <tbody className="text-center" >
-          {orders.length === 0 ? <Loader /> : <OrdersList orders={orders}/> }
+          {orders ? <OrdersList orders={orders}/>: <Loader/>  }
           
 
         </tbody>

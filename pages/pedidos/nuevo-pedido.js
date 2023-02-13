@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 const Form_Order = () => {
   const router = useRouter();
   const { offers } = useAdmin();
-  const pendingOffers = offers.filter((offer) => offer.status === "Aceptado");
+  const pendingOffers = offers.filter((offer) => offer.status === "Pendiente");
 
   const typeCurrency = [
     { id: 1, name: "USD" },
@@ -41,7 +41,7 @@ const Form_Order = () => {
     type: typeEntity[0].name,
     class_type: typeClass[0].name,
     entity: "",
-    offer_id: Number(pendingOffers[0].id), 
+    offer_id: 1, 
     //Money data
     amount: "",
     final_amount: "",
@@ -81,6 +81,8 @@ const Form_Order = () => {
       [name]: value,
     });
   }
+
+  const { id } = router.query;
 
 
   const handleSubmit = async (e) => {

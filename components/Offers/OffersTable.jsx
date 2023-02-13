@@ -15,6 +15,8 @@ const OffersTable = ({ offers }) => {
     setPageCount(Math.ceil(offers.length / itemsPerPage));
   }, [itemOffset, offers, itemsPerPage]);
 
+
+
   const handlePageClick = (e) => {
     const newOffset = (e.selected * itemsPerPage) % offers.length;
     setItemOffset(newOffset);
@@ -101,11 +103,9 @@ const OffersTable = ({ offers }) => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {offers.length === 0 ? (
-                    <Loader />
-                  ) : (
-                    <OffersList offers={currentItems}></OffersList>
-                  )}
+                  {offers ? (
+                    <OffersList offers={currentItems} />
+                  ): (<Loader/>)}
                 </tbody>
               </table>
             </div>
