@@ -17,7 +17,7 @@ const Loader = ({childre, type}) => {
           </svg>
         </div>
         <h1 className=" text-[36px] font-bold text-slate-500 lg:text-[35px]">{`No hay ${type}`}</h1>
-        <p className="text-slate-600  lg:text-lg italic">{`Agregue ${type.replace(/registrados$/, '')} para iniciar acciones`}</p>
+        <p className="text-slate-600  lg:text-lg italic">{`Agregue ${type.replace(/registrados$/, '').replace(/registradas$/,'') } para iniciar acciones`}</p>
         {
           
         }
