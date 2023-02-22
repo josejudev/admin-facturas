@@ -20,7 +20,7 @@ const OrdersList = ({ orders }) => {
           <td className="border-b-2 p-4">{order.final_amount}</td>
           <td className="border-b-2 p-4">{order.type}</td>
           <td className="border-b-2 p-4">{order.class_type}</td>
-          <td className="border-b-2 p-4">{order.milestone}</td>
+          <td className="border-b-2 p-4">{order.type}</td>
           <td className="border-b-2 p-4">
             <a
               href={`/uploads/${order.offer.fileName}`}

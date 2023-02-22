@@ -41,18 +41,26 @@ model order {
   id            Int     @id @default(autoincrement())
   date          String? @db.VarChar(30)
   name          String? @db.VarChar(100)
-  fileName      String? @db.VarChar(100)
+  //fileName      String? @db.VarChar(100)
   concept       String? @db.VarChar(100)
   amount        Float?
   final_amount  Float?
   type          String? @db.VarChar(50)
   class_type    String? @db.VarChar(50)
-  milestone     Int     @db.TinyInt
+  //milestone     Int     @db.TinyInt
   entity        String? @db.VarChar(20)
   currency      String? @db.VarChar(10)
   order_balance Float?
   status        String? @default("Pendiente") @db.VarChar(50)
   observations  String? @db.VarChar(100)
-  offer_id      Int?
-  offer         offer?  @relation(fields: [offer_id], references: [id])
+  offer_id      Int
+  offer         offer   @relation(fields: [offer_id], references: [id])
+  milestone milestone[]
+}
+
+model milestone {
+  id       Int     @id @default(autoincrement())
+  name     String? @db.VarChar(10)
+  order_id Int
+  order order @relation(fields: [order_id], references: [id])
 }

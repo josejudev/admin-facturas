@@ -54,7 +54,6 @@ const createOrder = async (req, res) => {
         final_amount,
         type,
         class_type,
-        milestone,
         entity,
         currency,
         order_balance,
@@ -75,7 +74,6 @@ const createOrder = async (req, res) => {
               final_amount : parseFloat(final_amount),
               type,
               class_type,
-              milestone : parseInt(milestone),
               entity,
               currency,
               order_balance : parseFloat(order_balance),
@@ -94,6 +92,8 @@ const createOrder = async (req, res) => {
         }
         
       });
+
+
 
 
       return res.json(order);

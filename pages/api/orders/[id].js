@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
 const updateOrders = async (req, res) => {
   const { id } = req.query;
-  const {date,name,concept,amount,final_amount,type,class_type,milestone,entity,currency,order_balance,status,observations,offer_id} = req.body;
+  const {date,name,concept,amount,final_amount,type,class_type,entity,currency,order_balance,status,observations,offer_id} = req.body;
   const order = await prisma.order.update({
     where: {
       id: Number(id),
@@ -32,7 +32,6 @@ const updateOrders = async (req, res) => {
       final_amount,
       type,
       class_type,
-      milestone,
       entity,
       currency,
       order_balance,

@@ -7,10 +7,7 @@ import { useRouter } from "next/router";
 const Form_Order = () => {
   const router = useRouter();
   const { offers } = useAdmin();
-  const{ offersEmpty } = useAdmin();
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente");
-
-
 
   const typeCurrency = [
     { id: 1, name: "USD" },
@@ -33,9 +30,6 @@ const Form_Order = () => {
     { id: 2, name: "CERRADO" },
   ];
 
-  
-
-
   const [order, setOrder] = useState({
     date: "",
     name: "",
@@ -44,14 +38,14 @@ const Form_Order = () => {
     type: typeEntity[0].name,
     class_type: typeClass[0].name,
     entity: "",
-    offer_id: 1, 
+    offer_id: 1,
     //Money data
     amount: "",
     final_amount: "",
     currency: typeCurrency[0].name,
     order_balance: "",
     milestone: "",
-    status : typeStatus[0].name,
+    status: typeStatus[0].name,
     //Status data
   });
 
@@ -61,8 +55,6 @@ const Form_Order = () => {
       [name]: value,
     });
   };
-
-
 
   const handleCurrency = ({ target: { name, value } }) => {
     setOrder({
@@ -76,21 +68,60 @@ const Form_Order = () => {
       ...order,
       [name]: files[0],
     });
-  }
+  };
 
   const handleStatus = ({ target: { name, value } }) => {
     setOrder({
       ...order,
       [name]: value,
     });
-  }
+  };
 
+  //Create Milestone
 
+  const handleinputchange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...inputFields];
+    list[index][name] = value;
+    setInputFields(list);
+  };
 
+  const handleremove = (index) => {
+    const list = [...inputFields];
+    list.splice(index, 1);
+    setInputFields(list);
+  };
+
+  const [inputFields, setInputFields] = useState([
+    {
+      milestone: "",
+      percentage: 0,
+      value_milestone: 0,
+    },
+  ]);
+
+  const sum = inputFields.reduce((total, obj) => {
+    return total + Number(obj.percentage);
+  }, 0);
+  console.log(sum);
+
+  const handleAddClick = () => {
+    setInputFields([
+      ...inputFields,
+      {
+        milestone: "",
+        percentage: 0,
+        value_milestone: 0,
+      },
+    ]);
+  };
+
+  //crear la suma de cada input
+  const handleSum = () => {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const body = new FormData();
       body.append("date", order.date);
       body.append("name", order.name);
@@ -104,18 +135,13 @@ const Form_Order = () => {
       body.append("final_amount", order.final_amount);
       body.append("currency", order.currency);
       body.append("order_balance", order.order_balance);
-      body.append("milestone", order.milestone);
       body.append("status", order.status);
       const res = await axios.post("/api/orders", body);
       router.push("/pedidos");
     } catch (error) {
-      console.log("Hubo un error")
+      console.log("Hubo un error");
     }
-
-  }
-
-
-
+  };
 
   return (
     <>
@@ -200,8 +226,6 @@ const Form_Order = () => {
                         </span>
                         <input
                           type="text"
-                          name="milestone"
-                          onChange={handleChange}
                           className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
                         />
                       </label>
@@ -222,6 +246,108 @@ const Form_Order = () => {
                 {/**
                  * Segundo contenedor
                  */}
+                <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md">
+                  {inputFields.map((x, i) => {
+                    return (
+                      <div key={i}>
+                        <div className="mb-4 md:flex md:flex-wrap md:justify-between">
+                          <div className="flex flex-col  md:w-1/4 justify-center items-center ">
+                            <h1 className=" font-bold text-blue-500 text-center text-3xl">
+                              Hito {i + 1}
+                            </h1>
+                          </div>
+                          <div className="flex flex-col mb-4 md:w-1/4">
+                            <label className="block px-3 text-grey-darkest md:ml-2">
+                              <span className=" block text-sm font-medium text-slate-700">
+                                Porcentaje
+                              </span>
+                              <input
+                                type="number"
+                                name="percentage"
+                                onChange={(e) => handleinputchange(e, i)}
+                                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                              />
+                            </label>
+                          </div>
+                          <div className="flex flex-col mb-4 md:w-1/4">
+                            <label className="block px-3 text-grey-darkest md:ml-2">
+                              <span className=" block text-sm font-medium text-slate-700">
+                                Valor
+                              </span>
+                              <input
+                                type="text"
+                                name="value_milestone"
+                                onChange={(e) => handleinputchange(e, i)}
+                                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                              />
+                            </label>
+                          </div>
+
+                          <div className="flex flex-col md:w-1/4 items-center ">
+                            {inputFields.length - 1 === i && sum < 100 && (
+                              <div className="mx-auto w-full flex items-center justify-center  gap-1">
+                                <button
+                                  className="mx-auto mt-6 w-1/2 rounded-md border border-blue-500 py-2 font-medium text-md text-blue-500 hover:bg-blue-400 hover:text-white items-center justify-center flex"
+                                  onClick={handleAddClick}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M12 4.5v15m7.5-7.5h-15"
+                                    />
+                                  </svg>
+                                  <span className="font-normal">Agregar</span>
+                                </button>
+                                {inputFields.length !== 1 && (
+                                  <button
+                                    className="mx-auto mt-6 w-1/2 rounded-md py-2 font-medium text-md text-red-500 border border-red-500 hover:bg-red-600 hover:text-white items-center justify-center flex"
+                                    onClick={() => handleremove(i)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth={1.5}
+                                      stroke="currentColor"
+                                      className="w-6 h-6"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                      />
+                                    </svg>
+                                    <span className="font-normal">
+                                      Eliminar
+                                    </span>
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div className="flex flex-col md:w-full text-center justify-center items-center">
+                    {sum > 100 ? (
+                      <p className="text-red-500 font-normal text-center">
+                        Establecer Porcentajes correctamente
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+                {/**
+                 * Tercer contenedor
+                 */}
                 <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
                   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                     <div className=" md:flex-row flex flex-wrap items-center justify-center mx-auto bg-white rounded-xl mt-5 gap-8">
@@ -230,11 +356,11 @@ const Form_Order = () => {
                           Oferta
                         </span>
                         <select
-                        name="offer_id"
-                        onChange={handleChange}
-                        defaultValue={1}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
-
+                          name="offer_id"
+                          onChange={handleChange}
+                          defaultValue={1}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
+                        >
                           {pendingOffers.map((offer) => (
                             <option key={offer.id} value={offer.id}>
                               {offer.project_name}
@@ -258,8 +384,9 @@ const Form_Order = () => {
                           Clase
                         </span>
                         <select
-                        name="class_type" 
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
+                          name="class_type"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
+                        >
                           {typeClass.map((item) => (
                             <option key={item.id} value={item.id}>
                               {item.name}
@@ -272,9 +399,10 @@ const Form_Order = () => {
                           Tipo
                         </span>
                         <select
-                        name="type"
-                        onChange={handleChange}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
+                          name="type"
+                          onChange={handleChange}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
+                        >
                           {typeEntity.map((item) => (
                             <option key={item.id} value={item.id}>
                               {item.name}
@@ -288,9 +416,10 @@ const Form_Order = () => {
                           Status
                         </span>
                         <select
-                        name="status"
-                        onChange={handleStatus}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 ">
+                          name="status"
+                          onChange={handleStatus}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 "
+                        >
                           {typeStatus.map((item) => (
                             <option key={item.id} value={item.name}>
                               {item.name}
@@ -332,7 +461,12 @@ const Form_Order = () => {
                           </span>
                         </span>
                       </span>
-                      <input type="file" name="fileName" className="hidden" onChange={ handleFile}/>
+                      <input
+                        type="file"
+                        name="fileName"
+                        className="hidden"
+                        onChange={handleFile}
+                      />
                     </label>
                   </div>
                 </div>
@@ -377,9 +511,11 @@ const Form_Order = () => {
                 <div className="flex justify-between">
                   <p className="text-lg font-bold">Total</p>
                   <div className="">
-                    <p className="mb-1 text-lg font-bold">{
-                      order.final_amount > 0 ? "$" + order.final_amount + " MXN" : "$0.00"
-                    }</p>
+                    <p className="mb-1 text-lg font-bold">
+                      {order.final_amount > 0
+                        ? "$" + order.final_amount + " MXN"
+                        : "$0.00"}
+                    </p>
                   </div>
                 </div>
                 <button className="mt-6 w-full rounded-md bg-blue-500 py-3.5 font-bold text-md text-blue-50 hover:bg-blue-600">
