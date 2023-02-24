@@ -44,7 +44,7 @@ const Form_Order = () => {
     final_amount: "",
     currency: typeCurrency[0].name,
     order_balance: "",
-    milestone: "",
+
     status: typeStatus[0].name,
     //Status data
   });
@@ -85,6 +85,7 @@ const Form_Order = () => {
     list[index][name] = value;
     setInputFields(list);
   };
+  
 
   const handleremove = (index) => {
     const list = [...inputFields];
@@ -94,9 +95,8 @@ const Form_Order = () => {
 
   const [inputFields, setInputFields] = useState([
     {
-      milestone: "",
+      milestone: 0,
       percentage: 0,
-      value_milestone: 0,
     },
   ]);
 
@@ -109,9 +109,8 @@ const Form_Order = () => {
     setInputFields([
       ...inputFields,
       {
-        milestone: "",
+        milestone: inputFields.length,
         percentage: 0,
-        value_milestone: 0,
       },
     ]);
   };
@@ -136,8 +135,9 @@ const Form_Order = () => {
       body.append("currency", order.currency);
       body.append("order_balance", order.order_balance);
       body.append("status", order.status);
+      body.append("milestone", JSON.stringify(inputFields));
       const res = await axios.post("/api/orders", body);
-      router.push("/pedidos");
+
     } catch (error) {
       console.log("Hubo un error");
     }
@@ -276,8 +276,7 @@ const Form_Order = () => {
                               </span>
                               <input
                                 type="text"
-                                name="value_milestone"
-                                onChange={(e) => handleinputchange(e, i)}
+
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
                             </label>

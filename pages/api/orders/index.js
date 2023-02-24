@@ -1,8 +1,21 @@
+import { json } from "express";
+
 const path = require("path");
 const multer = require("multer");
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(process.cwd(), "public", "uploads"));
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + "-" + file.originalname);
+    },
+  }),
+});
 
 export const config = {
   api: {
@@ -60,28 +73,35 @@ const createOrder = async (req, res) => {
         status,
         observations,
         offer_id,
+        percentage,
+        milestone,
       } = req.body;
 
-
-  
       const order = await prisma.order.create({
-          data: {
-              date,
-              name,
-              fileName: req.file.filename,
-              concept,
-              amount: parseFloat(amount),
-              final_amount : parseFloat(final_amount),
-              type,
-              class_type,
-              entity,
-              currency,
-              order_balance : parseFloat(order_balance),
-              status,
-              observations,
-              offer_id: parseInt(offer_id)
-          },
+        data: {
+          date,
+          name,
+          fileName: req.file.filename,
+          concept,
+          amount: parseFloat(amount),
+          final_amount : parseFloat(final_amount),
+          type,
+          class_type,
+          entity,
+          currency,
+          order_balance : parseFloat(order_balance),
+          status,
+          observations,
+          offer_id: parseInt(offer_id)
+        },
       });
+
+      const order_id = order.id;
+      let milestones = JSON.parse(milestone).map((milestone, index) => ({
+        num_milestone: index + 1,
+        order_id,
+        percentage: parseInt(milestone.percentage),
+      }));
 
       await prisma.offer.update({
         where: {
@@ -93,23 +113,13 @@ const createOrder = async (req, res) => {
         
       });
 
+      const createdMilestones = await prisma.milestone.createMany({
+        data: milestones,
+      });
 
-
-
-      return res.json(order);
+      return res.json({ order, createdMilestones });
     });
   } catch (error) {
     console.log("La orden no se pudo crear");
   }
 };
-
-  const upload = multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, path.join(process.cwd(), "public", "uploads"));
-      },
-      filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    }),
-  });
