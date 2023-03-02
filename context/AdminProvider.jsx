@@ -13,6 +13,8 @@ const AdminProvider = ({ children }) => {
     const [offers, setOffers] = useState([]);
     //Save the offer selected in state
     const [offer, setOffer] = useState({});
+    
+    const [user, setUser] = useState({});
     /*
     * Modal state
     * Modal: Edit offer
@@ -36,9 +38,15 @@ const AdminProvider = ({ children }) => {
         setOffers(data);
     }
 
+    const getUser = async () => {
+        const { data } = await axios.get('/api/auth/profile');
+        setUser(data);
+    }
+
     useEffect(() => {
         getClients();
         getOffers();
+        getUser();
     }, []);
 
     const handleSetOffer = (offer) => {
@@ -97,6 +105,8 @@ const AdminProvider = ({ children }) => {
 
             modalEditClient,
             handleModalEditClient,
+
+            user
         }}>
             {children}
         </AdminContext.Provider>

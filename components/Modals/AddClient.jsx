@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useAdmin from "../../hooks/useAdmin";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddClient = () => {
   const router = useRouter();
@@ -28,10 +30,12 @@ const AddClient = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/clients", client);
-      router.reload();
+      router.push("/clientes");
+      handleModalClient();
+      toast.success("Cliente agregado correctamente");
 
     } catch (error) {
-      console.log(error);
+      toast.error("No se pudo agregar el cliente");
     }
   };
 

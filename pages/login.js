@@ -1,35 +1,38 @@
 import axios from "axios";
 import { useState } from "react";
-import { useRouter } from "next/router"
-
+import { useRouter } from "next/router";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const login = () => {
-    const router = useRouter()
-    const [credentials, setCredentials] = useState({
-        user_email: "",
-        user_pass: "",
+
+  const router = useRouter();
+  const [credentials, setCredentials] = useState({
+    user_email: "",
+    user_pass: "",
+  });
+
+  const handleChangeInput = ({ target: { name, value } }) => {
+    setCredentials({
+      ...credentials,
+      [name]: value,
     });
-
-    const handleChangeInput = ({ target: { name, value } }) => {
-        setCredentials({
-            ...credentials,
-            [name]: value,
-        });
-
-    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await axios.post(
-        '/api/auth/login', credentials
-        )
-        console.log(data)
-        router.push('/profile')
-        
+    try {
+      const data = await axios.post("/api/auth/login", credentials);
+      console.log(data);
+      router.push("/");
+    } catch (error) {
+      toast.error("Error al iniciar sesión, por favor verifique sus credenciales");
+    }
   };
 
   return (
     <div>
+      <ToastContainer />
       <section className="bg-gradient-to-r from-rose-100 to-teal-100 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a

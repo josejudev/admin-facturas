@@ -1,7 +1,9 @@
 import useAdmin from "../../hooks/useAdmin";
 
+
 const ClientsList = ({ clients }) => {
   const { handleSetClient, handleModalDelete,handleModalEditClient } = useAdmin();
+  
 
 
   return (

@@ -28,5 +28,5 @@ export async function middleware(request) {
 
 // Paths to be protected
 export const config = {
-  matcher: ["/profile/:path*", "/clientes/:path*", "/pedidos/:path*", "/", "/api/clients/:path*"],
+  matcher: ["/profile/:path*", "/clientes/:path*", "/pedidos/:path*", "/",],
 };

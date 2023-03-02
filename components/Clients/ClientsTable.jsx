@@ -3,14 +3,11 @@ import ClientsList from "./ClientsList";
 import ReactPaginate from "react-paginate";
 import Loader from "../Loader";
 
+
 const ClientsTable = ({ clients }) => {
   if (Object.keys(clients).length === 0) {
     return <Loader type={"clientes registrados"} />
   }
-
-
-
-
 
   return (
     <>

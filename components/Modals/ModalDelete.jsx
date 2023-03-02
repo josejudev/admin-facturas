@@ -2,6 +2,8 @@ import useAdmin from "../../hooks/useAdmin";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ModalDelete = ({children, title = ''}) => {
   const { handleModalDelete, offer,client } = useAdmin();
@@ -15,6 +17,7 @@ const ModalDelete = ({children, title = ''}) => {
           await axios.delete(`/api/clients/${client.id}`);
           router.push("/clientes");
           handleModalDelete();
+          toast.error("Cliente eliminado correctamente");
           break;
         case "/":
           await axios.delete(`/api/offers/${offer.id}`);

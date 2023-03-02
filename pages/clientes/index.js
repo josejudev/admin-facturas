@@ -3,6 +3,7 @@ import Header_Table from "../../components/HeaderTable";
 import ClientsTable from "../../components/Clients/ClientsTable";
 import { useState } from "react";
 import Loader from "../../components/Loader";
+
 import axios from "axios";
 const index = ({ clients }) => {
 

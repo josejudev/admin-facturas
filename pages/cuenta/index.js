@@ -1,20 +1,16 @@
 import Layout from "../../components/Layout"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import useAdmin from "../../hooks/useAdmin"
 import axios from "axios"
 const index = () => {
     const router = useRouter()
+    const { user } = useAdmin()
 
-    const [user, setUser] = useState({
-        user_email: "",
-    })
+
+
 
     
-    const getProfile = async () => {
-        const res = await axios.get('/api/auth/profile')
-        setUser(res.data)
-
-    }
 
     const logoutSession = async () => {
         const response = await axios.get('/api/auth/logout')
@@ -27,22 +23,19 @@ const index = () => {
 
     <Layout title="Profile" description="This is the profile page">
         <div className="container text-center mt-10 flex gap-5 justify-center items-center">
-        <h1 className="text-3xl">Profile</h1>
-        <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => getProfile()}
-        >
-            Get data
-        </button>
+        <h1 className="text-3xl">
+            Welcome {user.user_name} {
+                user.role_id === 1 
+                    ?<span className="text-green-500">Admin</span>:<span className="text-blue-500">User</span>
+            }
+        </h1>
         <button
             onClick={() => logoutSession()}
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
             Log out
         </button>
-        <pre>
-            {JSON.stringify(user, null, 2)}
-        </pre>
+
         </div>
     </Layout>
 

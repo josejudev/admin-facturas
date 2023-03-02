@@ -28,7 +28,7 @@ const findUser = async (req, res) => {
     where: {
       user_email,
       role_id, // add role_id to the where clause
-      user_name
+      user_name,
     }
   });
 
@@ -53,7 +53,7 @@ const findUser = async (req, res) => {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
       user_email: user_email,
       role_id: user[0].role_id, // add role_id to the token payload
-      user_name: user[0].user_name
+      user_name: user[0].user_name,
     },
     "secret"
   );
