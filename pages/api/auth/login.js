@@ -1,34 +1,75 @@
 import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
+const bcrypt = require("bcrypt");
+const { PrismaClient } = require("@prisma/client");
 
-export default function loginHandler(req, res) {
-  const { user_email, user_pass } = req.body;
+/**
+ * @async @function loginHandler
+ */
 
-  if (user_email === "jose@mail.com" && user_pass === "2398") {
-    // expire in 30 days
-    const token = sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-        user_email : user_email,
-        user_pass : user_pass
+const prisma = new PrismaClient();
 
-      },
-      'secret'
-    );
+export default async function loginHandler(req, res) {
+  switch (req.method) {
+    case "POST":
+      return await findUser(req, res);
+      break;
+    default:
+      return res.status(200).json("Nothing");
+  }
+}
 
-    const serialized = serialize("Mytoken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      path: "/",
-    });
+//find user in database with email
 
-    res.setHeader("Set-Cookie", serialized);
-    return res.status(200).json({
-      message: "Login successful",
-    });
+const findUser = async (req, res) => {
+  const { user_email, user_pass, role_id,user_name } = req.body;
+
+  const user = await prisma.user.findMany({
+    where: {
+      user_email,
+      role_id, // add role_id to the where clause
+      user_name
+    }
+  });
+
+  //check if user exists
+
+  if (!user || !user.length) {
+    return res.status(401).json({ error: "Invalid credentials" });
   }
 
-  return res.status(401).json({ error: "Invalid credentials" });
-}
+  //check if password is correct
+
+  const password = await bcrypt.compare(user_pass, user[0].user_pass);
+
+  if (!password) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  //create token and send it to the client
+
+  const token = sign(
+    {
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+      user_email: user_email,
+      role_id: user[0].role_id, // add role_id to the token payload
+      user_name: user[0].user_name
+    },
+    "secret"
+  );
+
+  const serialized = serialize("Mytoken", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    path: "/",
+  });
+
+  //set cookie
+
+  res.setHeader("Set-Cookie", serialized);
+  return res.status(200).json({
+    message: "Login successful",
+  });
+};

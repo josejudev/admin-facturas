@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
+/**
+ * 
+ * @returns {NextResponse}
+ * 
+ */
+
 export async function middleware(request) {
   const jwt = request.cookies.get("Mytoken");
 
+  // If no token, redirect to login page
   if (!jwt) {return NextResponse.redirect(new URL("/login", request.url));}
 
   try {
@@ -11,14 +18,15 @@ export async function middleware(request) {
       jwt.value,
       new TextEncoder().encode("secret")
     );
-    console.log({ payload });
+    console.log(payload);
     return NextResponse.next();
   } catch (error) {
-    console.log({ error });
+
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 
+// Paths to be protected
 export const config = {
   matcher: ["/profile/:path*", "/clientes/:path*", "/pedidos/:path*", "/", "/api/clients/:path*"],
 };
