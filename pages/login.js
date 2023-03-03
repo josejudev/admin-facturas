@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from 'next/image'
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,30 +28,33 @@ const login = () => {
       console.log(data);
       router.push("/");
     } catch (error) {
-      toast.error("Error al iniciar sesión, por favor verifique sus credenciales");
+      toast.error("Error al iniciar sesión, por favor verifique sus credenciales",);
     }
   };
 
   return (
     <div>
       <ToastContainer />
-      <section className="bg-gradient-to-r from-rose-100 to-teal-100 h-screen dark:bg-gray-900">
+      <section className="bg-gradient-to-r from-cyan-300 to-teal-800 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
-            <img
-              className="w-8 h-8 mr-2"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-              alt="logo"
-            />
-            Revolutio
+              <Image
+                src="/horizontal_logo.png"
+                alt="Vercel Logo"
+                width={250}
+                height={154}
+                className="w-180 h-110 text-red-400 mr-2"
+                priority
+              />
+   
           </a>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Iniciar sesión con su cuenta
+                Iniciar sesión
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
@@ -116,9 +121,9 @@ const login = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-sky-400 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full bg-teal-500 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Iniciar sesión
+                  Ingresar
                 </button>
               </form>
             </div>

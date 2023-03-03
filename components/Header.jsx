@@ -10,13 +10,12 @@ const Header = () => {
         <div className=" flex flex-wrap items-center justify-between mx-auto p-1 ">
           <Link href="/" className="flex items-center">
             <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              className="h-6 mr-3 sm:h-9"
+              src="/horizontal_logo.png"
+              width={190}
+              height={154}
+              className="w-180 h-110 text-red-400 mr-2"
               alt="Revolutio Logo"
             />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              Revolutio
-            </span>
           </Link>
 
           <div

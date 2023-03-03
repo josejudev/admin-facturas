@@ -13,7 +13,7 @@ const AdminProvider = ({ children }) => {
     const [offers, setOffers] = useState([]);
     //Save the offer selected in state
     const [offer, setOffer] = useState({});
-    
+
     const [user, setUser] = useState({});
     /*
     * Modal state
@@ -39,8 +39,14 @@ const AdminProvider = ({ children }) => {
     }
 
     const getUser = async () => {
-        const { data } = await axios.get('/api/auth/profile');
-        setUser(data);
+        try {
+            const { data } = await axios.get('/api/auth/profile');
+            setUser(data);
+        }
+        catch (error) {
+            console.log("No user logged in");
+        }
+
     }
 
     useEffect(() => {
@@ -59,7 +65,7 @@ const AdminProvider = ({ children }) => {
     const handleModalEditOffer = () => {
         setModalEditOffer(!modalEditOffer);
     }
-    
+
     const handleModalOffer = () => {
         setModalOffer(!modalAddOffer);
     }
@@ -78,41 +84,41 @@ const AdminProvider = ({ children }) => {
 
 
 
-    
+
     return (
-        <AdminContext.Provider 
-        value={{
-            clients,
-            client,
+        <AdminContext.Provider
+            value={{
+                clients,
+                client,
 
-            offer,
-            offers,
+                offer,
+                offers,
 
-            handleSetOffer,
-            handleSetClient,
+                handleSetOffer,
+                handleSetClient,
 
-            modalEditOffer,
-            handleModalEditOffer,
+                modalEditOffer,
+                handleModalEditOffer,
 
-            modalAddOffer,
-            handleModalOffer,
+                modalAddOffer,
+                handleModalOffer,
 
-            modalAddClient,
-            handleModalClient,
+                modalAddClient,
+                handleModalClient,
 
-            modalDelete,
-            handleModalDelete,
+                modalDelete,
+                handleModalDelete,
 
-            modalEditClient,
-            handleModalEditClient,
+                modalEditClient,
+                handleModalEditClient,
 
-            user
-        }}>
+                user
+            }}>
             {children}
         </AdminContext.Provider>
     )
 }
-export{
+export {
     AdminProvider
 }
 
