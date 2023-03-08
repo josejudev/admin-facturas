@@ -22,20 +22,20 @@ const Header = () => {
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="mobile-menu-2"
           >
-            <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-lg md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-lg md:font-medium md:border-0 md:bg-white ">
               <li>
                 <Link
                   href="/"
-                  className={ router.pathname === '/' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/' ? 'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out' }
                   aria-current="page"
                 >
-                  Oferta
+                  Ofertas
                 </Link>
               </li>
               <li>
                 <Link
                   href="/pedidos"
-                  className={ router.pathname === '/pedidos' || router.pathname === '/pedidos/nuevo-pedido' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/pedidos' || router.pathname === '/pedidos/nuevo-pedido' ? 'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out' }
                 >
                   Pedidos
                 </Link>
@@ -44,7 +44,7 @@ const Header = () => {
               <li>
                 <Link
                   href="/clientes"
-                  className={ router.pathname === '/clientes' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/clientes' ? 'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out' }
 
                 >
                   Clientes
@@ -53,7 +53,7 @@ const Header = () => {
               <li>
                 <Link
                   href="/ingresos"
-                  className={ router.pathname === '/ingresos' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/ingresos' ? 'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out' }
                 >
                   Ingresos
                 </Link>
@@ -62,18 +62,18 @@ const Header = () => {
               <li>
                 <a
                   href="#"
-                  className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="text-gray-700 hover:text-teal-700"
                 >
                   Pre-Factura
                 </a>
               </li>
               <li>
-                <a
+              <Link
                   href="/cuenta"
-                  className={ router.pathname === '/cuenta' ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700' }
+                  className={ router.pathname === '/cuenta' ? 'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out' }
                 >
                   Cuenta
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

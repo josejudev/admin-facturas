@@ -32,12 +32,7 @@ const HeaderTable = ({ children, href='', title = ''}) => {
             router.pathname === "/" && Object.keys(clients).length === 0 ? <button>NO hay clientes</button> : null
           }
         </Link>
-        <button
-          type="button"
-          className="text-white bg-red-500 hover:bg-red-600 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 "
-        >
-          Eliminar seleccionados
-        </button>
+
       </div>
     </div>
   );

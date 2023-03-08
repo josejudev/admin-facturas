@@ -35,7 +35,7 @@ const login = () => {
   return (
     <div>
       <ToastContainer />
-      <section className="bg-gradient-to-r from-cyan-300 to-teal-800 h-screen dark:bg-gray-900">
+      <section className="bg-gradient-to-r from-orange-100 to-teal-100 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="#"

@@ -1,7 +1,8 @@
 import useAdmin from "../../hooks/useAdmin";
 
-const OffersList = ({ offers }) => {
+const OffersList = ({ offers,checkedIds, handleBoxChange }) => {
   const { handleSetOffer, handleModalEditOffer, handleModalDelete } = useAdmin();
+
 
 
   return (
@@ -10,9 +11,16 @@ const OffersList = ({ offers }) => {
         <tr key={offer.id} className="text-gray-700  hover:bg-gray-50 hover:transition-all">
           <td className="border-b-2 p-4 dark:border-dark-5">
             <input
-              id="default-checkbox"
-              type="checkbox"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 "
+            type="checkbox"
+            value={offer.id}
+
+            {
+              ...((offer.status === "Aceptado") && { disabled: true })
+            }
+            checked={checkedIds.includes(offer.id)}
+            
+            onChange={handleBoxChange}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 disabled:cursor-not-allowed "
             />
           </td>
           <td className="border-b-2 p-4">{offer.date}</td>

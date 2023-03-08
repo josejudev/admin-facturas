@@ -1,14 +1,20 @@
 import useAdmin from "../../hooks/useAdmin";
 
 
-const ClientsList = ({ clients }) => {
+const ClientsList = ({ clients,search }) => {
   const { handleSetClient, handleModalDelete,handleModalEditClient } = useAdmin();
   
 
 
   return (
     <>
-      {clients?.map((client) => (
+      {
+        
+      clients?.filter((client)=>{
+        
+        return search === '' || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some(key => client[key].toLowerCase().includes(search.toLowerCase()))
+        
+      }).map((client) => (
         <tr key={client.id} className="text-gray-700">
           <td className="border-b-2 p-4 dark:border-dark-5">
             <input

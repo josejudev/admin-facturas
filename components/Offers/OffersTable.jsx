@@ -2,42 +2,120 @@ import OffersList from "./OffersList";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Loader from "../Loader";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const OffersTable = ({ offers }) => {
-  if (Object.keys(offers).length === 0 ) {
-    return <Loader type={"ofertas registradas"}/>;
+  const router = useRouter();
+
+
+  const [checkedIds, setCheckedIds] = useState([]);
+
+  const statusFiltered = [
+    { id: 1, name: "Todos" },
+    { id: 2, name: "Aceptado" },
+    { id: 3, name: "Pendiente" },
+    { id: 4, name: "Rechazado" },
+  ];
+  if (Object.keys(offers).length === 0) {
+    return <Loader type={"ofertas registradas"} />;
   }
   const [currentItems, setCurrentItems] = useState([]);
+  const [search, setSearch] = useState("");
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 2;
+  const [dataFiltered, setDataFiltered] = useState({
+    status_filtered: statusFiltered[0].name,
+  });
+  const itemsPerPage = 10;
+
+  const handleFilter = (e) => {
+    setDataFiltered({
+      ...dataFiltered,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const handleBoxChange = (e) => {
+    const id = parseInt(e.target.value);
+    if (e.target.checked) {
+      setCheckedIds([...checkedIds, id]);
+    } else {
+      setCheckedIds(checkedIds.filter((checkedId) => checkedId !== id));
+    }
+  };
+
+
 
   useEffect(() => {
+    const filteredOffers = offers.filter((offer) =>
+      (search === "" || ["project_name", "date", "final_client", "activity_resumen", "status"].some((key) => offer[key].toLowerCase().includes(search.toLowerCase()))
+        || offer.client.name.toLowerCase().includes(search.toLowerCase())
+      ) &&
+      (dataFiltered.status_filtered === "Todos" || offer.status === dataFiltered.status_filtered)
+    );
     const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(offers.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(offers.length / itemsPerPage));
-  }, [itemOffset, offers, itemsPerPage]);
-
+    setCurrentItems(filteredOffers.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(filteredOffers.length / itemsPerPage));
+  }, [itemOffset, offers, search, itemsPerPage, dataFiltered]);
 
 
   const handlePageClick = (e) => {
-    const newOffset = (e.selected * itemsPerPage) % offers.length;
+    const newOffset = e.selected * itemsPerPage;
     setItemOffset(newOffset);
   };
+
+  const handleDeteteClick = (e) => {
+    e.preventDefault();
+    setCheckedIds([]);
+  
+    axios.delete("/api/offers/manyDelete", { data: { checkedIds }})
+      .then((response) => {
+        router.push("/");
+        // Manejar la respuesta de la API
+      })
+      .catch((error) => {
+        // Manejar errores de la API
+      });
+  }
 
   return (
     <>
       <div className=" grid grid-cols-2 flex-wrap items-center mx-auto">
-        <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
-          <option value="UN"> Todos </option>
-          <option value="RE">Pendientes</option>
-        </select>
-        <div className="col-span-1 grid grid-cols-3 gap-2">
+        <div className="flex gap-2">
+
+          <button
+            type="button"
+            onClick={handleDeteteClick}
+            className="disabled:text-gray-500 disabled:border-gray-500 disabled:hover:bg-white disabled:cursor-not-allowed text-red-500  hover:bg-red-600 hover:transition hover:ease-in-out hover:delay-100 hover:text-white border border-red-500  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 "
+
+            {
+            ...((checkedIds.length === 0) && { disabled: true })
+            }
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+
+            Eliminar seleccionados
+          </button>
+        </div>
+
+        <div className="flex justify-end gap-2">
+        <select name="status_filtered" onChange={
+            handleFilter
+          } className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 w-64">
+            {statusFiltered.map((status) => (
+              <option key={status.id} value={status.name}> {
+                status.name
+              }</option>))}
+
+          </select>
           <input
             type="text"
             name="search"
             placeholder="Buscar"
-            href="clientes/nuevo"
+            onChange={(e) => setSearch(e.target.value)}
             className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
           />
           <input
@@ -107,8 +185,8 @@ const OffersTable = ({ offers }) => {
                 </thead>
                 <tbody className="text-center">
                   {offers ? (
-                    <OffersList offers={currentItems} />
-                  ): (<Loader/>)}
+                    <OffersList offers={currentItems} search={search} checkedIds={checkedIds} handleBoxChange={handleBoxChange} />
+                  ) : (<Loader />)}
                 </tbody>
               </table>
             </div>
@@ -120,17 +198,17 @@ const OffersTable = ({ offers }) => {
         breakLabel="..."
         //insert icon
         disabledClassName="hidden"
-        nextLabel=">>"
+        nextLabel="Siguiente"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="<<"
+        previousLabel="Anterior"
         renderOnZeroPageCount={null}
         containerClassName=" w-full flex items-center justify-center p-2 mt-4"
         pageClassName="mx-1"
         pageLinkClassName="page-link relative block py-1.5 px-3 rounded border-0  outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-        nextLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-        previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+        nextLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
+        previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
         activeLinkClassName="bg-sky-400 text-white hover:bg-sky-400 hover:text-white"
       />
     </>

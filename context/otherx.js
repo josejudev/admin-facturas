@@ -17,19 +17,6 @@ const AdminProvider = ({ children }) => {
     //Get the user logged
     const [user, setUser] = useState({});
 
-    /*
-    * Modal state
-    * Modal: Edit offer
-    * ModalAddOffer: Add offer
-    * ModalAddClient: Add client
-    * ModalDelete: Delete offer
-    * ModalEditClient: Edit client
-     */
-    const [modalEditOffer, setModalEditOffer] = useState(false);
-    const [modalEditClient, setModalEditClient] = useState(false);
-    const [modalAddOffer, setModalOffer] = useState(false);
-    const [modalAddClient, setModalClient] = useState(false);
-    const [modalDelete, setModalDelete] = useState(false);
 
     const getClients = async () => {
         const { data } = await axios.get('/api/clients');
@@ -57,32 +44,6 @@ const AdminProvider = ({ children }) => {
         getUser();
     }, []);
 
-    const handleSetOffer = (offer) => {
-        setOffer(offer);
-    }
-    const handleSetClient = (client) => {
-        setClient(client);
-    }
-
-    const handleModalEditOffer = () => {
-        setModalEditOffer(!modalEditOffer);
-    }
-
-    const handleModalOffer = () => {
-        setModalOffer(!modalAddOffer);
-    }
-
-    const handleModalClient = () => {
-        setModalClient(!modalAddClient);
-    }
-
-    const handleModalEditClient = () => {
-        setModalEditClient(!modalEditClient);
-    }
-
-    const handleModalDelete = () => {
-        setModalDelete(!modalDelete);
-    }
 
 
 
@@ -92,28 +53,10 @@ const AdminProvider = ({ children }) => {
             value={{
                 clients,
                 client,
-
                 offer,
                 offers,
-
                 handleSetOffer,
                 handleSetClient,
-
-                modalEditOffer,
-                handleModalEditOffer,
-
-                modalAddOffer,
-                handleModalOffer,
-
-                modalAddClient,
-                handleModalClient,
-
-                modalDelete,
-                handleModalDelete,
-
-                modalEditClient,
-                handleModalEditClient,
-
                 user
             }}>
             {children}

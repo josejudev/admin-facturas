@@ -2,12 +2,15 @@ import React from "react";
 import ClientsList from "./ClientsList";
 import ReactPaginate from "react-paginate";
 import Loader from "../Loader";
+import { useState } from "react";
 
 
 const ClientsTable = ({ clients }) => {
   if (Object.keys(clients).length === 0) {
     return <Loader type={"clientes registrados"} />
   }
+
+  const [search, setSearch] = useState("");
 
   return (
     <>
@@ -20,7 +23,7 @@ const ClientsTable = ({ clients }) => {
           <input
             type="text"
             name="search"
-
+            onChange={(e) => setSearch(e.target.value)}
 
             placeholder="Buscar"
             className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
@@ -92,7 +95,7 @@ const ClientsTable = ({ clients }) => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  <ClientsList clients={clients} />
+                  <ClientsList clients={clients} search={search} />
                 </tbody>
               </table>
             </div>

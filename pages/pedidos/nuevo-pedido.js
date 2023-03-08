@@ -339,7 +339,7 @@ const Form_Order = () => {
                   <div className="flex flex-col md:w-full text-center justify-center items-center">
                     {sum > 100 ? (
                       <p className="text-red-500 font-normal text-center">
-                        Establecer Porcentajes correctamente
+                        Establecer porcentajes correctamente
                       </p>
                     ) : null}
                   </div>

@@ -2,6 +2,8 @@ import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditClient = () => {
   const { client, handleModalEditClient } = useAdmin();
@@ -32,6 +34,7 @@ const EditClient = () => {
     const response = await axios.put(`/api/clients/${client.id}`, body);
     handleModalEditClient();
     router.push("/clientes");
+    toast.success("Cliente editado correctamente");
     // try {
     //   const body = { ...editClient };
     //   const response = await fetch(`/api/clients/${client.id}`, {
