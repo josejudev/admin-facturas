@@ -10,6 +10,7 @@ const OffersTable = ({ offers }) => {
 
 
   const [checkedIds, setCheckedIds] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]);
 
   const statusFiltered = [
     { id: 1, name: "Todos" },
@@ -17,11 +18,11 @@ const OffersTable = ({ offers }) => {
     { id: 3, name: "Pendiente" },
     { id: 4, name: "Rechazado" },
   ];
-  if (Object.keys(offers).length === 0) {
-    return <Loader type={"ofertas registradas"} />;
-  }
-  const [currentItems, setCurrentItems] = useState([]);
+ 
   const [search, setSearch] = useState("");
+  
+
+
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [dataFiltered, setDataFiltered] = useState({
@@ -78,7 +79,12 @@ const OffersTable = ({ offers }) => {
         // Manejar errores de la API
       });
   }
+  if (Object.keys(offers).length === 0) {
+    return <Loader
+    type="ofertas registradas"
 
+    />;
+  } else{
   return (
     <>
       <div className=" grid grid-cols-2 flex-wrap items-center mx-auto">
@@ -194,6 +200,8 @@ const OffersTable = ({ offers }) => {
         </div>
       </div>
 
+      {offers && offers.length > 0 && (
+
       <ReactPaginate
         breakLabel="..."
         //insert icon
@@ -211,8 +219,11 @@ const OffersTable = ({ offers }) => {
         previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
         activeLinkClassName="bg-sky-400 text-white hover:bg-sky-400 hover:text-white"
       />
+      )}
     </>
+    
   );
+  }
 };
 
 export default OffersTable;
