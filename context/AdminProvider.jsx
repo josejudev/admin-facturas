@@ -13,6 +13,10 @@ const AdminProvider = ({ children }) => {
     const [offers, setOffers] = useState([]);
     //Save the offer selected in state
     const [offer, setOffer] = useState({});
+    //Save all orders in state
+    const [orders, setOrders] = useState([]);
+    //Save the order selected in state
+    const [order, setOrder] = useState({});
 
     //Get the user logged
     const [user, setUser] = useState({});
@@ -39,6 +43,10 @@ const AdminProvider = ({ children }) => {
         const { data } = await axios.get('/api/offers');
         setOffers(data);
     }
+    const getOrders = async () => {
+        const { data } = await axios.get('/api/orders');
+        setOrders(data);
+    }
 
     const getUser = async () => {
         try {
@@ -55,6 +63,7 @@ const AdminProvider = ({ children }) => {
         getClients();
         getOffers();
         getUser();
+        getOrders();
     }, []);
 
     const handleSetOffer = (offer) => {
@@ -62,6 +71,9 @@ const AdminProvider = ({ children }) => {
     }
     const handleSetClient = (client) => {
         setClient(client);
+    }
+    const handleSetOrder = (order) => {
+        setOrder(order);
     }
 
     const handleModalEditOffer = () => {
@@ -96,8 +108,12 @@ const AdminProvider = ({ children }) => {
                 offer,
                 offers,
 
+                orders,
+                order,
+
                 handleSetOffer,
                 handleSetClient,
+                handleSetOrder,
 
                 modalEditOffer,
                 handleModalEditOffer,
@@ -113,6 +129,8 @@ const AdminProvider = ({ children }) => {
 
                 modalEditClient,
                 handleModalEditClient,
+
+
 
                 user
             }}>

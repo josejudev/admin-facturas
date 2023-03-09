@@ -26,8 +26,8 @@ const Form_Order = () => {
   ];
 
   const typeStatus = [
-    { id: 1, name: "ACTIVO" },
-    { id: 2, name: "CERRADO" },
+    { id: 1, name: "Activo" },
+    { id: 2, name: "Cerrado" },
   ];
 
   const [order, setOrder] = useState({

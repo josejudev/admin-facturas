@@ -1,6 +1,9 @@
 import React from "react";
+import useAdmin from "../../hooks/useAdmin";
 
 const OrdersList = ({ orders }) => {
+  const { handleSetOrder, handleModalDelete } = useAdmin();
+
   return (
     <>
       {orders.map((order) => (
@@ -94,7 +97,11 @@ const OrdersList = ({ orders }) => {
                       </button>
                     </li>
                     <li>
-                      <button
+                    <button
+                        onClick={() => {
+                          handleModalDelete();
+                          handleSetOrder(order);
+                        }}
                         type="button"
                         className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"
                       >

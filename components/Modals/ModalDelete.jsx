@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ModalDelete = ({children, title = ''}) => {
-  const { handleModalDelete, offer,client } = useAdmin();
+  const { handleModalDelete, offer,client,order } = useAdmin();
   const router = useRouter();
 
   const handleDelete = async (e) => {
@@ -30,6 +30,14 @@ const ModalDelete = ({children, title = ''}) => {
           router.push("/");
           handleModalDelete();
           break;
+
+        case "/pedidos":
+          await axios.delete(`/api/orders/${order.id}`);
+          router.push("/pedidos");
+          handleModalDelete();
+          break;  
+
+
       }
 
     } catch (err) {
@@ -44,7 +52,7 @@ const ModalDelete = ({children, title = ''}) => {
           <div className="grid grid-cols-2  px-8 pt-6">
             <h1 className="text-4xl font-bold text-red-500">
               
-              {router.pathname === "/clientes" ? "Eliminar cliente" : "Eliminar oferta"}
+              {router.pathname === "/clientes" ? "Eliminar cliente" : router.pathname === "/pedidos" ? "Eliminar pedido" : "Eliminar oferta"}
               
             </h1>
             <div className="flex justify-end">

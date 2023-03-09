@@ -68,7 +68,7 @@ model order {
   status        String?     @default("Pendiente") @db.VarChar(50)
   observations  String?     @db.VarChar(100)
   offer_id      Int
-  offer         offer       @relation(fields: [offer_id], references: [id])
+  offer         offer       @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   milestone     milestone[]
 }
 
@@ -77,7 +77,7 @@ model milestone {
   order_id      Int
   num_milestone Int
   percentage    Int
-  order         order @relation(fields: [order_id], references: [id])
+  order         order @relation(fields: [order_id], references: [id], onDelete: Cascade)
 
   //@@unique([order_id, num_hito])
 }

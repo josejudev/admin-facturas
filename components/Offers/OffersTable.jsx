@@ -35,6 +35,7 @@ const OffersTable = ({ offers }) => {
       ...dataFiltered,
       [e.target.name]: e.target.value,
     });
+
   }
 
   const handleBoxChange = (e) => {
@@ -190,9 +191,9 @@ const OffersTable = ({ offers }) => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {offers ? (
+                 
                     <OffersList offers={currentItems} search={search} checkedIds={checkedIds} handleBoxChange={handleBoxChange} />
-                  ) : (<Loader />)}
+               
                 </tbody>
               </table>
             </div>

@@ -42,3 +42,14 @@ const updateOrders = async (req, res) => {
   });
   return res.json(order);
 };
+
+
+const deleteOrder = async (req, res) => {
+  const { id } = req.query;
+  const deleted_order = await prisma.order.delete({
+    where: {
+      id: parseInt(id),
+    },
+  });
+  return res.json(deleted_order);
+}
