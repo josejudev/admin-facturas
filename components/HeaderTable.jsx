@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const router = useRouter();
-  const { handleModalOffer, handleModalClient,clients } = useAdmin();
+  const { handleModalOffer, handleModalClient,clients,offers } = useAdmin();
   return (
     <div className="px-2 sm:px-4 py-2.5">
       <ToastContainer
@@ -18,7 +18,10 @@ const HeaderTable = ({ children, href='', title = ''}) => {
           {`Tabla de ${title}`}
         </h1>
         <Link href={`${href}`}>
-          <button
+
+
+          {
+            router.pathname === "/" && Object.keys(clients).length === 0  ? null :<button
             onClick={
               router.pathname === "/" ? handleModalOffer : handleModalClient ? router.pathname === "/pedidos" ?  null: handleModalClient : null
             }
@@ -27,9 +30,6 @@ const HeaderTable = ({ children, href='', title = ''}) => {
           >
             Agregar nuevo
           </button>
-
-          {
-            router.pathname === "/" && Object.keys(clients).length === 0 ? <button>NO hay clientes</button> : null
           }
         </Link>
 

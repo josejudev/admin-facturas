@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Loader = ({childre, type}) => {
+const Loader = ({children, type}) => {
   return (
     <div className="flex  items-center justify-center p-5 bg-white w-full">
       <div className="text-center">

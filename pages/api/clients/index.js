@@ -48,7 +48,8 @@ const createClient = async (req, res) => {
             address,
             contact_phone,
             contact_email,
-            contact_name
+            contact_name,
+            
         }
         
     })

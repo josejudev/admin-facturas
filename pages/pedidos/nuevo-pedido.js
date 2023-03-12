@@ -3,10 +3,13 @@ import axios from "axios";
 import Layout from "../../components/Layout";
 import useAdmin from "../../hooks/useAdmin";
 import { useRouter } from "next/router";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Form_Order = () => {
+const Form_Order = ({
+  offers,
+}) => {
   const router = useRouter();
-  const { offers } = useAdmin();
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente");
 
   const typeCurrency = [
@@ -38,7 +41,7 @@ const Form_Order = () => {
     type: typeEntity[0].name,
     class_type: typeClass[0].name,
     entity: "",
-    offer_id: 1,
+    offer_id: offers[0].id,
     //Money data
     amount: "",
     final_amount: "",
@@ -54,14 +57,10 @@ const Form_Order = () => {
       ...order,
       [name]: value,
     });
+    console.log(order);
   };
 
-  const handleCurrency = ({ target: { name, value } }) => {
-    setOrder({
-      ...order,
-      [name]: value,
-    });
-  };
+
 
   const handleFile = ({ target: { name, files } }) => {
     setOrder({
@@ -70,12 +69,8 @@ const Form_Order = () => {
     });
   };
 
-  const handleStatus = ({ target: { name, value } }) => {
-    setOrder({
-      ...order,
-      [name]: value,
-    });
-  };
+
+
 
   //Create Milestone
 
@@ -137,6 +132,11 @@ const Form_Order = () => {
       body.append("status", order.status);
       body.append("milestone", JSON.stringify(inputFields));
       const res = await axios.post("/api/orders", body);
+      router.push("/pedidos");
+      setTimeout(() => {
+        toast.success("Pedido creado correctamente");
+      }, 1100);
+
 
     } catch (error) {
       console.log("Hubo un error");
@@ -198,8 +198,7 @@ const Form_Order = () => {
                         </span>
                         <select
                           name="currency"
-                          defaultValue={1}
-                          onChange={handleCurrency}
+                          onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-64 focus:border-blue-500 block p-2.5 "
                         >
                           {typeCurrency.map((item) => (
@@ -357,7 +356,6 @@ const Form_Order = () => {
                         <select
                           name="offer_id"
                           onChange={handleChange}
-                          defaultValue={1}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
                           {pendingOffers.map((offer) => (
@@ -384,6 +382,7 @@ const Form_Order = () => {
                         </span>
                         <select
                           name="class_type"
+                          onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
                           {typeClass.map((item) => (
@@ -416,7 +415,7 @@ const Form_Order = () => {
                         </span>
                         <select
                           name="status"
-                          onChange={handleStatus}
+                          onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 "
                         >
                           {typeStatus.map((item) => (
@@ -528,5 +527,16 @@ const Form_Order = () => {
     </>
   );
 };
+
+export const getServerSideProps = async (context) => {
+  const { data: offers } = await axios.get("http://localhost:3000/api/offers/");
+  return {
+    props: {
+      offers,
+    },
+  };
+};
+
+
 
 export default Form_Order;

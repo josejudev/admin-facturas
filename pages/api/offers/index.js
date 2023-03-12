@@ -51,7 +51,7 @@ const createOffer = async (req, res) => {
       fileName,
       final_client,
       client_id,
-      activity_resumen
+      activity_resumen,
     } = req.body;
     const offer = await prisma.offer.create({
       data: {
@@ -59,6 +59,7 @@ const createOffer = async (req, res) => {
         fileName: req.file.filename,
         final_client,
         client_id: parseInt(client_id),
+
         activity_resumen,
       },
     });

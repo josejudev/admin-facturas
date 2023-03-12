@@ -28,12 +28,13 @@ model user {
 model client {
   id             Int     @id @default(autoincrement())
   name           String  @db.VarChar(100)
-  rfc            String  @db.Char(15)
+  status         String? @default("Activo") @db.VarChar(50)
+  rfc            String  @db.Char(25)
   fiscal_address String  @db.VarChar(100)
-  email          String  @db.VarChar(50)
+  email          String  @db.VarChar(100)
   address        String  @db.VarChar(100)
   contact_phone  String? @db.VarChar(30)
-  contact_email  String? @db.VarChar(50)
+  contact_email  String? @db.VarChar(100)
   contact_name   String? @db.VarChar(100)
   offers         offer[]
 }

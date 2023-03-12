@@ -1,10 +1,12 @@
 import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddOffer = () => {
   const router = useRouter();
-  const { clients, handleModalOffer } = useAdmin();
+  const { clients, handleModalOffer,createOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
 
     const [offer, setOffer] = useState({
@@ -36,20 +38,21 @@ const AddOffer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = new FormData();
-      body.append("fileName", fileName);
-      body.append("project_name", offer.project_name);
-      body.append("final_client", offer.final_client);
-      body.append("activity_resumen", offer.activity_resumen);
-      body.append("client_id", offer.client_id);
-      const response = await fetch("/api/offers/", {
-        method: "POST",
-        body,
-      });
-      handleModalOffer();
+      const { project_name, fileName, final_client, activity_resumen, client_id } = e.target.elements;
+  
+      await createOffer(
+        project_name.value,
+        fileName.files[0], // use the first file in the FileList
+        final_client.value,
+        activity_resumen.value,
+        client_id.value
+      );
       router.push("/");
-    } catch (err) {
-      console.log(err);
+      handleModalOffer();
+      toast.success("Oferta agregada correctamente");
+    }catch (error) {
+      toast.error("Error al agregar la oferta");
+
     }
   };
 

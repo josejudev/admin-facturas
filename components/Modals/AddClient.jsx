@@ -4,10 +4,15 @@ import { useRouter } from "next/router";
 import useAdmin from "../../hooks/useAdmin";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useForm } from 'react-hook-form';
 
 const AddClient = () => {
+
   const router = useRouter();
-  const { handleModalClient } = useAdmin();
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const { handleModalClient,createClient } = useAdmin();
   const [client, setClient] = useState({
     name: "",
     rfc: "",
@@ -19,6 +24,7 @@ const AddClient = () => {
     contact_name: "",
   });
 
+
   const handleChange = ({ target: { name, value } }) => {
     setClient({
       ...client,
@@ -26,16 +32,25 @@ const AddClient = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post("/api/clients", client);
-      router.push("/clientes");
-      handleModalClient();
-      toast.success("Cliente agregado correctamente");
+  const onSubmit = async (e) => {
+    try{
+      const { name, rfc, fiscal_address, email, address, contact_phone, contact_email, contact_name } = event.target.elements;
+      await createClient(
+       name.value,
+       rfc.value,
+       fiscal_address.value,
+       email.value,
+       address.value,
+       contact_phone.value,
+       contact_email.value,
+       contact_name.value
+     );
 
-    } catch (error) {
-      toast.error("No se pudo agregar el cliente");
+      handleModalClient();
+      router.push('/clientes')
+      toast.success("Client added successfully");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -68,7 +83,7 @@ const AddClient = () => {
           </button>
         </div>
       </div>
-      <form method="POST" onSubmit={handleSubmit}>
+      <form method="POST" onSubmit={handleSubmit(onSubmit)}>
         <div className=" rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">

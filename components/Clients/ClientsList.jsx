@@ -1,29 +1,15 @@
 import useAdmin from "../../hooks/useAdmin";
 
 
-const ClientsList = ({ clients,search }) => {
+const ClientsList = ({ clients }) => {
   const { handleSetClient, handleModalDelete,handleModalEditClient } = useAdmin();
-  
-
 
   return (
     <>
       {
         
-      clients?.filter((client)=>{
-        
-        return search === '' || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some(key => client[key].toLowerCase().includes(search.toLowerCase()))
-        
-      }).map((client) => (
+      clients.map((client) => (
         <tr key={client.id} className="text-gray-700">
-          <td className="border-b-2 p-4 dark:border-dark-5">
-            <input
-              id="default-checkbox"
-              type="checkbox"
-              value=""
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-          </td>
           <td className="border-b-2 p-4">{client.name}</td>
           <td className="border-b-2 p-4">{client.rfc}</td>
           <td className="border-b-2 p-4">{client.fiscal_address}</td>
@@ -32,6 +18,11 @@ const ClientsList = ({ clients,search }) => {
           <td className="border-b-2 p-4">{client.contact_name}</td>
           <td className="border-b-2 p-4">{client.contact_phone}</td>
           <td className="border-b-2 p-4">{client.contact_email}</td>
+          <td className="border-b-2 p-4">
+          {client.status === "Activo" ? <span className="border border-green-200 text-green-500 font-medium  shadow-lg shadow-green-300/10 px-4 py-0.5 rounded">{client.status}</span> : <span className="border border-red-200 text-red-500 font-medium  shadow-lg shadow-red-300/10 px-4 py-0.5 rounded">{client.status}</span>  }
+
+
+          </td>
 
           <td className="border-b-2 p-4">
           <div className="p-1">

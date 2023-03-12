@@ -59,6 +59,59 @@ const AdminProvider = ({ children }) => {
 
     }
 
+    const createClient = async (name, rfc, fiscal_address,email,address, contact_phone, contact_email, contact_name) => {
+        const { data } = await axios.post('/api/clients', {
+            name,
+            rfc,
+            fiscal_address,
+            email,
+            address,
+            contact_phone,
+            contact_email,
+            contact_name
+        });
+        setClients([...clients, data]);
+    }
+
+    const removedClient = async (id) => {
+        await axios.delete(`/api/clients/${id}`);
+        setClients(clients.filter((client) => client.id !== id));
+    }
+
+
+    const editClientId = async (id, name, rfc, fiscal_address,email,address, contact_phone, contact_email, contact_name,status) => {
+        const { data } = await axios.put(`/api/clients/${id}`, {
+            name,
+            rfc,
+            fiscal_address,
+            email,
+            address,
+            contact_phone,
+            contact_email,
+            contact_name,
+            status
+        });
+        setClients(clients.map((client) => client.id === id ? data : client));
+    }
+
+    const createOffer = async (project_name, fileName, final_client, activity_resumen, client_id) => {
+        const body = new FormData();
+        body.append("project_name", project_name);
+        body.append("fileName", fileName);
+        body.append("final_client", final_client);
+        body.append("activity_resumen", activity_resumen);
+        body.append("client_id", client_id);
+        const response = await fetch("/api/offers/", {
+            method: "POST",
+            body
+        });
+        const data = await response.json();
+         setOffers([...offers, data]);
+         getOffers(data);
+    }
+
+    
+
     useEffect(() => {
         getClients();
         getOffers();
@@ -104,12 +157,17 @@ const AdminProvider = ({ children }) => {
             value={{
                 clients,
                 client,
+                createClient,
+                removedClient,
+                editClientId,
+                createOffer,
 
                 offer,
                 offers,
 
                 orders,
                 order,
+
 
                 handleSetOffer,
                 handleSetClient,

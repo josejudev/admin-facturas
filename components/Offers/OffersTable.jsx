@@ -28,6 +28,7 @@ const OffersTable = ({ offers }) => {
   const [dataFiltered, setDataFiltered] = useState({
     status_filtered: statusFiltered[0].name,
   });
+  
   const itemsPerPage = 10;
 
   const handleFilter = (e) => {

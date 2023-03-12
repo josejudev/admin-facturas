@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ModalDelete = ({children, title = ''}) => {
-  const { handleModalDelete, offer,client,order } = useAdmin();
+  const { handleModalDelete, offer,client,order,removedClient } = useAdmin();
   const router = useRouter();
 
   const handleDelete = async (e) => {
@@ -14,7 +14,7 @@ const ModalDelete = ({children, title = ''}) => {
     try {
       switch (router.pathname) {
         case "/clientes":
-          await axios.delete(`/api/clients/${client.id}`);
+          await removedClient(client.id)
           router.push("/clientes");
           handleModalDelete();
           toast.error("Cliente eliminado correctamente",{

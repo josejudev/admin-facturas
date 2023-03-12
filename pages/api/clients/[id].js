@@ -28,7 +28,7 @@ const deleteClient = async (req, res) => {
 
 const updateClient = async (req, res) => {
     const { id } = req.query
-    const { name, rfc, contact_phone, fiscal_address, email, address, contact_email, contact_name} = req.body
+    const { name, rfc, contact_phone, fiscal_address, email, address, contact_email, contact_name,status} = req.body
     const client = await prisma.client.update({
         where: {
             id: parseInt(id)
@@ -41,7 +41,8 @@ const updateClient = async (req, res) => {
             email,
             address,
             contact_email,
-            contact_name
+            contact_name,
+            status
 
         }
     })

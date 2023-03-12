@@ -6,7 +6,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditClient = () => {
-  const { client, handleModalEditClient } = useAdmin();
+  const status = [
+    { id: 1, name: "Activo" },
+    { id: 2, name: "Inactivo" },
+  ];
+
+
+
+  const { client, handleModalEditClient, editClientId } = useAdmin();
   const router = useRouter();
   const [editClient, setEditClient] = useState({
     name: client.name,
@@ -19,6 +26,16 @@ const EditClient = () => {
     contact_email: client.contact_email,
   });
 
+  const handleStatus = ({ target: { name, value } }) => {
+    setEditClient({
+      ...editClient,
+      [name]: value,
+    });
+    console.log(editClient);
+    
+  };
+
+
   const handleChange = ({ target: { name, value } }) => {
     setEditClient({
       ...editClient,
@@ -28,27 +45,26 @@ const EditClient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-    const body = { ...editClient };
-    const response = await axios.put(`/api/clients/${client.id}`, body);
-    handleModalEditClient();
-    router.push("/clientes");
-    toast.success("Cliente editado correctamente");
-    // try {
-    //   const body = { ...editClient };
-    //   const response = await fetch(`/api/clients/${client.id}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(body),
-    //   });
-    //   handleModalEditOffer()
-    //   router.push("/");
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const { name, rfc, fiscal_address, email, address, contact_phone, contact_email, contact_name,status } = e.target.elements;
+      await editClientId(
+        client.id,
+        name.value,
+        rfc.value,
+        fiscal_address.value,
+        email.value,
+        address.value,
+        contact_phone.value,
+        contact_email.value,
+        contact_name.value,
+        status.value,
+      );
+      handleModalEditClient();
+      router.push("/clientes");
+      toast.success("Client edited successfully");
+    } catch (err) {
+      toast.error("Error editing client");
+    }
   }
 
   return (
@@ -78,6 +94,7 @@ const EditClient = () => {
               />
             </svg>
           </button>
+          
         </div>
       </div>
       <form method="POST" onSubmit={handleSubmit}>
@@ -225,9 +242,36 @@ const EditClient = () => {
                 type="text"
               />
             </div>
+
           </div>
+          <div className="flex-col justify-center items-center  flex mt-2">
+            <label
+              className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+              htmlFor="grid-client"
+            >
+              Status
+            </label>
+            <select
+              onChange={handleStatus}
+              name="status"
+              defaultValue={client.status}
+              className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-1/3  px-4 focus:border-blue-500 block py-3.5 mb-3 "
+
+
+            >
+              {status.map((state) => (
+                <option key={state.id} value={state.name}>
+                  {state.name}
+                </option>
+              ))}
+
+
+            </select>
+          </div>
+
           <div className="-mx-3 md:flex mt-3 justify-center ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
+
               <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Actualizar Datos
               </button>
