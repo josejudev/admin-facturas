@@ -33,6 +33,11 @@ const Form_Order = ({
     { id: 2, name: "Cerrado" },
   ];
 
+  const entity = [ 
+    { id: 1, name: "REVOLUTIO" },
+    { id: 2, name: "ISOTROL" },
+  ]
+
   const [order, setOrder] = useState({
     date: "",
     name: "",
@@ -40,16 +45,13 @@ const Form_Order = ({
     concept: "",
     type: typeEntity[0].name,
     class_type: typeClass[0].name,
-    entity: "",
     offer_id: offers[0].id,
     //Money data
     amount: "",
     final_amount: "",
     currency: typeCurrency[0].name,
     order_balance: "",
-
-    status: typeStatus[0].name,
-    //Status data
+    entity: entity[0].name,
   });
 
   const handleChange = ({ target: { name, value } }) => {
@@ -57,7 +59,6 @@ const Form_Order = ({
       ...order,
       [name]: value,
     });
-    console.log(order);
   };
 
 
@@ -91,27 +92,55 @@ const Form_Order = ({
   const [inputFields, setInputFields] = useState([
     {
       milestone: 0,
-      percentage: 0,
+      percentage_milestone: 0,
+      value_milestone: 0,
+      concept_milestone: "",
     },
   ]);
 
   const sum = inputFields.reduce((total, obj) => {
-    return total + Number(obj.percentage);
+    return total + Number(obj.percentage_milestone);
   }, 0);
-  console.log(sum);
 
   const handleAddClick = () => {
     setInputFields([
       ...inputFields,
       {
         milestone: inputFields.length,
-        percentage: 0,
+        percentage_milestone: 0,
+        value_milestone: 0,
+        concept_milestone: "",
       },
     ]);
   };
 
-  //crear la suma de cada input
-  const handleSum = () => {};
+  const calculateMilestoneValue = (finalAmount, percentage) => {
+    return (finalAmount * percentage) / 100;
+  };
+  
+  const handleFinalAmountChange = (event) => {
+    const finalAmount = event.target.value;
+    setOrder({
+      ...order,
+      final_amount: finalAmount,
+    });
+  
+    setInputFields(
+      inputFields.map((field) => ({
+        ...field,
+        value_milestone: calculateMilestoneValue(finalAmount, field.percentage_milestone),
+      }))
+    );
+  };
+  
+  const handlePercentageChange = (event, index) => {
+    const percentage = event.target.value;
+    const list = [...inputFields];
+    list[index].percentage_milestone = percentage;
+    list[index].value_milestone = calculateMilestoneValue(order.final_amount, percentage);
+    setInputFields(list);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,13 +158,13 @@ const Form_Order = ({
       body.append("final_amount", order.final_amount);
       body.append("currency", order.currency);
       body.append("order_balance", order.order_balance);
-      body.append("status", order.status);
       body.append("milestone", JSON.stringify(inputFields));
       const res = await axios.post("/api/orders", body);
       router.push("/pedidos");
       setTimeout(() => {
         toast.success("Pedido creado correctamente");
       }, 1100);
+
 
 
     } catch (error) {
@@ -213,18 +242,9 @@ const Form_Order = ({
                           Valor en pesos
                         </span>
                         <input
-                          onChange={handleChange}
-                          type="text"
                           name="final_amount"
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Numero de pagos
-                        </span>
-                        <input
-                          type="text"
+                          value={order.final_amount}
+                          onChange={handleFinalAmountChange}
                           className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
                         />
                       </label>
@@ -258,24 +278,42 @@ const Form_Order = ({
                           <div className="flex flex-col mb-4 md:w-1/4">
                             <label className="block px-3 text-grey-darkest md:ml-2">
                               <span className=" block text-sm font-medium text-slate-700">
-                                Porcentaje
+                                Concepto
                               </span>
                               <input
-                                type="number"
-                                name="percentage"
+                                type="text"
+                                name="concept_milestone"
                                 onChange={(e) => handleinputchange(e, i)}
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
                             </label>
                           </div>
-                          <div className="flex flex-col mb-4 md:w-1/4">
+
+                          <div className="flex flex-col mb-4 md:w-28">
+                            <label className="block px-3 text-grey-darkest md:ml-2">
+                              <span className=" block text-sm font-medium text-slate-700">
+                                Porcentaje
+                              </span>
+                              <input
+                                    type="number"
+                                    name={`percentage_milestone_${i}`}
+                                    value={x.percentage_milestone}
+                                    onChange={(event) => handlePercentageChange(event, i)}
+                                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                              />
+                            </label>
+                          </div>
+
+                          <div className="flex flex-col mb-4 md:w-40">
                             <label className="block px-3 text-grey-darkest md:ml-2">
                               <span className=" block text-sm font-medium text-slate-700">
                                 Valor
                               </span>
                               <input
-                                type="text"
-
+                                    type="number"
+                                    name={`value_milestone_${i}`}
+                                    value={x.value_milestone}
+                                    onChange={(event) => handleinputchange(event, i)}
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
                             </label>
@@ -411,14 +449,14 @@ const Form_Order = ({
 
                       <label className="block">
                         <span className=" block text-sm font-medium text-slate-700">
-                          Status
+                          Entidad
                         </span>
                         <select
                           name="status"
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 "
                         >
-                          {typeStatus.map((item) => (
+                          {entity.map((item) => (
                             <option key={item.id} value={item.name}>
                               {item.name}
                             </option>

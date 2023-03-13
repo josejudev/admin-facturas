@@ -55,30 +55,34 @@ model offer {
 
 model order {
   id            Int         @id @default(autoincrement())
-  date          String?     @db.VarChar(30)
-  name          String?     @db.VarChar(100)
-  fileName      String?     @db.VarChar(100)
-  concept       String?     @db.VarChar(100)
-  amount        Float?
-  final_amount  Float?
-  type          String?     @db.VarChar(50)
-  class_type    String?     @db.VarChar(50)
-  entity        String?     @db.VarChar(20)
-  currency      String?     @db.VarChar(10)
-  order_balance Float?
-  status        String?     @default("Pendiente") @db.VarChar(50)
-  observations  String?     @db.VarChar(100)
+  date          String      @db.VarChar(30)
+  name          String      @db.VarChar(100)
+  amount        Float
+  currency      String      @db.VarChar(10)
+  final_amount  Float
+  order_balance Float
+
   offer_id      Int
+  concept       String      @db.VarChar(100)
+  class_type    String      @db.VarChar(50)
+  type          String      @db.VarChar(50)
+  status        String?     @default("En proceso") @db.VarChar(50)
+  
+  entity        String      @db.VarChar(20)
+  observations  String?     @db.VarChar(100)
+  fileName      String      @db.VarChar(100)
   offer         offer       @relation(fields: [offer_id], references: [id], onDelete: Cascade)
   milestone     milestone[]
 }
 
 model milestone {
-  id            Int   @id @default(autoincrement())
-  order_id      Int
-  num_milestone Int
-  percentage    Int
-  order         order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  id                   Int    @id @default(autoincrement())
+  order_id             Int
+  concept_milestone    String @db.VarChar(100)
+  num_milestone        Int
+  percentage_milestone Float
+  value_milestone      Float
+  order                order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
 
   //@@unique([order_id, num_hito])
 }

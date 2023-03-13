@@ -70,11 +70,12 @@ const createOrder = async (req, res) => {
         entity,
         currency,
         order_balance,
-        status,
         observations,
         offer_id,
-        percentage,
         milestone,
+        concept_milestone,
+        percentage_milestone,
+        value_milestone,
       } = req.body;
 
       const order = await prisma.order.create({
@@ -90,7 +91,6 @@ const createOrder = async (req, res) => {
           entity,
           currency,
           order_balance : parseFloat(order_balance),
-          status,
           observations,
           offer_id: parseInt(offer_id)
         },
@@ -100,7 +100,9 @@ const createOrder = async (req, res) => {
       let milestones = JSON.parse(milestone).map((milestone, index) => ({
         num_milestone: index + 1,
         order_id,
-        percentage: parseInt(milestone.percentage),
+        percentage_milestone: parseFloat(milestone.percentage_milestone),
+        value_milestone: parseFloat(milestone.value_milestone),
+        concept_milestone: milestone.concept_milestone,
       }));
 
       await prisma.offer.update({
