@@ -3,9 +3,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { deleteClient } from '../../pages/features/clients/clientSlice';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ModalDelete = ({children, title = ''}) => {
+  const dispatch = useDispatch();
+  const  {data, loading, error} = useSelector((state) => state.clients);
+
   const { handleModalDelete, offer,client,order,removedClient } = useAdmin();
   const router = useRouter();
 
@@ -14,9 +20,8 @@ const ModalDelete = ({children, title = ''}) => {
     try {
       switch (router.pathname) {
         case "/clientes":
-          await removedClient(client.id)
-          router.push("/clientes");
-          handleModalDelete();
+          dispatch(deleteClient(client.id));
+          await handleModalDelete();
           toast.error("Cliente eliminado correctamente",{
             icon:(
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500">

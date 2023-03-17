@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Loader = ({children, type}) => {
+const Loader = ({children, table}) => {
   return (
     <div className="flex  items-center justify-center p-5 bg-white w-full">
       <div className="text-center">
@@ -16,11 +16,7 @@ const Loader = ({children, type}) => {
             <path d="M150.1 58.3027L139 70.7559M124.1 54V70.7559V54ZM98 58.3027L109.1 70.7559L98 58.3027Z" stroke="#75A4FE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <h1 className=" text-[36px] font-bold text-slate-500 lg:text-[35px]">{`No hay ${type}`}</h1>
-        <p className="text-slate-600  lg:text-lg italic">{`Agregue ${type.replace(/registrados$/, '').replace(/registradas$/,'') } para iniciar acciones`}</p>
-        {
-          
-        }
+        <h1 className=" text-[36px] font-bold text-slate-500 lg:text-[35px]">{`No hay ${table}`}</h1>
       </div>
     </div>
   )

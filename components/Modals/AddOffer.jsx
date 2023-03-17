@@ -3,18 +3,33 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchClients } from '../../pages/features/clients/clientSlice';
 
 const AddOffer = () => {
   const router = useRouter();
   const { clients, handleModalOffer,createOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
+  const dispatch = useDispatch();
+  const {data, loading, error} = useSelector((state) => state.clients);
+
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+  const dataFiltered= data.filter((client) => client.status === "Activo" )
+
+
+
+  
+
 
     const [offer, setOffer] = useState({
       project_name: "",
       fileName: "",
       final_client: "", 
       activity_resumen: "",
-      client_id: clients[0].id,
+      client_id: dataFiltered[0].id,
     });
   
 
@@ -121,7 +136,7 @@ const AddOffer = () => {
               >
                 {
                   // Aqui va el map de los clientes
-                  clients?.map((client) => (
+                  dataFiltered?.map((client) => (
                     <option key={client.id} value={client.id}>
                       {client.name}
                     </option>

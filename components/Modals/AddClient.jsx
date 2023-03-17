@@ -5,9 +5,12 @@ import useAdmin from "../../hooks/useAdmin";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { addClient } from '../../pages/features/clients/clientSlice';
 
 const AddClient = () => {
-
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -33,18 +36,8 @@ const AddClient = () => {
   };
 
   const onSubmit = async (e) => {
-    try{
-      const { name, rfc, fiscal_address, email, address, contact_phone, contact_email, contact_name } = event.target.elements;
-      await createClient(
-       name.value,
-       rfc.value,
-       fiscal_address.value,
-       email.value,
-       address.value,
-       contact_phone.value,
-       contact_email.value,
-       contact_name.value
-     );
+    try {
+      dispatch(addClient(client));
 
       handleModalClient();
       router.push('/clientes')

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 const EditOffer = () => {
-  const { offer, handleModalEditOffer, clients } = useAdmin();
+  const { offer, handleModalEditOffer, clients,editOfferId } = useAdmin();
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
   const [editOffer, setEditOffer] = useState({
@@ -15,8 +15,7 @@ const EditOffer = () => {
 
   const status = [
     { id: 1, name: "Pendiente" },
-    { id: 2, name: "Aceptado" },
-    { id: 3, name: "Rechazado" },
+    { id: 2, name: "Rechazado" },
   ];
 
   const handleChange = ({ target: { name, value } }) => {
@@ -44,14 +43,17 @@ const EditOffer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { ...editOffer };
-      const response = await fetch(`/api/offers/${offer.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+
+      const { project_name, final_client, activity_resumen,status, client_id } = e.target.elements;
+      await editOfferId(
+        offer.id,
+        project_name.value,
+        final_client.value,
+        activity_resumen.value,
+        status.value,
+        client_id.value,
+      );
+
       handleModalEditOffer()
       router.push("/");
     } catch (err) {

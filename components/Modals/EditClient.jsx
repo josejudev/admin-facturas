@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { updateClient } from '../../pages/features/clients/clientSlice';
 
 const EditClient = () => {
   const status = [
@@ -11,11 +14,14 @@ const EditClient = () => {
     { id: 2, name: "Inactivo" },
   ];
 
+  const dispatch = useDispatch();
+
 
 
   const { client, handleModalEditClient, editClientId } = useAdmin();
   const router = useRouter();
   const [editClient, setEditClient] = useState({
+    id: client.id,
     name: client.name,
     rfc: client.rfc,
     fiscal_address: client.fiscal_address,
@@ -46,19 +52,10 @@ const EditClient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { name, rfc, fiscal_address, email, address, contact_phone, contact_email, contact_name,status } = e.target.elements;
-      await editClientId(
-        client.id,
-        name.value,
-        rfc.value,
-        fiscal_address.value,
-        email.value,
-        address.value,
-        contact_phone.value,
-        contact_email.value,
-        contact_name.value,
-        status.value,
-      );
+      dispatch(
+        updateClient(editClient, editClient.id)
+      )
+      console.log(editClient);
       handleModalEditClient();
       router.push("/clientes");
       toast.success("Client edited successfully");

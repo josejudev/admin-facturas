@@ -110,6 +110,36 @@ const AdminProvider = ({ children }) => {
          getOffers(data);
     }
 
+    const editOfferId = async (id, project_name, final_client, activity_resumen,status, client_id) => {
+
+        const { data } = await axios.put(`/api/offers/${id}`, {
+            project_name,
+            final_client,
+            activity_resumen,
+            status,
+            client_id
+        });
+        setOffers(offers.map((offer) => offer.id === id ? data : offer));
+    }
+
+    const createOrder = async (project_name, fileName, final_client, activity_resumen, client_id) => {
+        const body = new FormData();
+        body.append("project_name", project_name);
+        body.append("fileName", fileName);
+        body.append("final_client", final_client);
+        body.append("activity_resumen", activity_resumen);
+        body.append("client_id", client_id);
+        const response = await fetch("/api/orders/", {
+            method: "POST",
+            body
+        });
+        const data = await response.json();
+        setOrders([...orders, data]);
+        getOrders(data);
+    }
+
+
+
     
 
     useEffect(() => {
@@ -160,10 +190,11 @@ const AdminProvider = ({ children }) => {
                 createClient,
                 removedClient,
                 editClientId,
-                createOffer,
-
+                
                 offer,
                 offers,
+                createOffer,
+                editOfferId,
 
                 orders,
                 order,

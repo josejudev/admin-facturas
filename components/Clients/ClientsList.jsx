@@ -1,14 +1,26 @@
 import useAdmin from "../../hooks/useAdmin";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchClients } from '../../pages/features/clients/clientSlice';
 
 
-const ClientsList = ({ clients }) => {
+const ClientsList = () => {
   const { handleSetClient, handleModalDelete,handleModalEditClient } = useAdmin();
+  const dispatch = useDispatch();
+
+  const {data, loading, error} = useSelector((state) => state.clients);
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+  if (loading) return <tr><td>Loading...</td></tr>;
+  if (error) return <tr><td>Error: {error.message}</td></tr>;
+  if (data.length === 0) return <tr><td>No hay clientes registrados</td></tr>;
 
   return (
     <>
       {
         
-      clients.map((client) => (
+      data.map((client) => (
         <tr key={client.id} className="text-gray-700">
           <td className="border-b-2 p-4">{client.name}</td>
           <td className="border-b-2 p-4">{client.rfc}</td>

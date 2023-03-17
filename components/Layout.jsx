@@ -8,6 +8,8 @@ import AddOffer from "./Modals/AddOffer";
 import AddClient from "./Modals/AddClient";
 import ModalDelete from "./Modals/ModalDelete";
 import EditClient from "./Modals/EditClient";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const customStyles = {
   content: {
@@ -43,6 +45,10 @@ function Layout({ children, title = "", description = "" }) {
         <title>{`admin - ${title}`}</title>
         <meta name="description" content={description} />
       </Head>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={1800} 
+      />
       <Header />
       {children}
       {modalAddOffer && (

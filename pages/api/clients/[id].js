@@ -11,6 +11,10 @@ export default async function handler(req, res) {
         case "PUT":
             return await updateClient(req, res);
             break;
+
+        case "PATCH":
+            return await updateClients(req, res);
+            break;
         default:
             return res.status(200).json('Nothing')    
     }
@@ -44,6 +48,29 @@ const updateClient = async (req, res) => {
             contact_name,
             status
 
+        }
+    })
+    return res.json(client)
+}
+
+const updateClients = async (req, res) => {
+    const { id } = req.query
+    const { name, rfc, contact_phone, fiscal_address, email, address, contact_email, contact_name,status} = req.body
+    const client = await prisma.client.update({
+        where: {
+            id: parseInt(id)
+        },
+        data: {
+            name,
+            rfc,
+            contact_phone,
+            fiscal_address,
+            email,
+            address,
+            contact_email,
+            contact_name,
+            status
+            
         }
     })
     return res.json(client)

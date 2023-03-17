@@ -18,7 +18,6 @@ export async function middleware(request) {
       jwt.value,
       new TextEncoder().encode("secret")
     );
-    console.log(payload);
     return NextResponse.next();
   } catch (error) {
 
@@ -28,5 +27,5 @@ export async function middleware(request) {
 
 // Paths to be protected
 export const config = {
-  matcher: ["/profile/:path*", "/clientes/:path*", "/pedidos/:path*",],
+  matcher: ["/profile/:path*", "/clientes/:path*", "/pedidos/:path*", "/"],
 };

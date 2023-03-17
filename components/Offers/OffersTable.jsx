@@ -83,7 +83,7 @@ const OffersTable = ({ offers }) => {
   }
   if (Object.keys(offers).length === 0) {
     return <Loader
-    type="ofertas registradas"
+    table="ofertas registradas"
 
     />;
   } else{

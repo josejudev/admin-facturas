@@ -143,6 +143,7 @@ const ClientsTable = ({ clients }) => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
+                  
                   <ClientsList clients={currentItems} />
                 </tbody>
               </table>
