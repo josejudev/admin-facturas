@@ -37,7 +37,6 @@ const EditClient = () => {
       ...editClient,
       [name]: value,
     });
-    console.log(editClient);
     
   };
 
@@ -55,7 +54,6 @@ const EditClient = () => {
       dispatch(
         updateClient(editClient, editClient.id)
       )
-      console.log(editClient);
       handleModalEditClient();
       router.push("/clientes");
       toast.success("Client edited successfully");

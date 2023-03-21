@@ -1,12 +1,19 @@
 import useAdmin from "../../hooks/useAdmin";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { updateOffer } from '../../pages/features/offers/offerSlice';
+
 
 const EditOffer = () => {
+  const dispatch = useDispatch();
   const { offer, handleModalEditOffer, clients,editOfferId } = useAdmin();
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
   const [editOffer, setEditOffer] = useState({
+    id: offer.id,
     project_name: offer.project_name,
     final_client: offer.final_client,
     activity_resumen: offer.activity_resumen,
@@ -43,21 +50,16 @@ const EditOffer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-      const { project_name, final_client, activity_resumen,status, client_id } = e.target.elements;
-      await editOfferId(
-        offer.id,
-        project_name.value,
-        final_client.value,
-        activity_resumen.value,
-        status.value,
-        client_id.value,
-      );
-
+      dispatch(
+        updateOffer(editOffer, editOffer.id)
+      )
+      console.log(editOffer);
       handleModalEditOffer()
+      toast.success("Oferta editada con éxito");
       router.push("/");
     } catch (err) {
-      console.log(err);
+
+      toast.error("Error al editar la oferta");
     }
   };
 

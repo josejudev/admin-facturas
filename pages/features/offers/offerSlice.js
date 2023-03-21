@@ -46,6 +46,20 @@ export const offerSlice = createSlice({
             state.error = action.payload;
             state.data = state.data.filter((offer) => offer.id !== action.payload)
         },
+        updateOfferRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        updateOfferSuccess: (state, action) => {
+            state.loading = false;
+            state.data = state.data.map((offer) =>
+                offer.id === action.payload.id ? action.payload : offer
+            );
+        },
+        updateOfferError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }
         
 
 
@@ -62,6 +76,9 @@ export const {
     deleteOfferRequest,
     deleteOfferSuccess,
     deleteOfferError,
+    updateOfferRequest,
+    updateOfferSuccess,
+    updateOfferError,
 } = offerSlice.actions;
 
 
@@ -115,6 +132,19 @@ export const addOffer = (offer) => {
         }
     }
   }
+
+  export const updateOffer = (offer, id) =>{
+    return async (dispatch) =>{
+        try{
+            dispatch(updateOfferRequest())
+            const response = await axios.put(`/api/offers/${id}`, offer);
+            dispatch(updateOfferSuccess(response.data));
+        }catch (error){
+            dispatch(updateOfferError(error.message))
+            console.log(error.message)
+        }
+    }
+  } 
 
 
 export default offerSlice.reducer;
