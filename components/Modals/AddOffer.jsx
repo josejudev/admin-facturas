@@ -6,18 +6,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchClients } from '../../pages/features/clients/clientSlice';
+import { addOffer, fetchOffers } from '../../pages/features/offers/offerSlice';
+
 
 const AddOffer = () => {
   const router = useRouter();
   const { clients, handleModalOffer,createOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
   const dispatch = useDispatch();
-  const {data, loading, error} = useSelector((state) => state.clients);
+  const {dataClient, loading, error} = useSelector((state) => state.clients);
 
   useEffect(() => {
     dispatch(fetchClients());
   }, [dispatch]);
-  const dataFiltered= data.filter((client) => client.status === "Activo" )
+  const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
 
 
 
@@ -55,21 +57,22 @@ const AddOffer = () => {
     try {
       const { project_name, fileName, final_client, activity_resumen, client_id } = e.target.elements;
   
-      await createOffer(
-        project_name.value,
-        fileName.files[0], // use the first file in the FileList
-        final_client.value,
-        activity_resumen.value,
-        client_id.value
-      );
-      router.push("/");
-      handleModalOffer();
-      toast.success("Oferta agregada correctamente");
-    }catch (error) {
-      toast.error("Error al agregar la oferta");
+      const formData = {
+        project_name: project_name.value,
+        fileName: fileName.files[0], // use the first file in the FileList
+        final_client: final_client.value,
+        activity_resumen: activity_resumen.value,
+        client_id: client_id.value
+      };
+      dispatch(addOffer(formData));
+      dispatch(fetchOffers())
 
+      handleModalOffer(); 
+      toast.success('Oferta creada con éxito');
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
   return (
     <div className="w-[900px] flex flex-col">

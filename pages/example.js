@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClients } from "./features/clients/clientSlice";
+import { fetchOffers } from "./features/offers/offerSlice";
 
 const ClientsList = () => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.clients);
-
+  const { data, loading, error } = useSelector((state) => state.offers);
   useEffect(() => {
-    dispatch(fetchClients());
+    dispatch(fetchOffers());
   }, [dispatch]);
 
   if (loading) {
@@ -20,8 +19,8 @@ const ClientsList = () => {
 
   return (
     <div>
-      {data.map((client) => (
-        <div key={client.id}>{client.name}</div>
+      {data.map((offer) => (
+        <div key={offer.id}>{offer.project_name}</div>
       ))}
     </div>
   );

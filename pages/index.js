@@ -7,10 +7,11 @@ import axios from "axios";
 import Header_Table from "../components/HeaderTable";
 import OffersTable from "../components/Offers/OffersTable";
 import { useState } from "react";
+import OffersT from "../components/Offers/OffersT";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const Home = ({ offers }) => {
+const Home = () => {
   const { handleModalOffer } = useAdmin();
 
 
@@ -30,7 +31,7 @@ const Home = ({ offers }) => {
            />
           <div className="px-2 sm:px-4 py-2.5">
             <div className=" mx-auto bg-white h-full p-5 rounded-lg">
-              <OffersTable offers={offers} />
+              <OffersT  />
             </div>
           </div>
         </Layout>
@@ -39,13 +40,5 @@ const Home = ({ offers }) => {
   );
 };
 
-export const getServerSideProps = async (context) => {
-  const { data: offers } = await axios.get("http://localhost:3000/api/offers/");
-  return {
-    props: {
-      offers,
-    },
-  };
-};
 
 export default Home;

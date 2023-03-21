@@ -82,7 +82,7 @@ const OrdersTable = ({orders}) => {
 
   if (Object.keys(orders).length === 0) {
     return <Loader
-    type="pedidos registrados"    
+    table="pedidos registrados"    
     />;
   }
 

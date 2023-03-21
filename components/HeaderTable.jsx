@@ -10,7 +10,7 @@ import { fetchClients } from '../pages/features/clients/clientSlice';
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const dispatch = useDispatch();
-  const {data, loading, error} = useSelector((state) => state.clients);
+  const {dataClient, loading, error} = useSelector((state) => state.clients);
   
   useEffect(() => {
     dispatch(fetchClients());
@@ -23,8 +23,8 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   const router = useRouter();
   const { handleModalOffer, handleModalClient,clients,offers } = useAdmin();
 
-  if(data.length === 0 && router.pathname==="/") return null;
-  const dataFiltered= data.filter((client) => client.status === "Activo" )
+  if(dataClient.length === 0 && router.pathname==="/") return null;
+  const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
   if(dataFiltered.length === 0 && router.pathname==="/") return null;
   
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente" );
@@ -42,7 +42,7 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
 
           {
-            router.pathname === "/" && data.lenght === 0 || router.pathname === "/pedidos" && Object.keys(offers).length === 0 || router.pathname === "/pedidos" && pendingOffers.length === 0  ? null :
+            router.pathname === "/" && dataClient.lenght === 0 || router.pathname === "/pedidos" && Object.keys(offers).length === 0 || router.pathname === "/pedidos" && pendingOffers.length === 0  ? null :
             <button
             onClick={
               router.pathname === "/" ? handleModalOffer :

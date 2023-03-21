@@ -12,8 +12,7 @@ const ClientsT = () => {
     const { handleSetClient, handleModalDelete, handleModalEditClient } = useAdmin();
     const dispatch = useDispatch();
 
-    const { data, loading, error } = useSelector((state) => state.clients);
-    console.log(data);
+    const { dataClient, loading, error } = useSelector((state) => state.clients);
 
     const [currentItems, setCurrentItems] = useState([]);
     const [dataFiltered, setDataFiltered] = useState({
@@ -40,11 +39,11 @@ const ClientsT = () => {
 
 
       useEffect(() => {
-        if (data.length === 0 && !loading ) {
+        if (dataClient.length === 0 && !loading ) {
           dispatch(fetchClients());
         } else {
           // Filter data based on search value
-          const filteredData = data.filter((item) =>
+          const filteredData = dataClient.filter((item) =>
             (
                 search === "" || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some((key) => item[key].toLowerCase().includes(search.toLowerCase())) 
             
@@ -58,11 +57,11 @@ const ClientsT = () => {
           // Calculate pageCount based on filtered data
           setPageCount(Math.ceil(filteredData.length / itemsPerPage));
         }
-      }, [data, itemOffset, itemsPerPage, search,dispatch, dataFiltered]);
+      }, [dataClient, itemOffset, itemsPerPage, search,dispatch, dataFiltered]);
 
       
 
-      if (data.length === 0) return <Loader table={"clientes registrados"} />;
+      if (dataClient.length === 0) return <Loader table={"clientes registrados"} />;
       if (error) return <div><p>Error: {error.message}</p></div>;
       if (loading) return <SkeletonLoader />;
 
