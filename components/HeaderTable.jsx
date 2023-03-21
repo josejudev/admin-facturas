@@ -7,13 +7,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClients } from '../pages/features/clients/clientSlice';
+import { fetchOffers } from '../pages/features/offers/offerSlice';
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const dispatch = useDispatch();
   const {dataClient, loading, error} = useSelector((state) => state.clients);
+  const {data:dataOffer, loading: loadingOffer, error: errorOffer} = useSelector((state) => state.offers);
   
   useEffect(() => {
     dispatch(fetchClients());
+    dispatch(fetchOffers());
   }, [dispatch]);
 
 
@@ -25,7 +28,12 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
   if(dataClient.length === 0 && router.pathname==="/") return null;
   const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
+
+  if(dataOffer.length === 0 && router.pathname==="/pedidos") return null;
+  const dataFilteredOffer= dataOffer.filter((offer) => offer.status === "Pendiente" )
+
   if(dataFiltered.length === 0 && router.pathname==="/") return null;
+  if(dataFilteredOffer.length === 0 && router.pathname==="/pedidos") return null;
   
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente" );
   
@@ -42,11 +50,12 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
 
           {
-            router.pathname === "/" && dataClient.lenght === 0 || router.pathname === "/pedidos" && Object.keys(offers).length === 0 || router.pathname === "/pedidos" && pendingOffers.length === 0  ? null :
             <button
             onClick={
-              router.pathname === "/" ? handleModalOffer :
-              handleModalClient ? router.pathname === "/pedidos" ?  null: handleModalClient : null
+              router.pathname === "/" 
+              ? handleModalOffer :handleModalClient 
+              ? router.pathname === "/pedidos" 
+              ?  null: handleModalClient : null
             }
             type="button"
             className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">

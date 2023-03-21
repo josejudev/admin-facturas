@@ -144,7 +144,8 @@ export const addOffer = (offer) => {
             console.log(error.message)
         }
     }
-  } 
+  }
+
 
 
 export default offerSlice.reducer;

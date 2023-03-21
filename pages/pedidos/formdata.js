@@ -1,0 +1,15 @@
+const body = new FormData();
+body.append("date", order.date);
+body.append("name", order.name);
+body.append("fileName", order.fileName);
+body.append("concept", order.concept);
+body.append("type", order.type);
+body.append("class_type", order.class_type);
+body.append("entity", order.entity);
+body.append("offer_id", order.offer_id);
+body.append("amount", order.amount);
+body.append("final_amount", order.final_amount);
+body.append("currency", order.currency);
+body.append("order_balance", order.order_balance);
+body.append("milestone", JSON.stringify(inputFields));
+const res = await axios.post("/api/orders", body);

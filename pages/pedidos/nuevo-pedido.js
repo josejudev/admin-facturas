@@ -1,16 +1,33 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../../components/Layout";
-import useAdmin from "../../hooks/useAdmin";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrder } from "../features/orders/orderSlice";
 import { useRouter } from "next/router";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Form_Order = ({
-  offers,
-}) => {
+const Form_Order = ({ offers }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente");
+
+  useEffect(() => {
+    axios
+      .get("/api/offers") // Replace with the API endpoint that fetches the offers
+      .then((response) => {
+        const pendingOffers = response.data.filter(
+          (offer) => offer.status === "Pendiente"
+        );
+        if (!pendingOffers.length) {
+          router.push("/pedidos");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Error al obtener las ofertas pendientes");
+      });
+  }, [router]);
 
   const typeCurrency = [
     { id: 1, name: "USD" },
@@ -33,10 +50,10 @@ const Form_Order = ({
     { id: 2, name: "Cerrado" },
   ];
 
-  const entity = [ 
+  const entity = [
     { id: 1, name: "REVOLUTIO" },
     { id: 2, name: "ISOTROL" },
-  ]
+  ];
 
   const [order, setOrder] = useState({
     date: "",
@@ -61,17 +78,12 @@ const Form_Order = ({
     });
   };
 
-
-
   const handleFile = ({ target: { name, files } }) => {
     setOrder({
       ...order,
       [name]: files[0],
     });
   };
-
-
-
 
   //Create Milestone
 
@@ -81,7 +93,6 @@ const Form_Order = ({
     list[index][name] = value;
     setInputFields(list);
   };
-  
 
   const handleremove = (index) => {
     const list = [...inputFields];
@@ -117,59 +128,66 @@ const Form_Order = ({
   const calculateMilestoneValue = (finalAmount, percentage) => {
     return (finalAmount * percentage) / 100;
   };
-  
+
   const handleFinalAmountChange = (event) => {
     const finalAmount = event.target.value;
     setOrder({
       ...order,
       final_amount: finalAmount,
     });
-  
+
     setInputFields(
       inputFields.map((field) => ({
         ...field,
-        value_milestone: calculateMilestoneValue(finalAmount, field.percentage_milestone),
+        value_milestone: calculateMilestoneValue(
+          finalAmount,
+          field.percentage_milestone
+        ),
       }))
     );
   };
-  
+
   const handlePercentageChange = (event, index) => {
     const percentage = event.target.value;
     const list = [...inputFields];
     list[index].percentage_milestone = percentage;
-    list[index].value_milestone = calculateMilestoneValue(order.final_amount, percentage);
+    list[index].value_milestone = calculateMilestoneValue(
+      order.final_amount,
+      percentage
+    );
     setInputFields(list);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = new FormData();
-      body.append("date", order.date);
-      body.append("name", order.name);
-      body.append("fileName", order.fileName);
-      body.append("concept", order.concept);
-      body.append("type", order.type);
-      body.append("class_type", order.class_type);
-      body.append("entity", order.entity);
-      body.append("offer_id", order.offer_id);
-      body.append("amount", order.amount);
-      body.append("final_amount", order.final_amount);
-      body.append("currency", order.currency);
-      body.append("order_balance", order.order_balance);
-      body.append("milestone", JSON.stringify(inputFields));
-      const res = await axios.post("/api/orders", body);
-      router.push("/pedidos");
-      setTimeout(() => {
-        toast.success("Pedido creado correctamente");
-      }, 1100);
-
-
-
+      const {date, name,fileName, concept, type, class_type, entity, offer_id, amount, final_amount, currency, order_balance,milestone } = e.target.elements;
+      const formData = {
+        date: date.value,
+        name: name.value,
+        fileName: fileName.files[0],
+        concept: concept.value,
+        type: type.value,
+        class_type: class_type.value,
+        entity: entity.value,
+        offer_id: offer_id.value,
+        amount: amount.value,
+        final_amount: final_amount.value,
+        currency: currency.value,
+        order_balance: order_balance.value,
+        milestone: inputFields,
+        
+      }
+      console.log(formData);
+      dispatch(addOrder(formData));
+      // router.push("/pedidos");
+      // setTimeout(() => {
+      //   toast.success("Pedido creado correctamente");
+      // }, 1100);
     } catch (error) {
-      console.log("Hubo un error");
+      toast.error("Hubo un error " + error);
     }
+
   };
 
   return (
@@ -295,10 +313,12 @@ const Form_Order = ({
                                 Porcentaje
                               </span>
                               <input
-                                    type="number"
-                                    name={`percentage_milestone_${i}`}
-                                    value={x.percentage_milestone}
-                                    onChange={(event) => handlePercentageChange(event, i)}
+                                type="number"
+                                name={`percentage_milestone_${i}`}
+                                value={x.percentage_milestone}
+                                onChange={(event) =>
+                                  handlePercentageChange(event, i)
+                                }
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
                             </label>
@@ -310,10 +330,12 @@ const Form_Order = ({
                                 Valor
                               </span>
                               <input
-                                    type="number"
-                                    name={`value_milestone_${i}`}
-                                    value={x.value_milestone}
-                                    onChange={(event) => handleinputchange(event, i)}
+                                type="number"
+                                name={`value_milestone_${i}`}
+                                value={x.value_milestone}
+                                onChange={(event) =>
+                                  handleinputchange(event, i)
+                                }
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
                             </label>
@@ -452,7 +474,7 @@ const Form_Order = ({
                           Entidad
                         </span>
                         <select
-                          name="status"
+                          name="entity"
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 "
                         >
@@ -574,7 +596,5 @@ export const getServerSideProps = async (context) => {
     },
   };
 };
-
-
 
 export default Form_Order;
