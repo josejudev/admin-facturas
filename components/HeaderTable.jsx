@@ -1,30 +1,20 @@
+import {useEffect,useRouter,useDispatch,useSelector,fetchClients,fetchOffers,handleModalClient,useAdmin} from '../exports/commonExports';
 import Link from "next/link";
-import useAdmin from "../hooks/useAdmin";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import 'react-toastify/dist/ReactToastify.css';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients } from '../redux/clients/clientSlice';
-import { fetchOffers } from '../redux/offers/offerSlice';
-import { handleModalClient } from "../redux/modals/modalSlice";
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const dispatch = useDispatch();
-  const {dataClient, loading, error} = useSelector((state) => state.clients);
-  const {data:dataOffer, loading: loadingOffer, error: errorOffer} = useSelector((state) => state.offers);
+  const {data:dataClient} = useSelector((state) => state.clients);
+  const {data:dataOffer} = useSelector((state) => state.offers);
   
   useEffect(() => {
     dispatch(fetchClients());
     dispatch(fetchOffers());
   }, [dispatch]);
 
-
-  
-  
   
   const router = useRouter();
-  const { handleModalOffer,clients,offers } = useAdmin();
+  const { handleModalOffer,offers } = useAdmin();
 
   if(dataClient.length === 0 && router.pathname==="/") return null;
   const dataFiltered= dataClient.filter((client) => client.status === "Activo" )

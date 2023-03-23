@@ -1,18 +1,8 @@
+import {Modal,useAdmin,AddOffer,AddClient,ModalDelete,ModalOffer,EditClient,ToastContainer,useRouter,useDispatch,useSelector,selectModalClient,selectModalClientEdit} from '../exports/commonExports';
 import Head from "next/head";
 import Header from "./Header";
-import Modal from "react-modal";
-import useAdmin from "../hooks/useAdmin";
-import ModalOffer from "./Modals/EditOffer";
-import { useRouter } from "next/router";
-import AddOffer from "./Modals/AddOffer";
-import AddClient from "./Modals/AddClient";
-import ModalDelete from "./Modals/ModalDelete";
-import EditClient from "./Modals/EditClient";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectModalClient, selectModalClientEdit } from "../redux/modals/modalSlice";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -26,12 +16,9 @@ const customStyles = {
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.25)",
-    //set blur
     backdropFilter: "blur(5px)",
-    //Create a transition
     transition: "all 0.2s ease-in-out",
   },
-
 };
 
 Modal.setAppElement("#__next");
@@ -44,7 +31,7 @@ function Layout({ children, title = "", description = "" }) {
 
 
 
-  const { modalEditOffer, modalAddOffer, modalDelete, modalEditClient } = useAdmin();
+  const { modalEditOffer, modalAddOffer, modalDelete } = useAdmin();
 
   return (
     <>

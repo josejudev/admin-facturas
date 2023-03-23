@@ -14,12 +14,12 @@ const AddOffer = () => {
   const { clients, handleModalOffer,createOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
   const dispatch = useDispatch();
-  const {dataClient, loading, error} = useSelector((state) => state.clients);
+  const {data, loading, error} = useSelector((state) => state.clients);
 
   useEffect(() => {
     dispatch(fetchClients());
   }, [dispatch]);
-  const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
+  const dataFiltered= data.filter((client) => client.status === "Activo" )
 
 
 

@@ -1,31 +1,16 @@
-import useAdmin from "../../hooks/useAdmin";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
-import { toast } from 'react-toastify';
+import { useState, useEffect, useRouter, axios, toast, useDispatch, updateClient, handleModalClientEdit, } from '../../exports/commonExports';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { updateClient } from '../../redux/clients/clientSlice';
-import { handleModalClientEdit } from "../../redux/modals/modalSlice";
 
-const EditClient = (
-  
-    {
-      clientId,
-    }
-  
-) => {
+
+const EditClient = ({clientId}) => {
   const status = [
     { id: 1, name: "Activo" },
     { id: 2, name: "Inactivo" },
   ];
 
   const dispatch = useDispatch();
-
-
-
   const router = useRouter();
+
   const [editClient, setEditClient] = useState(
     {
       name: "",
@@ -41,13 +26,12 @@ const EditClient = (
     }
   );
 
-
   const handleStatus = ({ target: { name, value } }) => {
     setEditClient({
       ...editClient,
       [name]: value,
     });
-    
+
   };
 
 
@@ -68,9 +52,6 @@ const EditClient = (
     getClient();
   },
     [clientId])
-
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,7 +103,7 @@ const EditClient = (
               />
             </svg>
           </button>
-          
+
         </div>
       </div>
       <form method="POST" onSubmit={handleSubmit}>

@@ -1,7 +1,4 @@
-import { useAdmin, useState, useEffect } from '../../exports/commonExports';
-import { Loader, ReactPaginate, SkeletonLoader } from '../../exports/commonExports';
-import { useDispatch, useSelector, fetchClients } from '../../exports/commonExports';
-import { handleModalClientEdit } from '../../redux/modals/modalSlice';
+import { useState, useEffect, Loader, ReactPaginate, SkeletonLoader, useDispatch, useSelector, fetchClients, handleModalClientEdit } from '../../exports/commonExports';
 
 const ClientsT = () => {
     const statusFiltered = [
@@ -10,13 +7,9 @@ const ClientsT = () => {
         { id: 3, name: "Inactivo" },
     ];
 
-    const { handleSetClient, handleModalDelete, handleModalEditClient } = useAdmin();
     const dispatch = useDispatch();
 
-    
-
-
-    const { dataClient, loading, error } = useSelector((state) => state.clients);
+    const { data, loading, error } = useSelector((state) => state.clients);
 
     const [currentItems, setCurrentItems] = useState([]);
     const [dataFiltered, setDataFiltered] = useState({
@@ -43,11 +36,11 @@ const ClientsT = () => {
 
 
     useEffect(() => {
-        if (dataClient.length === 0 && !loading) {
+        if (data.length === 0 && !loading) {
             dispatch(fetchClients());
         } else {
             // Filter data based on search value
-            const filteredData = dataClient.filter((item) =>
+            const filteredData = data.filter((item) =>
                 (
                     search === "" || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some((key) => item[key].toLowerCase().includes(search.toLowerCase()))
 
@@ -61,11 +54,11 @@ const ClientsT = () => {
             // Calculate pageCount based on filtered data
             setPageCount(Math.ceil(filteredData.length / itemsPerPage));
         }
-    }, [dataClient, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
+    }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
 
 
 
-    if (dataClient.length === 0) return <Loader table={"clientes registrados"} />;
+    if (data.length === 0) return <Loader table={"clientes registrados"} />;
     if (error) return <div><p>Error: {error.message}</p></div>;
     if (loading) return <SkeletonLoader />;
 

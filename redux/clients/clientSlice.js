@@ -5,7 +5,7 @@ import { fetchOffers } from "../offers/offerSlice";
 export const clientSlice = createSlice({
   name: "clients",
   initialState: {
-    dataClient: [],
+    data: [],
     loading: false,
     error: null,
   },
@@ -16,7 +16,7 @@ export const clientSlice = createSlice({
     },
     getClientSuccess: (state, action) => {
       state.loading = false;
-      state.dataClient = action.payload;
+      state.data = action.payload;
     },
     getClientError: (state, action) => {
       state.loading = false;
@@ -28,7 +28,7 @@ export const clientSlice = createSlice({
     },
     addClientSuccess: (state, action) => {
       state.loading = false;
-      state.dataClient.push(action.payload);
+      state.data.push(action.payload);
     },
     addClientError: (state, action) => {
       state.loading = false;
@@ -40,12 +40,12 @@ export const clientSlice = createSlice({
     },
     deleteClientSuccess: (state, action) => {
       state.loading = false;
-      state.dataClient = state.dataClient.filter((client) => client.id !== action.payload);
+      state.data = state.data.filter((client) => client.id !== action.payload);
     },
     deleteClientError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-      state.dataClient = state.dataClient.filter((client) => client.id !== action.payload);
+      state.data = state.data.filter((client) => client.id !== action.payload);
     },
     updateClientRequest: (state) => {
       state.loading = true;
@@ -53,7 +53,7 @@ export const clientSlice = createSlice({
     },
     updateClientSuccess: (state, action) => {
       state.loading = false;
-      state.dataClient = state.dataClient.map((client) =>
+      state.data = state.data.map((client) =>
         client.id === action.payload.id ? action.payload : client
       );
     },

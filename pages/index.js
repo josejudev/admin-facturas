@@ -1,20 +1,9 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
 import Layout from "../components/Layout";
-import Link from "next/link";
-import  useAdmin  from "../hooks/useAdmin";
-import axios from "axios";
 import Header_Table from "../components/HeaderTable";
-import OffersTable from "../components/Offers/OffersTable";
-import { useState } from "react";
 import OffersT from "../components/Offers/OffersT";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const Home = () => {
-  const { handleModalOffer } = useAdmin();
-
-
   return (
     <>
       <Head>
@@ -25,13 +14,10 @@ const Home = () => {
       </Head>
       <main>
         <Layout title={"Ofertas"} description="This is the offert page">
-          <Header_Table 
-          title="Ofertas"
-          onClick={handleModalOffer}
-           />
+          <Header_Table title="Ofertas"/>
           <div className="px-2 sm:px-4 py-2.5">
             <div className=" mx-auto bg-white h-full p-5 rounded-lg">
-              <OffersT  />
+              <OffersT />
             </div>
           </div>
         </Layout>
@@ -39,6 +25,5 @@ const Home = () => {
     </>
   );
 };
-
 
 export default Home;
