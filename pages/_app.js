@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import { AdminProvider } from '../context/AdminProvider'
 import { Provider } from 'react-redux';
-import store from './app/store';
+import store from '../redux/store';
 import NextNProgress from 'nextjs-progressbar';
 
 

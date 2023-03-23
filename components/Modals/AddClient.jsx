@@ -1,13 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import useAdmin from "../../hooks/useAdmin";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { addClient } from '../../pages/features/clients/clientSlice';
+import { addClient } from '../../redux/clients/clientSlice';
+import { handleModalClient } from "../../redux/modals/modalSlice";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -15,7 +13,6 @@ const AddClient = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const { handleModalClient,createClient } = useAdmin();
   const [client, setClient] = useState({
     name: "",
     rfc: "",
@@ -38,8 +35,7 @@ const AddClient = () => {
   const onSubmit = async (e) => {
     try {
       dispatch(addClient(client));
-
-      handleModalClient();
+      dispatch(handleModalClient());
       router.push('/clientes')
       toast.success("Client added successfully");
     } catch (err) {
@@ -53,7 +49,13 @@ const AddClient = () => {
         <h1 className="text-4xl font-bold text-blue-700">Agregar Cliente</h1>
         <div className="flex justify-end">
           <button
-            onClick={handleModalClient}
+            onClick={
+              () => {
+                dispatch(
+                  handleModalClient()
+                );
+              }
+            }
             type="button"
             className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
@@ -167,7 +169,7 @@ const AddClient = () => {
             Persona de contacto
           </p>
           <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
                 htmlFor="grid-phone"

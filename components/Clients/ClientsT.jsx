@@ -1,6 +1,7 @@
 import { useAdmin, useState, useEffect } from '../../exports/commonExports';
 import { Loader, ReactPaginate, SkeletonLoader } from '../../exports/commonExports';
 import { useDispatch, useSelector, fetchClients } from '../../exports/commonExports';
+import { handleModalClientEdit } from '../../redux/modals/modalSlice';
 
 const ClientsT = () => {
     const statusFiltered = [
@@ -11,6 +12,9 @@ const ClientsT = () => {
 
     const { handleSetClient, handleModalDelete, handleModalEditClient } = useAdmin();
     const dispatch = useDispatch();
+
+    
+
 
     const { dataClient, loading, error } = useSelector((state) => state.clients);
 
@@ -35,35 +39,35 @@ const ClientsT = () => {
     const handlePageClick = (e) => {
         const newOffset = e.selected * itemsPerPage;
         setItemOffset(newOffset);
-      };
+    };
 
 
-      useEffect(() => {
-        if (dataClient.length === 0 && !loading ) {
-          dispatch(fetchClients());
+    useEffect(() => {
+        if (dataClient.length === 0 && !loading) {
+            dispatch(fetchClients());
         } else {
-          // Filter data based on search value
-          const filteredData = dataClient.filter((item) =>
-            (
-                search === "" || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some((key) => item[key].toLowerCase().includes(search.toLowerCase())) 
-            
-            )  && (dataFiltered.status_filtered === "Todos" || item.status === dataFiltered.status_filtered)
+            // Filter data based on search value
+            const filteredData = dataClient.filter((item) =>
+                (
+                    search === "" || ['name', 'rfc', 'fiscal_address', 'address', 'email', 'contact_name', 'contact_phone', 'contact_email'].some((key) => item[key].toLowerCase().includes(search.toLowerCase()))
+
+                ) && (dataFiltered.status_filtered === "Todos" || item.status === dataFiltered.status_filtered)
             );
-      
-          // Slice data based on current offset and itemsPerPage
-          const endOffset = itemOffset + itemsPerPage;
-          setCurrentItems(filteredData.slice(itemOffset, endOffset));
-      
-          // Calculate pageCount based on filtered data
-          setPageCount(Math.ceil(filteredData.length / itemsPerPage));
+
+            // Slice data based on current offset and itemsPerPage
+            const endOffset = itemOffset + itemsPerPage;
+            setCurrentItems(filteredData.slice(itemOffset, endOffset));
+
+            // Calculate pageCount based on filtered data
+            setPageCount(Math.ceil(filteredData.length / itemsPerPage));
         }
-      }, [dataClient, itemOffset, itemsPerPage, search,dispatch, dataFiltered]);
+    }, [dataClient, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
 
-      
 
-      if (dataClient.length === 0) return <Loader table={"clientes registrados"} />;
-      if (error) return <div><p>Error: {error.message}</p></div>;
-      if (loading) return <SkeletonLoader />;
+
+    if (dataClient.length === 0) return <Loader table={"clientes registrados"} />;
+    if (error) return <div><p>Error: {error.message}</p></div>;
+    if (loading) return <SkeletonLoader />;
 
 
 
@@ -207,8 +211,11 @@ const ClientsT = () => {
                                                                     <li>
                                                                         <button
                                                                             onClick={() => {
-                                                                                handleModalEditClient();
-                                                                                handleSetClient(client);
+                                                                                dispatch(
+                                                                                    handleModalClientEdit(
+                                                                                        client.id,
+                                                                                    ))
+
                                                                             }}
                                                                             type="button"
                                                                             className="block px-4 py-2 hover:bg-gray-100 text-cyan-600 w-full"
@@ -242,23 +249,23 @@ const ClientsT = () => {
                 </div>
             </div>
 
-        <ReactPaginate
-          breakLabel="..."
-          //insert icon
-          disabledClassName="hidden"
-          nextLabel="Siguiente"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="Anterior"
-          renderOnZeroPageCount={null}
-          containerClassName=" w-full flex items-center justify-center p-2 mt-4"
-          pageClassName="mx-1"
-          pageLinkClassName="page-link relative block py-1.5 px-3 rounded border-0  outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-          nextLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
-          previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
-          activeLinkClassName="bg-sky-400 text-white hover:bg-sky-400 hover:text-white"
-        />
+            <ReactPaginate
+                breakLabel="..."
+                //insert icon
+                disabledClassName="hidden"
+                nextLabel="Siguiente"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="Anterior"
+                renderOnZeroPageCount={null}
+                containerClassName=" w-full flex items-center justify-center p-2 mt-4"
+                pageClassName="mx-1"
+                pageLinkClassName="page-link relative block py-1.5 px-3 rounded border-0  outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+                nextLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
+                previousLinkClassName="mx-4 py-1.5 px-3 transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none border"
+                activeLinkClassName="bg-sky-400 text-white hover:bg-sky-400 hover:text-white"
+            />
         </>
     )
 }

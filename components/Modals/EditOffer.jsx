@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { updateOffer } from '../../pages/features/offers/offerSlice';
+import { updateOffer } from '../../redux/offers/offerSlice';
 
 
 const EditOffer = () => {

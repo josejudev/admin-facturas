@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { deleteClient } from '../../pages/features/clients/clientSlice';
-import { deleteOffer } from '../../pages/features/offers/offerSlice';
+import { deleteClient } from '../../redux/clients/clientSlice';
+import { deleteOffer } from '../../redux/offers/offerSlice';
 
 import 'react-toastify/dist/ReactToastify.css';
 

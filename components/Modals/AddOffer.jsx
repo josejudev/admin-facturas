@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchClients } from '../../pages/features/clients/clientSlice';
-import { addOffer, fetchOffers } from '../../pages/features/offers/offerSlice';
+import { fetchClients } from '../../redux/clients/clientSlice';
+import { addOffer, fetchOffers } from '../../redux/offers/offerSlice';
 
 
 const AddOffer = () => {

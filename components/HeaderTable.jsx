@@ -2,12 +2,12 @@ import Link from "next/link";
 import useAdmin from "../hooks/useAdmin";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClients } from '../pages/features/clients/clientSlice';
-import { fetchOffers } from '../pages/features/offers/offerSlice';
+import { fetchClients } from '../redux/clients/clientSlice';
+import { fetchOffers } from '../redux/offers/offerSlice';
+import { handleModalClient } from "../redux/modals/modalSlice";
 
 const HeaderTable = ({ children, href='', title = ''}) => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   
   
   const router = useRouter();
-  const { handleModalOffer, handleModalClient,clients,offers } = useAdmin();
+  const { handleModalOffer,clients,offers } = useAdmin();
 
   if(dataClient.length === 0 && router.pathname==="/") return null;
   const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
@@ -36,6 +36,35 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   if(dataFilteredOffer.length === 0 && router.pathname==="/pedidos") return null;
   
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente" );
+
+  const modalButton = (e) => {
+    e.preventDefault();
+    if(router.pathname === "/"){
+      return (
+        <button
+          onClick={
+            handleModalClient
+          }
+          type="button"
+          className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">
+          Agregar nuevo
+        </button>
+      )
+    }else if(router.pathname === "/pedidos"){
+      return (
+        <button
+          onClick={
+            handleModalOffer
+          }
+          type="button"
+          className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">
+          Agregar nuevo
+        </button>
+      )
+    }else{
+      return null;
+    }
+  }
   
 
 
@@ -51,11 +80,12 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
           {
             <button
-            onClick={
-              router.pathname === "/" 
-              ? handleModalOffer :handleModalClient 
-              ? router.pathname === "/pedidos" 
-              ?  null: handleModalClient : null
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(
+                handleModalClient()
+              );
+            }
             }
             type="button"
             className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">

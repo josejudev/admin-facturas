@@ -15,6 +15,9 @@ export default async function handler(req, res) {
         case "PATCH":
             return await updateClients(req, res);
             break;
+
+        case "GET":
+            return await getClient(req, res);    
         default:
             return res.status(200).json('Nothing')    
     }
@@ -71,6 +74,17 @@ const updateClients = async (req, res) => {
             contact_name,
             status
             
+        }
+    })
+    return res.json(client)
+}
+
+
+const getClient = async (req, res) => {
+    const { id } = req.query
+    const client = await prisma.client.findUnique({
+        where: {
+            id: parseInt(id)
         }
     })
     return res.json(client)

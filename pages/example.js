@@ -1,29 +1,37 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOffers } from "./features/offers/offerSlice";
+import { useDispatch,useSelector } from "react-redux"
+import AddClient from "../components/Modals/AddClient"
+import AddOffer from "../components/Modals/AddOffer"
+import { selectModalClient,handleModalClient } from "../redux/modals/modalSlice"
 
-const ClientsList = () => {
-  const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.offers);
-  useEffect(() => {
-    dispatch(fetchOffers());
-  }, [dispatch]);
+const example = () => {
+    const dispatch = useDispatch()
+    const modalClient = useSelector(selectModalClient)
 
-  if (loading) {
-    return <div>Loading clients...</div>;
-  }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+    const handleModal = (e) => {
+        e.preventDefault()
+        dispatch(
+            handleModalClient()
+        )
+        console.log(handleModalClient())
+
+    }
+
+    const closeModal = (e) => {
+        e.preventDefault()
+        dispatch(
+            handleModalClient()
+        )
+    }
 
   return (
     <div>
-      {data.map((offer) => (
-        <div key={offer.id}>{offer.project_name}</div>
-      ))}
+        <button onClick={
+            handleModal
+        }>Open Modal</button>
+        {modalClient && <AddClient />}
     </div>
-  );
-};
+  )
+}
 
-export default ClientsList;
+export default example

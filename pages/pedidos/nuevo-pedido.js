@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../../components/Layout";
-import { useDispatch, useSelector } from "react-redux";
-import { addOrder } from "../features/orders/orderSlice";
+import { useDispatch } from "react-redux";
+import { addOrder } from "../../redux/orders/orderSlice";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

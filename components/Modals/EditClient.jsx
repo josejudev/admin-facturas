@@ -6,9 +6,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { updateClient } from '../../pages/features/clients/clientSlice';
+import { updateClient } from '../../redux/clients/clientSlice';
+import { handleModalClientEdit } from "../../redux/modals/modalSlice";
 
-const EditClient = () => {
+const EditClient = (
+  
+    {
+      clientId,
+    }
+  
+) => {
   const status = [
     { id: 1, name: "Activo" },
     { id: 2, name: "Inactivo" },
@@ -18,19 +25,22 @@ const EditClient = () => {
 
 
 
-  const { client, handleModalEditClient, editClientId } = useAdmin();
   const router = useRouter();
-  const [editClient, setEditClient] = useState({
-    id: client.id,
-    name: client.name,
-    rfc: client.rfc,
-    fiscal_address: client.fiscal_address,
-    email: client.email,
-    address: client.address,
-    contact_phone: client.contact_phone,
-    contact_name: client.contact_name,
-    contact_email: client.contact_email,
-  });
+  const [editClient, setEditClient] = useState(
+    {
+      name: "",
+      status: "",
+      rfc: "",
+      fiscal_address: "",
+      email: "",
+      address: "",
+      contact_phone: "",
+      contact_name: "",
+      contact_email: "",
+
+    }
+  );
+
 
   const handleStatus = ({ target: { name, value } }) => {
     setEditClient({
@@ -48,15 +58,32 @@ const EditClient = () => {
     });
   }
 
+  useEffect(() => {
+    const getClient = async () => {
+      const { data } = await axios.get(
+        `/api/clients/${clientId}`
+      );
+      setEditClient(data);
+    };
+    getClient();
+  },
+    [clientId])
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(
         updateClient(editClient, editClient.id)
       )
-      handleModalEditClient();
       router.push("/clientes");
+      dispatch(
+        handleModalClientEdit()
+      )
       toast.success("Client edited successfully");
+
     } catch (err) {
       toast.error("Error editing client");
     }
@@ -68,7 +95,13 @@ const EditClient = () => {
         <h1 className="text-4xl font-bold text-blue-700">Editar Cliente</h1>
         <div className="flex justify-end">
           <button
-            onClick={handleModalEditClient}
+            onClick={
+              () => {
+                dispatch(
+                  handleModalClientEdit()
+                );
+              }
+            }
             type="button"
             className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
@@ -107,7 +140,7 @@ const EditClient = () => {
                 onChange={handleChange}
                 id="grid-first-name"
                 name="name"
-                value={editClient.name}
+                value={editClient?.name}
                 type="text"
               />
             </div>
@@ -124,8 +157,8 @@ const EditClient = () => {
                 onChange={handleChange}
                 id="grid-rfc"
                 name="rfc"
-                value={editClient.rfc}
                 type="text"
+                value={editClient?.rfc}
               />
             </div>
           </div>
@@ -142,9 +175,9 @@ const EditClient = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
                 onChange={handleChange}
                 id="grid-dirfis"
-                value={editClient.fiscal_address}
                 type="text"
                 name="fiscal_address"
+                value={editClient?.fiscal_address}
               />
             </div>
             <div className="md:w-1/2 px-3">
@@ -159,7 +192,7 @@ const EditClient = () => {
                 onChange={handleChange}
                 id="grid-email"
                 name="email"
-                value={editClient.email}
+                value={editClient?.email}
                 type="text"
               />
             </div>
@@ -178,7 +211,7 @@ const EditClient = () => {
                 onChange={handleChange}
                 id="grid-direccion"
                 name="address"
-                value={editClient.address}
+                value={editClient?.address}
                 type="text"
               />
             </div>
@@ -199,8 +232,8 @@ const EditClient = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 onChange={handleChange}
                 id="grid-phone"
-                value={editClient.contact_name}
                 name="contact_name"
+                value={editClient?.contact_name}
                 type="text"
               />
             </div>
@@ -216,7 +249,7 @@ const EditClient = () => {
                 onChange={handleChange}
                 id="grid-phone"
                 name="contact_phone"
-                value={editClient.contact_phone}
+                value={editClient?.contact_phone}
                 type="text"
               />
             </div>
@@ -232,8 +265,8 @@ const EditClient = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 onChange={handleChange}
                 id="grid-email"
-                value={editClient.contact_email}
                 name="contact_email"
+                value={editClient?.contact_email}
                 type="text"
               />
             </div>
@@ -249,10 +282,8 @@ const EditClient = () => {
             <select
               onChange={handleStatus}
               name="status"
-              defaultValue={client.status}
               className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-1/3  px-4 focus:border-blue-500 block py-3.5 mb-3 "
-
-
+              value={editClient?.status}
             >
               {status.map((state) => (
                 <option key={state.id} value={state.name}>

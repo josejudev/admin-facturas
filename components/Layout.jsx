@@ -10,7 +10,9 @@ import ModalDelete from "./Modals/ModalDelete";
 import EditClient from "./Modals/EditClient";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectModalClient, selectModalClientEdit } from "../redux/modals/modalSlice";
 const customStyles = {
   content: {
     top: "50%",
@@ -36,8 +38,13 @@ Modal.setAppElement("#__next");
 
 function Layout({ children, title = "", description = "" }) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const modalClient = useSelector(selectModalClient);
+  const modalClientEdit = useSelector(selectModalClientEdit);
 
-  const { modalEditOffer, modalAddOffer, modalAddClient, modalDelete, modalEditClient } = useAdmin();
+
+
+  const { modalEditOffer, modalAddOffer, modalDelete, modalEditClient } = useAdmin();
 
   return (
     <>
@@ -47,7 +54,7 @@ function Layout({ children, title = "", description = "" }) {
       </Head>
       <ToastContainer
         position="bottom-center"
-        autoClose={1800} 
+        autoClose={1800}
       />
       <Header />
       {children}
@@ -62,15 +69,16 @@ function Layout({ children, title = "", description = "" }) {
         </Modal>
       )}
 
-      {modalAddClient && (
-        <Modal isOpen={modalAddClient} style={customStyles}>
+      {modalClient && (
+        <Modal isOpen={modalClient} style={customStyles}>
           <AddClient />
         </Modal>
       )}
 
-      {modalEditClient && (
-        <Modal isOpen={modalEditClient} style={customStyles}>
-          <EditClient />
+      {modalClientEdit.modal && (
+        <Modal isOpen={true} style={customStyles}>
+          <EditClient clientId={modalClientEdit.id}
+          />
         </Modal>
       )}
 

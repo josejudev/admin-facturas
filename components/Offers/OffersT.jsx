@@ -3,8 +3,8 @@ import Loader from "../Loader";
 import SkeletonLoader from "../SkeletonLoader";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOffers } from "../../pages/features/offers/offerSlice";
-import { fetchClients } from "../../pages/features/clients/clientSlice";
+import { fetchOffers } from "../../redux/offers/offerSlice";
+import { fetchClients } from "../../redux/clients/clientSlice";
 
 import { useRouter } from "next/router";
 import useAdmin from "../../hooks/useAdmin";
