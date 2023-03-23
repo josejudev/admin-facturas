@@ -15,9 +15,9 @@ import { useDispatch, useSelector } from 'react-redux';
 //Client Slice
 import { fetchClients, updateClient } from '../redux/clients/clientSlice';
 //Modal Slice
-import { handleModalClientEdit, handleModalClient,selectModalClient, selectModalClientEdit } from "../redux/modals/modalSlice";
+import { handleModalClientEdit, handleModalClient,handleModalOffer,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalOffer } from "../redux/modals/modalSlice";
 //offers Slice
-import { fetchOffers } from "../redux/offers/offerSlice";
+import { fetchOffers, addOffer } from "../redux/offers/offerSlice";
 
 
 /**
@@ -65,5 +65,9 @@ export {
     selectModalClient,
     selectModalClientEdit,
     ModalDelete,
-    Modal
+    handleModalDelete,
+    Modal,
+    handleModalOffer,
+    selectModalOffer,
+    addOffer
 }

@@ -1,4 +1,4 @@
-import {useEffect,useRouter,useDispatch,useSelector,fetchClients,fetchOffers,handleModalClient,useAdmin} from '../exports/commonExports';
+import {useEffect,useRouter,useDispatch,useSelector,fetchClients,fetchOffers,handleModalClient,handleModalOffer,useAdmin} from '../exports/commonExports';
 import Link from "next/link";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,7 +14,7 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
   
   const router = useRouter();
-  const { handleModalOffer,offers } = useAdmin();
+  const { offers } = useAdmin();
 
   if(dataClient.length === 0 && router.pathname==="/") return null;
   const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
@@ -28,30 +28,35 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   const pendingOffers = offers.filter((offer) => offer.status === "Pendiente" );
 
   const modalButton = (e) => {
-    e.preventDefault();
     if(router.pathname === "/"){
       return (
         <button
-          onClick={
-            handleModalClient
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(handleModalOffer());
+          }
           }
           type="button"
           className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">
-          Agregar nuevo
+          Agregar nueva oferta
         </button>
       )
-    }else if(router.pathname === "/pedidos"){
+    }else if(router.pathname === "/clientes"){
       return (
         <button
-          onClick={
-            handleModalOffer
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(handleModalClient());
+          }
           }
           type="button"
           className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">
-          Agregar nuevo
+          Agregar nuevo cliente
         </button>
       )
-    }else{
+    }
+    
+    else{
       return null;
     }
   }
@@ -69,18 +74,7 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
 
           {
-            <button
-            onClick={(e) => {
-              e.preventDefault();
-              dispatch(
-                handleModalClient()
-              );
-            }
-            }
-            type="button"
-            className="text-white bg-sky-400 hover:bg-sky-500 border  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 ">
-            Agregar nuevo
-            </button>
+            modalButton()
           }
         </Link>
 

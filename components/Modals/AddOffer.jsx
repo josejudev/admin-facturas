@@ -1,20 +1,14 @@
-import useAdmin from "../../hooks/useAdmin";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchClients } from '../../redux/clients/clientSlice';
-import { addOffer, fetchOffers } from '../../redux/offers/offerSlice';
 
+
+import {handleModalOffer,useState,useRouter,toast,useDispatch,useSelector,useEffect,fetchClients,addOffer, fetchOffers} from '../../exports/commonExports'
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddOffer = () => {
   const router = useRouter();
-  const { clients, handleModalOffer,createOffer } = useAdmin();
   const [fileName, setFileName] = useState(null);
   const dispatch = useDispatch();
-  const {data, loading, error} = useSelector((state) => state.clients);
+  const {data} = useSelector((state) => state.clients);
 
   useEffect(() => {
     dispatch(fetchClients());
@@ -64,8 +58,9 @@ const AddOffer = () => {
         activity_resumen: activity_resumen.value,
         client_id: client_id.value
       };
-      dispatch(addOffer(formData));
-      dispatch(fetchOffers())
+       dispatch(addOffer(formData));
+       dispatch(fetchOffers())
+       dispatch(handleModalOffer());
 
       handleModalOffer(); 
       toast.success('Oferta creada con éxito');
@@ -80,7 +75,9 @@ const AddOffer = () => {
         <h1 className="text-4xl font-bold text-blue-700">Agregar oferta</h1>
         <div className="flex justify-end">
           <button
-            onClick={handleModalOffer}
+            onClick={() => {
+              dispatch(handleModalOffer());
+            }}
             type="button"
             className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
