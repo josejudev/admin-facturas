@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
-import Loader from "../Loader";
-import SkeletonLoader from "../SkeletonLoader";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOffers } from "../../redux/offers/offerSlice";
-import { fetchClients } from "../../redux/clients/clientSlice";
-
-import { useRouter } from "next/router";
-import useAdmin from "../../hooks/useAdmin";
-import ReactPaginate from "react-paginate";
+import {
+  useEffect,
+  useState,
+  Loader,
+  SkeletonLoader,
+  axios,
+  useDispatch,
+  useSelector,
+  useRouter,
+  useAdmin,
+  ReactPaginate,
+  fetchOffers,
+  handleModalDelete
+} from '../../exports/commonExports';
 
 
 
@@ -16,7 +19,7 @@ const OffersT = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.offers);
   const router = useRouter();
-  const { handleSetOffer, handleModalEditOffer, handleModalDelete } = useAdmin();
+  const { handleSetOffer, handleModalEditOffer } = useAdmin();
 
 
   const [checkedIds, setCheckedIds] = useState([]);
@@ -293,8 +296,12 @@ const OffersT = () => {
                                 <li>
                                   <button
                                     onClick={() => {
-                                      handleModalDelete();
-                                      handleSetOffer(offer);
+                                      dispatch(
+                                        handleModalDelete(
+                                          offer.id
+                                        )
+                                        )
+                                        console.log(offer.id)
                                     }}
                                     type="button"
                                     className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"

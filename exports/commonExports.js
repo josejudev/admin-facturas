@@ -13,11 +13,11 @@ import Modal from "react-modal";
  */
 import { useDispatch, useSelector } from 'react-redux';
 //Client Slice
-import { fetchClients, updateClient } from '../redux/clients/clientSlice';
+import { fetchClients, updateClient,deleteClient } from '../redux/clients/clientSlice';
 //Modal Slice
-import { handleModalClientEdit, handleModalClient,handleModalOffer,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalOffer } from "../redux/modals/modalSlice";
+import { handleModalClientEdit, handleModalClient,handleModalOffer,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer } from "../redux/modals/modalSlice";
 //offers Slice
-import { fetchOffers, addOffer } from "../redux/offers/offerSlice";
+import { fetchOffers, addOffer,deleteOffer, updateOffer } from "../redux/offers/offerSlice";
 
 
 /**
@@ -69,5 +69,9 @@ export {
     Modal,
     handleModalOffer,
     selectModalOffer,
-    addOffer
+    addOffer,
+    selectModalDelete,
+    deleteClient,
+    deleteOffer,
+    updateOffer,
 }

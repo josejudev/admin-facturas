@@ -1,28 +1,23 @@
-import useAdmin from "../../hooks/useAdmin";
-import axios from "axios";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { deleteClient } from '../../redux/clients/clientSlice';
-import { deleteOffer } from '../../redux/offers/offerSlice';
-
+import{useAdmin,axios,useRouter,toast,useDispatch,deleteClient,deleteOffer,handleModalDelete} from '../../exports/commonExports';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ModalDelete = ({ children, title = '' }) => {
+const ModalDelete = ({ children, title = '',idProp }) => {
   const dispatch = useDispatch();
 
-  const { handleModalDelete, offer, client, order, removedClient } = useAdmin();
+  const {  offer,order } = useAdmin();
   const router = useRouter();
+
+  const handleModal = () => {
+    dispatch(handleModalDelete());
+  }
 
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       switch (router.pathname) {
         case "/clientes":
-          dispatch(deleteClient(client.id));
-          await handleModalDelete();
+          dispatch(deleteClient(idProp));
+          handleModal();
           toast.error("Cliente eliminado correctamente", {
             icon: (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500">
@@ -32,8 +27,8 @@ const ModalDelete = ({ children, title = '' }) => {
           });
           break;
         case "/":
-          dispatch(deleteOffer(offer.id));
-          await handleModalDelete();
+          dispatch(deleteOffer(idProp));
+          handleModal();
           toast.error("Oferta eliminada correctamente", {
             icon: (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500">
@@ -69,7 +64,9 @@ const ModalDelete = ({ children, title = '' }) => {
             </h1>
             <div className="flex justify-end">
               <button
-                onClick={handleModalDelete}
+                onClick={
+                  handleModal
+                }
                 type="button"
                 className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
               >

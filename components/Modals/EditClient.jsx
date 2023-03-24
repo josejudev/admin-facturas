@@ -50,8 +50,7 @@ const EditClient = ({clientId}) => {
       setEditClient(data);
     };
     getClient();
-  },
-    [clientId])
+  },[clientId])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

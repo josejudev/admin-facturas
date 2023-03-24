@@ -6,7 +6,10 @@ export const modalSlice = createSlice({
         modalOffer: false,
         modalClient: false,
         modalOrder: false,
-        modalDelete: false,
+        modalDelete: {
+            modal: false,
+            id: null,
+        },
 
         modalOfferEdit: {
             modal: false,
@@ -31,8 +34,9 @@ export const modalSlice = createSlice({
         handleModalOrder: (state) => {
             state.modalOrder = !state.modalOrder;
         },
-        handleModalDelete: (state) => {
-            state.modalDelete = !state.modalDelete;
+        handleModalDelete: (state,action) => {
+            state.modalDelete.modal = !state.modalDelete.modal;
+            state.modalDelete.id = action.payload;
         },
         handleModalOfferEdit: (state, action) => {
             state.modalOfferEdit.modal = !state.modalOfferEdit.modal;

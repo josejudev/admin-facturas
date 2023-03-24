@@ -1,4 +1,4 @@
-import { useState, useEffect, Loader, ReactPaginate, SkeletonLoader, useDispatch, useSelector, fetchClients, handleModalClientEdit } from '../../exports/commonExports';
+import { useState, useEffect, Loader, ReactPaginate, SkeletonLoader, useDispatch, useSelector, fetchClients, handleModalClientEdit, handleModalDelete } from '../../exports/commonExports';
 
 const ClientsT = () => {
     const statusFiltered = [
@@ -219,8 +219,7 @@ const ClientsT = () => {
                                                                     <li>
                                                                         <button
                                                                             onClick={() => {
-                                                                                handleModalDelete();
-                                                                                handleSetClient(client);
+                                                                                dispatch(handleModalDelete(client.id))
                                                                             }}
                                                                             type="button"
                                                                             className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"
