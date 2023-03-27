@@ -19,7 +19,7 @@ import { handleModalClientEdit, handleModalClient,handleModalOffer,handleModalOf
 //offers Slice
 import { fetchOffers, addOffer,deleteOffer, updateOffer,fetchOfferById } from "../redux/offers/offerSlice";
 //orders Slice
-import { fetchOrders,addOrder } from '../redux/orders/orderSlice'
+import { fetchOrders,addOrder,deleteOrder } from '../redux/orders/orderSlice'
 
 
 /**
@@ -80,5 +80,6 @@ export {
     selectModalOfferEdit,
     fetchOfferById,
     fetchOrders,
-    addOrder
+    addOrder,
+    deleteOrder
 }

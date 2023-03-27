@@ -120,6 +120,19 @@ export const addOrder = (order) => {
             dispatch(addOrderError(error));
             console.error( error);
         }
+        
+    }
+}
+
+export const deleteOrder = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(deleteOrderRequest());
+            await axios.delete(`/api/orders/${id}`);
+            dispatch(deleteOrderSuccess(id));
+        } catch (error) {
+            dispatch(deleteOrderError(error));
+        }
     }
 }
 

@@ -79,7 +79,9 @@ const OffersTable = ({ offers }) => {
       })
       .catch((error) => {
         // Manejar errores de la API
-      });
+      });  if (data.length === 0) return <Loader table="ofertas registradas"/>;
+      if (error) return <div>Error: {error}</div>;
+      if (loading) return <SkeletonLoader/>;
   }
   if (Object.keys(offers).length === 0) {
     return <Loader

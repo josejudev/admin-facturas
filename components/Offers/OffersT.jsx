@@ -15,7 +15,6 @@ import {
 const OffersT = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.offers);
-  console.log(data);
 
   const [currentItems, setCurrentItems] = useState([]);
 
