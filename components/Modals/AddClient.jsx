@@ -44,7 +44,7 @@ const AddClient = () => {
   };
 
   return (
-    <div className="w-[900px] flex flex-col">
+    <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
       <div className="grid grid-cols-2  px-8 pt-6">
         <h1 className="text-4xl font-bold text-blue-700">Agregar Cliente</h1>
         <div className="flex justify-end">
@@ -216,11 +216,19 @@ const AddClient = () => {
               />
             </div>
           </div>
-          <div className="-mx-3 md:flex mt-3 justify-center ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <div className=" md:flex mt-3 justify-end ">
+            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
+            <button className="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Agregar
               </button>
+            <button 
+              onClick={()=>{
+                dispatch(handleModalClient())
+              }}
+              className="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Cancelar
+              </button>
+
             </div>
           </div>
         </div>

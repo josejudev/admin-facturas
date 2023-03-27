@@ -15,9 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 //Client Slice
 import { fetchClients, updateClient,deleteClient } from '../redux/clients/clientSlice';
 //Modal Slice
-import { handleModalClientEdit, handleModalClient,handleModalOffer,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer } from "../redux/modals/modalSlice";
+import { handleModalClientEdit, handleModalClient,handleModalOffer,handleModalOfferEdit,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer,selectModalOfferEdit } from "../redux/modals/modalSlice";
 //offers Slice
-import { fetchOffers, addOffer,deleteOffer, updateOffer } from "../redux/offers/offerSlice";
+import { fetchOffers, addOffer,deleteOffer, updateOffer,fetchOfferById } from "../redux/offers/offerSlice";
+//orders Slice
+import { fetchOrders,addOrder } from '../redux/orders/orderSlice'
 
 
 /**
@@ -34,7 +36,7 @@ import useAdmin from "../hooks/useAdmin";
  */
 import AddOffer from "../components/Modals/AddOffer";
 import AddClient from "../components/Modals/AddClient";
-import ModalOffer from "../components/Modals/EditOffer";
+import EditOffer from "../components/Modals/EditOffer";
 import EditClient from "../components/Modals/EditClient";
 import ModalDelete from "../components/Modals/ModalDelete";
 import Loader from "./../components/Loader";
@@ -59,7 +61,7 @@ export {
     handleModalClient,
     ToastContainer,
     AddOffer,
-    ModalOffer,
+    EditOffer,
     AddClient,
     EditClient,
     selectModalClient,
@@ -74,4 +76,9 @@ export {
     deleteClient,
     deleteOffer,
     updateOffer,
+    handleModalOfferEdit,
+    selectModalOfferEdit,
+    fetchOfferById,
+    fetchOrders,
+    addOrder
 }

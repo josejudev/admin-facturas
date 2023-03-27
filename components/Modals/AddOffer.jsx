@@ -1,5 +1,3 @@
-
-
 import {handleModalOffer,useState,useRouter,toast,useDispatch,useSelector,useEffect,fetchClients,addOffer, fetchOffers} from '../../exports/commonExports'
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,6 +12,7 @@ const AddOffer = () => {
     dispatch(fetchClients());
   }, [dispatch]);
   const dataFiltered= data.filter((client) => client.status === "Activo" )
+
 
 
 
@@ -46,6 +45,15 @@ const AddOffer = () => {
     });
   };
 
+  const handleModali = (e) => {
+    e.preventDefault();
+    try{
+      dispatch(handleModalOffer)
+    }catch(e){
+      console.error(e);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,9 +78,9 @@ const AddOffer = () => {
   }
 
   return (
-    <div className="w-[900px] flex flex-col">
+    <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden ">
       <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-blue-700">Agregar oferta</h1>
+        <h1 className="md:text-4xl text-2xl font-bold text-blue-700">Agregar oferta</h1>
         <div className="flex justify-end">
           <button
             onClick={() => {
@@ -220,15 +228,19 @@ const AddOffer = () => {
             </label>
           </div>
 
-          <div className=" md:flex mt-3 justify-center ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-col items-center justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
-                Agregar
-              </button>
+          <div className=" md:flex mt-3 justify-end ">
+            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
               <button 
-              onClick={handleModalOffer}
+              onClick={
+                ()=>{
+                  dispatch(handleModalOffer())
+                }
+              }
               className="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Cancelar
+              </button>
+              <button className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Agregar
               </button>
             </div>
           </div>

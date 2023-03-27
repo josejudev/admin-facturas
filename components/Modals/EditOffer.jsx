@@ -1,24 +1,45 @@
-import useAdmin from "../../hooks/useAdmin";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { updateOffer } from '../../redux/offers/offerSlice';
+import {
+  useAdmin,
+  useState,
+  useRouter,
+  useDispatch,
+  toast,
+  updateOffer,
+  handleModalOfferEdit,
+  axios,
+  useEffect
+} from '../../exports/commonExports'
 
 
-const EditOffer = () => {
+const EditOffer = ({
+  offerId,
+}) => {
   const dispatch = useDispatch();
-  const { offer, handleModalEditOffer, clients,editOfferId } = useAdmin();
+  const { offer, clients } = useAdmin();
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
+
+  //get the data of the offer
   const [editOffer, setEditOffer] = useState({
-    id: offer.id,
-    project_name: offer.project_name,
-    final_client: offer.final_client,
-    activity_resumen: offer.activity_resumen,
-    client_id: offer.client_id,
+    project_name: "",
+    activity_resumen: "",
+    status: "",
+    client_id: "",
+    final_client: "",
   });
+
+  useEffect(() => {
+    const getOffer = async () => {
+      const { data } = await axios.get(
+        `/api/offers/${offerId}`
+      );
+      setEditOffer(data);
+    };
+    getOffer();
+  }, [offerId,]);
+
+
+
 
   const status = [
     { id: 1, name: "Pendiente" },
@@ -37,7 +58,7 @@ const EditOffer = () => {
       ...editOffer,
       [name]: value,
     });
-    
+
   };
 
   const handleChangeFile = (e) => {
@@ -53,10 +74,8 @@ const EditOffer = () => {
       dispatch(
         updateOffer(editOffer, editOffer.id)
       )
-      console.log(editOffer);
-      handleModalEditOffer()
       toast.success("Oferta editada con éxito");
-      router.push("/");
+      dispatch(handleModalOfferEdit());
     } catch (err) {
 
       toast.error("Error al editar la oferta");
@@ -68,34 +87,40 @@ const EditOffer = () => {
 
       <div className="grid grid-cols-2  px-8 pt-6">
 
-        <h1 className="text-4xl font-bold text-blue-700">Editar oferta</h1>
+        <h1 className="text-4xl font-bold text-teal-500">Editar oferta</h1>
         <div className="flex justify-end">
-      
-        <button
-          onClick={handleModalEditOffer}
-          type="button"
-          className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-        >
-          <span className="sr-only">Close menu</span>
-          <svg
-            className="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
+
+          <button
+            onClick={
+              () => {
+                dispatch(
+                  handleModalOfferEdit()
+                );
+              }
+            }
+            type="button"
+            className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+            <span className="sr-only">Close menu</span>
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
-        </div>
-        
+      </div>
+
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
@@ -111,8 +136,8 @@ const EditOffer = () => {
                 id="project-name"
                 name="project_name"
                 type="text"
-                value={editOffer.project_name}
                 onChange={handleChange}
+                value={editOffer?.project_name}
               />
             </div>
           </div>
@@ -127,8 +152,8 @@ const EditOffer = () => {
               <select
                 name="client_id"
                 onChange={handleChange}
+                value={editOffer?.client_id}
                 className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
-                defaultValue={offer.client_id}
               >
                 {clients.map((client) =>
                   //verificar que el cliente seleccionado sea el mismo que el que se esta editando
@@ -156,7 +181,7 @@ const EditOffer = () => {
                 id="final-client"
                 name="final_client"
                 onChange={handleChange}
-                value={editOffer.final_client}
+                value={editOffer?.final_client}
                 type="text"
               />
             </div>
@@ -175,7 +200,7 @@ const EditOffer = () => {
                 id="final-client"
                 name="activity_resumen"
                 onChange={handleChange}
-                value={editOffer.activity_resumen}
+                value={editOffer?.activity_resumen}
                 type="text"
               />
             </div>
@@ -189,8 +214,8 @@ const EditOffer = () => {
               <select
                 className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
                 onChange={handleStatus}
+                value={editOffer?.status}
                 name="status"
-                defaultValue={offer.status}
               >
                 {status.map((state) => (
                   <option key={state.id} value={state.name}>
@@ -241,11 +266,19 @@ const EditOffer = () => {
             </label>
                   </div>*/}
 
-          <div className="-mx-3 md:flex mt-3 justify-center ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center">
-                Actualizar Datos
+          <div className=" md:flex mt-3 justify-end ">
+            <div className="md:1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
+              <button className="shadow-md shadow-teal-500/20 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Guardar
               </button>
+              <button
+                onClick={() => {
+                  dispatch(handleModalOfferEdit())
+                }}
+                className="shadow-md shadow-red-500/20 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Cancelar
+              </button>
+
             </div>
           </div>
         </div>

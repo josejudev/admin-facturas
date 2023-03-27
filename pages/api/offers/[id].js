@@ -17,6 +17,9 @@ export default async function handler(req, res) {
             return await deleteOffer(req, res);
             break;
 
+        case "GET":
+            return await getOffer(req, res);
+            break;    
         default:
             return res.status(200).json("Nothing");
     }
@@ -63,5 +66,19 @@ const deleteOffer = async (req, res) => {
         },
     });
     return res.json(delete_offer);
+}
+
+const getOffer = async (req, res) => {
+    const { id } = req.query;
+
+    const offer = await prisma.offer.findUnique({
+        where: {
+            id: parseInt(id),
+        },
+        include: {
+            client: true,
+        },
+    });
+    return res.json(offer);
 }
   

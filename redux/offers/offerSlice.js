@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import {fetchClients} from '../clients/clientSlice';
 
 export const offerSlice = createSlice({
     name: 'offers',
@@ -20,7 +21,8 @@ export const offerSlice = createSlice({
         getOfferError: (state, action) => {
             state.loading = false;
             state.error = action.payload;
-        },
+        }
+        ,
         addOfferRequest: (state) => {
             state.loading = true;
             state.error = null;
@@ -59,6 +61,18 @@ export const offerSlice = createSlice({
         updateOfferError: (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        },
+        getofferByIdRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getofferByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        getofferByIdError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         }
         
 
@@ -79,6 +93,10 @@ export const {
     updateOfferRequest,
     updateOfferSuccess,
     updateOfferError,
+    getofferByIdRequest,
+    getofferByIdSuccess,
+    getofferByIdError
+
 } = offerSlice.actions;
 
 
@@ -139,9 +157,24 @@ export const addOffer = (offer) => {
             dispatch(updateOfferRequest())
             const response = await axios.put(`/api/offers/${id}`, offer);
             dispatch(updateOfferSuccess(response.data));
+            dispatch(fetchOffers());
+
         }catch (error){
             dispatch(updateOfferError(error.message))
             console.log(error.message)
+        }
+    }
+  }
+
+  export const fetchOfferById = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(getofferByIdRequest());
+            const response = await axios.get(`/api/offers/${id}`);
+            dispatch(getofferByIdSuccess(response.data));
+        } catch (error) {
+            dispatch(getofferByIdError(error.message));
+            console.log(error.message+ "-------------------")
         }
     }
   }
