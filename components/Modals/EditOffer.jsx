@@ -6,6 +6,7 @@ import {
   updateOffer,
   handleModalOfferEdit,
   axios,
+  useSelector,
   useEffect
 } from '../../exports/commonExports'
 
@@ -16,6 +17,8 @@ const EditOffer = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
+  const {data} = useSelector((state) => state.clients);
+
 
   //get the data of the offer
   const [editOffer, setEditOffer] = useState({
@@ -153,17 +156,13 @@ const EditOffer = ({
                 value={editOffer?.client_id}
                 className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
               >
-                {clients.map((client) =>
+                {data.map((client) =>
                   //verificar que el cliente seleccionado sea el mismo que el que se esta editando
-                  client.id === offer.client_id ? (
+
                     <option key={client.id} value={client.id}>
                       {client.name}
                     </option>
-                  ) : (
-                    <option key={client.id} value={client.id}>
-                      {client.name}
-                    </option>
-                  )
+                  
                 )}
               </select>
             </div>

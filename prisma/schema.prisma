@@ -82,6 +82,7 @@ model milestone {
   num_milestone        Int
   percentage_milestone Float
   value_milestone      Float
+  status_milestone     String @db.VarChar(20) @default("Activo")
   order                order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
 
   //@@unique([order_id, num_hito])

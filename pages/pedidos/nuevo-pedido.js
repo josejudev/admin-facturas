@@ -126,7 +126,9 @@ const Form_Order = ({ offers }) => {
   };
 
   const calculateMilestoneValue = (finalAmount, percentage) => {
-    return (finalAmount * percentage) / 100;
+    const milestoneValue = (finalAmount * percentage) / 100;
+    const roundedValue = milestoneValue.toFixed(2);
+    return parseFloat(roundedValue);
   };
 
   const handleFinalAmountChange = (event) => {

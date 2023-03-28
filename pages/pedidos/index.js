@@ -1,6 +1,5 @@
 import Layout from "../../components/Layout";
 import Header_Table from "../../components/HeaderTable";
-import OrdersTable from "../../components/Orders/OrdersTable";
 import OrdersT from "../../components/Orders/OrdersT";
 
 const pedidos = () => {

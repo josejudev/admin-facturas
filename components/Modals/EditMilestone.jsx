@@ -35,7 +35,7 @@ const EditOffer = ({
   return (
     <div className="w-[900px] flex flex-col">
 
-      <div className="grid grid-cols-2  px-8 pt-6">
+      <div className="grid grid-cols-2 pt-6">
 
         <h1 className="text-4xl font-bold text-teal-500">Editar Hitos</h1>
         <div className="flex justify-end">
@@ -71,7 +71,7 @@ const EditOffer = ({
       </div>
 
       <form>
-        <div className="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+        <div className="rounded pb-8 mb-4 flex flex-col my-2">
         <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
                 <thead>
                   <tr>
@@ -91,7 +91,7 @@ const EditOffer = ({
                     <tr key={milestone.id} className="text-gray-700hover:bg-gray-50 hover:transition-all">
 
                       <td className="border-b-2 p-4">{milestone.concept_milestone}</td>
-                      <td className="border-b-2 p-4">%{milestone.percentage_milestone}</td>
+                      <td className="border-b-2 p-4">{milestone.percentage_milestone}%</td>
                       <td className="border-b-2 p-4">${milestone.value_milestone}</td>
                     </tr>
                   ))}
