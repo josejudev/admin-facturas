@@ -14,6 +14,9 @@ export default async function handler(req, res) {
       return await deleteOrder(req, res);
       break;
 
+    case "GET":
+      return await getOrderMilestone(req, res); 
+
     default:
       return res.status(200).json("Nothing");
   }
@@ -52,4 +55,15 @@ const deleteOrder = async (req, res) => {
     },
   });
   return res.json(deleted_order);
+}
+
+const getOrderMilestone = async (req, res) => {
+  const { id } = req.query;
+  const order_milestone = await prisma.milestone.findMany({
+    where: {
+      order_id: parseInt(id),
+    },
+    
+  });
+  return res.json(order_milestone);
 }

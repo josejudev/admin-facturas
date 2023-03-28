@@ -1,4 +1,4 @@
-import {Modal,AddOffer,AddClient,EditOffer,ModalDelete,EditClient,ToastContainer,useSelector,selectModalClient,selectModalClientEdit,selectModalOffer,selectModalDelete,selectModalOfferEdit} from '../exports/commonExports';
+import {Modal,AddOffer,AddClient,EditOffer,ModalDelete,EditClient,ToastContainer,useSelector,selectModalClient,selectModalClientEdit,selectModalOffer,selectModalDelete,selectModalOfferEdit,selectModalOrderEdit,EditMilestone} from '../exports/commonExports';
 import Head from "next/head";
 import Header from "./Header";
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +29,7 @@ function Layout({ children, title = "", description = "" }) {
   const modalDelete = useSelector(selectModalDelete);
   const modalClientEdit = useSelector(selectModalClientEdit);
   const modalOfferEdit = useSelector(selectModalOfferEdit);
+  const modalOrderEdit = useSelector(selectModalOrderEdit);
 
   return (
     <>
@@ -71,6 +72,11 @@ function Layout({ children, title = "", description = "" }) {
       {modalDelete.modal && (
         <Modal isOpen={true} style={customStyles}>
           <ModalDelete idProp={modalDelete.id} />
+        </Modal>
+      )}
+      {modalOrderEdit.modal && (
+        <Modal isOpen={true} style={customStyles}>
+          <EditMilestone orderId={modalOrderEdit.id}/>
         </Modal>
       )}
 

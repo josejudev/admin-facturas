@@ -1,89 +1,90 @@
 import {
-    useState,
-    useEffect,
-    Loader,
-    ReactPaginate,
-    SkeletonLoader,
-    useDispatch,
-    useSelector,
-    fetchOrders,
-    handleModalDelete,
+  useState,
+  useEffect,
+  Loader,
+  ReactPaginate,
+  SkeletonLoader,
+  useDispatch,
+  useSelector,
+  fetchOrders,
+  handleModalDelete,
+  handleModalOrderEdit
 } from '../../exports/commonExports'
 
 const OrdersT = () => {
 
-    const statusFiltered = [
-        { id: 1, name: "Todos" },
-        { id: 2, name: "Activo" },
-        { id: 3, name: "Inactivo" },
-    ];
+  const statusFiltered = [
+    { id: 1, name: "Todos" },
+    { id: 2, name: "Activo" },
+    { id: 3, name: "Inactivo" },
+  ];
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-    const {data, loading, error}= useSelector((state) => state.orders)
+  const { data, loading, error } = useSelector((state) => state.orders)
 
-    const [currentItems, setCurrentItems] = useState([]);
-    const [dataFiltered, setDataFiltered] = useState({
-        status_filtered: statusFiltered[0].name,
+  const [currentItems, setCurrentItems] = useState([]);
+  const [dataFiltered, setDataFiltered] = useState({
+    status_filtered: statusFiltered[0].name,
+  });
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [search, setSearch] = useState("");
+  const [perPage, setPerPage] = useState(5);
+  const itemsPerPage = perPage;
+
+
+  const handleFilter = (e) => {
+    setDataFiltered({
+      ...dataFiltered,
+      [e.target.name]: e.target.value,
     });
-    const [pageCount, setPageCount] = useState(0);
-    const [itemOffset, setItemOffset] = useState(0);
-    const [search, setSearch] = useState("");
-    const [perPage, setPerPage] = useState(5);
-    const itemsPerPage = perPage;
+  }
+  const handlePageClick = (e) => {
+    const newOffset = e.selected * itemsPerPage;
+    setItemOffset(newOffset);
+  };
 
+  useEffect(() => {
+    if (data.length === 0 && !loading) {
+      dispatch(fetchOrders());
+    } else {
+      // Filter data based on search value
+      const filteredOrders = data.filter((order) =>
+        (
+          search === "" || ['entity'
+          ].some((key) => order[key].toLowerCase().includes(search.toLowerCase()))
 
-    const handleFilter = (e) => {
-        setDataFiltered({
-            ...dataFiltered,
-            [e.target.name]: e.target.value,
-        });
+        ) && (dataFiltered.status_filtered === "Todos" || order.status === dataFiltered.status_filtered)
+      );
+
+      // Slice data based on current offset and itemsPerPage
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(filteredOrders.slice(itemOffset, endOffset));
+
+      // Calculate pageCount based on filtered data
+      setPageCount(Math.ceil(filteredOrders.length / itemsPerPage));
     }
-    const handlePageClick = (e) => {
-        const newOffset = e.selected * itemsPerPage;
-        setItemOffset(newOffset);
-    };
+  }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
 
-    useEffect(() => {
-        if (data.length === 0 && !loading) {
-            dispatch(fetchOrders());
-        } else {
-            // Filter data based on search value
-            const filteredOrders = data.filter((order) =>
-                (
-                    search === "" || ['entity'
-                    ].some((key) => order[key].toLowerCase().includes(search.toLowerCase()))
-
-                ) && (dataFiltered.status_filtered === "Todos" || order.status === dataFiltered.status_filtered)
-            );
-
-            // Slice data based on current offset and itemsPerPage
-            const endOffset = itemOffset + itemsPerPage;
-            setCurrentItems(filteredOrders.slice(itemOffset, endOffset));
-
-            // Calculate pageCount based on filtered data
-            setPageCount(Math.ceil(filteredOrders.length / itemsPerPage));
-        }
-    }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
-
-    if (data.length === 0) return <Loader table="pedidos registrados"/>;
-    if (error) return <div>Error: {error}</div>;
-    if (loading) return <SkeletonLoader/>;
+  if (data.length === 0) return <Loader table="pedidos registrados" />;
+  if (loading) return <SkeletonLoader />;
+  if (error) return <div>Error: {error}</div>;
 
 
 
-    
+
   return (
     <>
       <div className="grid grid-cols-2 flex-wrap items-center mx-auto">
         <select
-        name="status_filtered"
-        onChange={handleFilter}
-         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
-        {statusFiltered.map((status) => (
-              <option key={status.id} value={status.name}> {
-                status.name
-              }</option>))}
+          name="status_filtered"
+          onChange={handleFilter}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
+          {statusFiltered.map((status) => (
+            <option key={status.id} value={status.name}> {
+              status.name
+            }</option>))}
         </select>
         <div className="col-span-1 grid grid-cols-3 gap-2">
           <input
@@ -116,157 +117,170 @@ const OrdersT = () => {
           </button>
         </div>
       </div>
-      <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
-        <thead>
-          <tr>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Fecha del pedido
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Nombre
-            </th>
+      <div className="flex flex-col">
+        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="overflow-hidden">
+              <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
+                <thead>
+                  <tr>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Fecha del pedido
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Nombre
+                    </th>
 
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Cantidad
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Valor en pesos
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Tipo
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Clase
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              N° de Pagos
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Oferta
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Pedido
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Entidad
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-              Estado
-            </th>
-            <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900 text">
-              Acciones
-            </th>
-          </tr>
-        </thead>
-        <tbody className="text-center" >
-        {currentItems.map((order) => (
-        <tr key={order.id}>
-          <td className="border-b-2 p-4">{order.date}</td>
-          <td className="border-b-2 p-4">{order.name}</td>
-          <td className="border-b-2 p-4">
-            {order.currency === "US" ? "$" + order.amount : "€" + order.amount}
-          </td>
-          <td className="border-b-2 p-4">{order.final_amount}</td>
-          <td className="border-b-2 p-4">{order.type}</td>
-          <td className="border-b-2 p-4">{order.class_type}</td>
-          <td className="border-b-2 p-4">{order.offer_id}</td>
-          <td className="border-b-2 p-4">
-            <a
-              href={`/uploads/${order.offer.fileName}`}
-              alt="alt text"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 "
-            >
-              {order.offer.project_name}
-            </a>
-          </td>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Cantidad
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Valor en pesos
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Tipo
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Clase
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      N° de Pagos
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Oferta
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Pedido
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Entidad
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Estado
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900 text">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-center" >
+                  {currentItems.map((order) => (
+                    <tr key={order.id}>
+                      <td className="border-b-2 p-4">{order.date}</td>
+                      <td className="border-b-2 p-4">{order.name}</td>
+                      <td className="border-b-2 p-4">
+                        {order.currency === "US" ? "$" + order.amount : "€" + order.amount}
+                      </td>
+                      <td className="border-b-2 p-4">{order.final_amount}</td>
+                      <td className="border-b-2 p-4">{order.type}</td>
+                      <td className="border-b-2 p-4">{order.class_type}</td>
+                      <td className="border-b-2 p-4">{order.offer_id}</td>
+                      <td className="border-b-2 p-4">
+                        <a
+                          href={`/uploads/${order.offer.fileName}`}
+                          alt="alt text"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 "
+                        >
+                          {order.offer.project_name}
+                        </a>
+                      </td>
 
-          <td className="border-b-2 p-4">
-            <a
-              href={`/uploads/${order.fileName}`}
-              alt="alt text"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 "
-            >
-              {order.fileName}
-            </a>
-          </td>
-            <td className="border-b-2 p-4">{order.entity}</td>
+                      <td className="border-b-2 p-4">
+                        <a
+                          href={`/uploads/${order.fileName}`}
+                          alt="alt text"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 "
+                        >
+                          {order.fileName}
+                        </a>
+                      </td>
+                      <td className="border-b-2 p-4">{order.entity}</td>
 
-          <td className="border-b-2 p-4">
-            {order.status === "Activo" ? (
-              <span className="border border-green-200 text-green-500 font-medium  shadow-lg shadow-green-300/10 px-4 py-0.5 rounded">
-                {order.status}
-              </span>
-            ) : order.status === "Cerrado" ? (
-              <span className="border border-red-200 text-red-500 font-medium  shadow-lg shadow-red-300/10 px-4 py-0.5 rounded">
-                {order.status}
-              </span>
-            ) : null}
-          </td>
-          <td className="border-b-2 p-4">
-            {/*
+                      <td className="border-b-2 p-4">
+                        {order.status === "Activo" ? (
+                          <span className="border border-green-200 text-green-500 font-medium  shadow-lg shadow-green-300/10 px-4 py-0.5 rounded">
+                            {order.status}
+                          </span>
+                        ) : order.status === "Cerrado" ? (
+                          <span className="border border-red-200 text-red-500 font-medium  shadow-lg shadow-red-300/10 px-4 py-0.5 rounded">
+                            {order.status}
+                          </span>
+                        ) : null}
+                      </td>
+                      <td className="border-b-2 p-4">
+                        {/*
             action button
              */}
-            <div className="p-1">
-              <div className="group relative">
-                <button className="text-gray-500 px-6 h-10 rounded">
-                  <div className="flex justify-center items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8 flex"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                      />
-                    </svg>
-                  </div>
-                </button>
-                <nav
-                  tabIndex="0"
-                  className=" border-2 shadow-lg bg-white invisible border-gray-100 rounded w-[8rem] absolute left-2 bottom-1 transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1 z-10"
-                >
-                  <ul className="py-1">
-                    <li>
-                      <button
-                        type="button"
-                        className="block px-4 py-2 hover:bg-gray-100 text-cyan-600 w-full"
-                      >
-                        Editar
-                      </button>
-                    </li>
-                    <li>
-                    <button
-                        onClick={() => {
-                          dispatch(handleModalDelete(
-                            order.id,
-                          ));
-                        }}
-                        type="button"
-                        className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"
-                      >
-                        Eliminar
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+                        <div className="p-1">
+                          <div className="group relative">
+                            <button className="text-gray-500 px-6 h-10 rounded">
+                              <div className="flex justify-center items-center">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="w-8 h-8 flex"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                                  />
+                                </svg>
+                              </div>
+                            </button>
+                            <nav
+                              tabIndex="0"
+                              className=" border-2 shadow-lg bg-white invisible border-gray-100 rounded w-[8rem] absolute left-2 bottom-1 transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1 z-10"
+                            >
+                              <ul className="py-1">
+                                <li>
+                                  <button
+                                    type="button"
+                                    className="block px-4 py-2 hover:bg-gray-100 text-cyan-600 w-full"
+                                    onClick={() => {
+                                      dispatch(handleModalOrderEdit(
+                                        order.id,
+                                      ));
+                                    }}
+                                  >
+                                    Editar
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    onClick={() => {
+                                      dispatch(handleModalDelete(
+                                        order.id,
+                                      ));
+                                    }}
+                                    type="button"
+                                    className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"
+                                  >
+                                    Eliminar
+                                  </button>
+                                </li>
+                              </ul>
+                            </nav>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </td>
-        </tr>
-      ))}
-        </tbody>
-      </table>
+          </div>
+        </div>
+      </div>
 
-      
+
       <ReactPaginate
         breakLabel="..."
         //insert icon

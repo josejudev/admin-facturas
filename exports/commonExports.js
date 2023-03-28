@@ -1,4 +1,3 @@
-
 /**
  * @package imports
  */
@@ -15,11 +14,13 @@ import { useDispatch, useSelector } from 'react-redux';
 //Client Slice
 import { fetchClients, updateClient,deleteClient } from '../redux/clients/clientSlice';
 //Modal Slice
-import { handleModalClientEdit, handleModalClient,handleModalOffer,handleModalOfferEdit,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer,selectModalOfferEdit } from "../redux/modals/modalSlice";
+import {handleModalOrderEdit,selectModalOrderEdit, handleModalClientEdit, handleModalClient,handleModalOffer,handleModalOfferEdit,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer,selectModalOfferEdit } from "../redux/modals/modalSlice";
 //offers Slice
 import { fetchOffers, addOffer,deleteOffer, updateOffer,fetchOfferById } from "../redux/offers/offerSlice";
 //orders Slice
 import { fetchOrders,addOrder,deleteOrder } from '../redux/orders/orderSlice'
+//milestones Slice
+import { fetchMilestones } from '../redux/milestones/milestoneSlice'
 
 
 /**
@@ -28,7 +29,6 @@ import { fetchOrders,addOrder,deleteOrder } from '../redux/orders/orderSlice'
  * */
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import useAdmin from "../hooks/useAdmin";
 
 
 /**
@@ -38,6 +38,7 @@ import AddOffer from "../components/Modals/AddOffer";
 import AddClient from "../components/Modals/AddClient";
 import EditOffer from "../components/Modals/EditOffer";
 import EditClient from "../components/Modals/EditClient";
+import EditMilestone from "../components/Modals/EditMilestone";
 import ModalDelete from "../components/Modals/ModalDelete";
 import Loader from "./../components/Loader";
 import SkeletonLoader from "./../components/SkeletonLoader";
@@ -45,7 +46,6 @@ import SkeletonLoader from "./../components/SkeletonLoader";
 export {
     useState,
     useEffect,
-    useAdmin,
     ReactPaginate,
     useDispatch,
     useSelector,
@@ -81,5 +81,9 @@ export {
     fetchOfferById,
     fetchOrders,
     addOrder,
-    deleteOrder
+    deleteOrder,
+    handleModalOrderEdit,
+    selectModalOrderEdit,
+    EditMilestone,
+    fetchMilestones
 }

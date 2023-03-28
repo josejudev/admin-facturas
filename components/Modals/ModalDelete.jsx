@@ -1,10 +1,9 @@
-import{useAdmin,axios,useRouter,toast,useDispatch,deleteClient,deleteOffer,deleteOrder,handleModalDelete} from '../../exports/commonExports';
+import{axios,useRouter,toast,useDispatch,deleteClient,deleteOffer,deleteOrder,handleModalDelete} from '../../exports/commonExports';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ModalDelete = ({ children, title = '',idProp }) => {
   const dispatch = useDispatch();
 
-  const {  offer,order } = useAdmin();
   const router = useRouter();
 
   const handleModal = () => {

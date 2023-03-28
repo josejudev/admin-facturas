@@ -1,5 +1,4 @@
 import {
-  useAdmin,
   useState,
   useRouter,
   useDispatch,
@@ -15,7 +14,6 @@ const EditOffer = ({
   offerId,
 }) => {
   const dispatch = useDispatch();
-  const { offer, clients } = useAdmin();
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
 

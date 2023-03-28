@@ -1,4 +1,4 @@
-import {useEffect,useRouter,useDispatch,useSelector,fetchClients,fetchOffers,handleModalClient,handleModalOffer,useAdmin} from '../exports/commonExports';
+import {useEffect,useRouter,useDispatch,useSelector,fetchClients,fetchOffers,handleModalClient,handleModalOffer} from '../exports/commonExports';
 import Link from "next/link";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,7 +14,6 @@ const HeaderTable = ({ children, href='', title = ''}) => {
 
   
   const router = useRouter();
-  const { offers } = useAdmin();
 
   if(dataClient.length === 0 && router.pathname==="/") return null;
   const dataFiltered= dataClient.filter((client) => client.status === "Activo" )
@@ -25,7 +24,6 @@ const HeaderTable = ({ children, href='', title = ''}) => {
   if(dataFiltered.length === 0 && router.pathname==="/") return null;
   if(dataFilteredOffer.length === 0 && router.pathname==="/pedidos") return null;
   
-  const pendingOffers = offers.filter((offer) => offer.status === "Pendiente" );
 
   const modalButton = (e) => {
     if(router.pathname === "/"){

@@ -6,11 +6,14 @@ export const modalSlice = createSlice({
         modalOffer: false,
         modalClient: false,
         modalOrder: false,
+        modalOrderEdit: {
+            modal: false,
+            id: null,
+        },
         modalDelete: {
             modal: false,
             id: null,
         },
-
         modalOfferEdit: {
             modal: false,
             id: null
@@ -19,10 +22,6 @@ export const modalSlice = createSlice({
             modal: false,
             id: null
         },
-        modalOrderEdit: {
-            modal: false,
-            id: null
-        }
     },
     reducers: {
         handleModalOffer: (state) => {
@@ -33,6 +32,10 @@ export const modalSlice = createSlice({
         },
         handleModalOrder: (state) => {
             state.modalOrder = !state.modalOrder;
+        },
+        handleModalOrderEdit: (state,action) => {
+            state.modalOrderEdit.modal = !state.modalOrderEdit.modal;
+            state.modalOrderEdit.id = action.payload;
         },
         handleModalDelete: (state,action) => {
             state.modalDelete.modal = !state.modalDelete.modal;
@@ -46,10 +49,6 @@ export const modalSlice = createSlice({
             state.modalClientEdit.modal = !state.modalClientEdit.modal;
             state.modalClientEdit.id = action.payload;
         },
-        handleModalOrderEdit: (state, action) => {
-            state.modalOrderEdit.modal = !state.modalOrderEdit.modal;
-            state.modalOrderEdit.id = action.payload;
-        }
     }
 
 });
@@ -61,7 +60,8 @@ export const {
     handleModalDelete,
     handleModalOfferEdit,
     handleModalClientEdit,
-    handleModalOrderEdit
+    handleModalOrderEdit,
+    
  } = modalSlice.actions;
 
 export const selectModalOffer = (state) => state.modals.modalOffer;
@@ -71,5 +71,6 @@ export const selectModalDelete = (state) => state.modals.modalDelete;
 export const selectModalOfferEdit = (state) => state.modals.modalOfferEdit;
 export const selectModalClientEdit = (state) => state.modals.modalClientEdit;
 export const selectModalOrderEdit = (state) => state.modals.modalOrderEdit;
+
 
 export default modalSlice.reducer;
