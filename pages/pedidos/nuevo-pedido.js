@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { addOrder } from "../../redux/orders/orderSlice";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Form_Order = ({ offers }) => {
   const dispatch = useDispatch();
@@ -182,10 +181,10 @@ const Form_Order = ({ offers }) => {
       }
       console.log(formData);
       dispatch(addOrder(formData));
-      // router.push("/pedidos");
-      // setTimeout(() => {
-      //   toast.success("Pedido creado correctamente");
-      // }, 1100);
+      router.push("/pedidos");
+      setTimeout(() => {
+        toast.success("Pedido creado correctamente");
+      }, 1100);
     } catch (error) {
       toast.error("Hubo un error " + error);
     }

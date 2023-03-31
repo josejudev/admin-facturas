@@ -66,7 +66,7 @@ model order {
   concept       String      @db.VarChar(100)
   class_type    String      @db.VarChar(50)
   type          String      @db.VarChar(50)
-  status        String?     @default("En proceso") @db.VarChar(50)
+  status        String?     @default("Activo") @db.VarChar(50)
   
   entity        String      @db.VarChar(20)
   observations  String?     @db.VarChar(100)

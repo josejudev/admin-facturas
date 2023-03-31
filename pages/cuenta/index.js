@@ -7,7 +7,6 @@ const index = () => {
     const logoutSession = async () => {
         const response = await axios.get('/api/auth/logout')
         router.push('/login')
-        console.log(response)
     }
 
 

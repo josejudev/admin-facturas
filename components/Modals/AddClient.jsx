@@ -5,13 +5,20 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { addClient } from '../../redux/clients/clientSlice';
 import { handleModalClient } from "../../redux/modals/modalSlice";
+import 'react-phone-number-input/style.css'
+import Input from 'react-phone-number-input/input'
+
+import InputField from "../InputFields";
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddClient = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [phoneValue, setPhoneValue] = useState()
+  const { register, handleSubmit, formState: { errors }, watch } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
 
   const [client, setClient] = useState({
     name: "",
@@ -24,6 +31,13 @@ const AddClient = () => {
     contact_name: "",
   });
 
+  const handlePhone = (e) => {
+    setClient({
+      ...client,
+      contact_phone: e,
+    });
+  }
+
 
   const handleChange = ({ target: { name, value } }) => {
     setClient({
@@ -32,16 +46,19 @@ const AddClient = () => {
     });
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async () => {
     try {
       dispatch(addClient(client));
       dispatch(handleModalClient());
       router.push('/clientes')
       toast.success("Client added successfully");
+      console.log(client);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const isDisabled = !watch("name") || !watch("rfc") || !watch("fiscal_address") || !watch("address") || !watch("email") || !watch("contact_phone") || !watch("contact_email") || !watch("contact_name");
 
   return (
     <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
@@ -82,86 +99,72 @@ const AddClient = () => {
         <div className=" rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-first-name"
-              >
-                Nombre / Razón Social
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-first-name"
+              <InputField
+                label="Nombre / Razón Social"
                 name="name"
-                type="text"
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                required
               />
+              {
+                errors.name && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
             <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-rfc"
-              >
-                RFC
-              </label>
-              <input
-                maxLength={15}
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-rfc"
+              <InputField
+                label="RFC"
                 name="rfc"
-                type="text"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                required />
+              {
+                errors.rfc && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
           </div>
 
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-dirfis"
-              >
-                Direccion Fiscal
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-dirfis"
-                type="text"
+              <InputField
+                label="Dirección Fiscal"
                 name="fiscal_address"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                required />
+              {
+                errors.fiscal_address && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
             <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-email"
-              >
-                Email
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-email"
+              <InputField
+                label="Email"
                 name="email"
-                type="text"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                type="email"
+                required />
+              {
+                errors.email && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
           </div>
 
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-direccion"
-              >
-                Dirección
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-direccion"
+              <InputField
+                label="Dirección"
                 name="address"
-                type="text"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                required />
+              {
+                errors.address && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
           </div>
 
@@ -170,19 +173,16 @@ const AddClient = () => {
           </p>
           <div className="-mx-3 md:flex mb-2">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-phone"
-              >
-                Nombre
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-phone"
+              <InputField
+                label="Nombre"
                 name="contact_name"
-                type="text"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                required />
+              {
+                errors.contact_name && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
               <label
@@ -191,44 +191,66 @@ const AddClient = () => {
               >
                 Telefono
               </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-phone"
-                name="contact_phone"
-                type="text"
+              <Input
+              {
+                ...register("contact_phone", {
+                  required: true,
+                })
+              }
+                value={phoneValue}
+                onChange={handlePhone}
+                className={
+                  errors.contact_phone ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border border-red-300 appearance-none block w-full bg-grey-lighter text-grey-darker border-grey-lighter rounded py-3 px-4" : "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red-500-lighter rounded py-3 px-4 mb-3"
+                }
+                
               />
+              {
+                errors.contact_phone && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
             </div>
 
             <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-email"
-              >
-                Email
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-email"
+              <InputField
+                label="Email"
                 name="contact_email"
-                type="text"
-              />
+                register={register}
+                errors={errors}
+                onChange={handleChange}
+                type="email"
+                required />
+              {
+                errors.contact_email && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
+
             </div>
           </div>
           <div className=" md:flex mt-3 justify-end ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
-            <button className="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+              <button 
+              disabled={
+                isDisabled
+              }
+              className="
+              disabled:opacity-50
+              disabled:hover:bg-transparent
+              disabled:hover:text-gray-500
+              disabled:hover:border-gray-500
+              disabled:hover:shadow-none
+              disabled:border-gray-500
+              disabled:text-gray-500
+              shadow-md shadow-teal-500/10 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center"
+              >
                 Agregar
               </button>
-            <button 
-              onClick={()=>{
-                dispatch(handleModalClient())
-              }}
-              className="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+
+              
+              <button
+                onClick={() => {
+                  dispatch(handleModalClient())
+                }}
+                className="shadow-md shadow-red-500/10 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Cancelar
               </button>
-
             </div>
           </div>
         </div>

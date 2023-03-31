@@ -24,6 +24,7 @@ const ModalDelete = ({ children, title = '',idProp }) => {
               </svg>
             )
           });
+          router.push('/clientes');
           break;
         case "/":
           dispatch(deleteOffer(idProp));

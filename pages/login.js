@@ -70,7 +70,7 @@ const login = () => {
                     name="user_email"
                     onChange={handleChangeInput}
                     id="email"
-                    className="transition duration-300  focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="transition duration-300  focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  block w-full p-2.5"
                     placeholder="name@company.com"
                     required=""
                   />
@@ -129,6 +129,7 @@ const login = () => {
             </div>
           </div>
         </div>
+
       </section>
     </div>
   );

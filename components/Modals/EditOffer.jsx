@@ -265,14 +265,14 @@ const EditOffer = ({
 
           <div className=" md:flex mt-3 justify-end ">
             <div className="md:1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
-              <button className="shadow-md shadow-teal-500/20 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+              <button className="shadow-md shadow-teal-500/10 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Guardar
               </button>
               <button
                 onClick={() => {
                   dispatch(handleModalOfferEdit())
                 }}
-                className="shadow-md shadow-red-500/20 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                className="shadow-md shadow-red-500/10 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Cancelar
               </button>
 
