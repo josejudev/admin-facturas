@@ -120,7 +120,7 @@ export const addOffer = (offer) => {
   
         const formData = new FormData();
         formData.append('project_name', project_name);
-        formData.append('fileName', fileName);
+        formData.append('fileName', fileName[0]);
         formData.append('final_client', final_client);
         formData.append('activity_resumen', activity_resumen);
         formData.append('client_id', client_id);

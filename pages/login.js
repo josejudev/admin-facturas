@@ -25,7 +25,6 @@ const login = () => {
     e.preventDefault();
     try {
       const data = await axios.post("/api/auth/login", credentials);
-      console.log(data);
       router.push("/");
     } catch (error) {
       toast.error("Error al iniciar sesión, por favor verifique sus credenciales",);

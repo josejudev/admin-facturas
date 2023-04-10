@@ -58,7 +58,7 @@ const AddClient = () => {
     }
   };
 
-  const isDisabled = !watch("name") || !watch("rfc") || !watch("fiscal_address") || !watch("address") || !watch("email") || !watch("contact_phone") || !watch("contact_email") || !watch("contact_name");
+  const isDisabled = !watch("name") || !watch("rfc") || !watch("fiscal_address") || !watch("address") || !watch("email") || !watch("contact_email") || !watch("contact_name");
 
   return (
     <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
@@ -184,30 +184,6 @@ const AddClient = () => {
                 errors.contact_name && <span className="text-red-500 text-sm">Campo obligatorio</span>
               }
             </div>
-            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-phone"
-              >
-                Telefono
-              </label>
-              <Input
-              {
-                ...register("contact_phone", {
-                  required: true,
-                })
-              }
-                value={phoneValue}
-                onChange={handlePhone}
-                className={
-                  errors.contact_phone ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border border-red-300 appearance-none block w-full bg-grey-lighter text-grey-darker border-grey-lighter rounded py-3 px-4" : "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red-500-lighter rounded py-3 px-4 mb-3"
-                }
-                
-              />
-              {
-                errors.contact_phone && <span className="text-red-500 text-sm">Campo obligatorio</span>
-              }
-            </div>
 
             <div className="md:w-1/2 px-3">
               <InputField
@@ -223,6 +199,32 @@ const AddClient = () => {
               }
 
             </div>
+
+            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                htmlFor="grid-phone"
+              >
+                Telefono
+              </label>
+              <Input
+              {
+                ...register("contact_phone", {
+                })
+              }
+                value={phoneValue}
+                onChange={handlePhone}
+                className={
+                  errors.contact_phone ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border border-red-300 appearance-none block w-full bg-grey-lighter text-grey-darker border-grey-lighter rounded py-3 px-4" : "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red-500-lighter rounded py-3 px-4 mb-3"
+                }
+                
+              />
+              {
+                errors.contact_phone && <span className="text-red-500 text-sm">Campo obligatorio</span>
+              }
+            </div>
+
+
           </div>
           <div className=" md:flex mt-3 justify-end ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">

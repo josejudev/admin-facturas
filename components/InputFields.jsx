@@ -13,7 +13,7 @@ const InputField = (props) => {
             required: props.required || false,
           })}
           className={
-            props.errors[props.name]
+            props.errors[props.name] 
               ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border border-red-300 appearance-none block w-full bg-grey-lighter text-grey-darker border-grey-lighter rounded py-3 px-4"
               : "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red-500-lighter rounded py-3 px-4 mb-3"
           }

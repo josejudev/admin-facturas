@@ -77,6 +77,7 @@ const createOrder = async (req, res) => {
         percentage_milestone,
         value_milestone,
       } = req.body;
+      console.log(req.body);
 
       const order = await prisma.order.create({
         data: {

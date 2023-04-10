@@ -180,11 +180,7 @@ const Form_Order = ({ offers }) => {
         
       }
       console.log(formData);
-      dispatch(addOrder(formData));
-      router.push("/pedidos");
-      setTimeout(() => {
-        toast.success("Pedido creado correctamente");
-      }, 1100);
+
     } catch (error) {
       toast.error("Hubo un error " + error);
     }

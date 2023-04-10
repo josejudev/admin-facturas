@@ -44,7 +44,7 @@ const listOffers = async (req, res) => {
 const createOffer = async (req, res) => {
   upload.single("fileName")(req, res, async (err) => {
     if (err) {
-      console.log(err);
+      console.log("Error uploading file: ", err);
     }
     const  {
       project_name,
@@ -53,13 +53,13 @@ const createOffer = async (req, res) => {
       client_id,
       activity_resumen,
     } = req.body;
+    console.log(req.body);
     const offer = await prisma.offer.create({
       data: {
         project_name,
         fileName: req.file.filename,
         final_client,
         client_id: parseInt(client_id),
-
         activity_resumen,
       },
     });
@@ -78,3 +78,4 @@ const upload = multer({
     },
   }),
 });
+

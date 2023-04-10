@@ -1,32 +1,51 @@
-import {handleModalOffer,useState,useRouter,toast,useDispatch,useSelector,useEffect,fetchClients,addOffer, fetchOffers} from '../../exports/commonExports'
-
+import { handleModalOffer, useState, useRouter, toast, useDispatch, useSelector, useEffect, fetchClients, addOffer, fetchOffers } from '../../exports/commonExports'
+import Select from 'react-select';
 import 'react-toastify/dist/ReactToastify.css';
+import InputField from '../InputFields';
+import ActionsButtons from '../ActionsButtons';
+import { useForm } from 'react-hook-form';
+
+const customStyles = {
+
+
+  control: (provided, state) => ({
+    ...provided,
+    borderRadius: 5,
+    height: 51,
+    borderColor: state.isFocused ? 'black' : '#d1d5db',
+    boxShadow: state.isFocused ? '0 0 0 1px #aaa' : null,
+    '&:hover': {
+      borderColor: state.isFocused ? 'black' : 'none'
+    }
+  }),
+
+};
 
 const AddOffer = () => {
+
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
+
   const router = useRouter();
   const [fileName, setFileName] = useState(null);
   const dispatch = useDispatch();
-  const {data} = useSelector((state) => state.clients);
+  const { data } = useSelector((state) => state.clients);
 
   useEffect(() => {
     dispatch(fetchClients());
   }, [dispatch]);
-  const dataFiltered= data.filter((client) => client.status === "Activo" )
+  const dataFiltered = data.filter((client) => client.status === "Activo")
 
+  const [offer, setOffer] = useState({
+    project_name: "",
+    fileName: "",
+    final_client: "",
+    activity_resumen: "",
+    client_id: "",
+  });
 
-
-
-  
-
-
-    const [offer, setOffer] = useState({
-      project_name: "",
-      fileName: "",
-      final_client: "", 
-      activity_resumen: "",
-      client_id: dataFiltered[0].id,
-    });
-  
 
 
 
@@ -37,45 +56,40 @@ const AddOffer = () => {
     });
   };
 
-  const handleFile = (e) => {
-    setFileName(e.target.files[0]);
+
+  const handleClient = (selectedOption) => {
+    if (selectedOption) {
+      setOffer({
+        ...offer,
+        client_id: selectedOption.value,
+      });
+
+      // Set the selected value to the 'client_id' field using setValue
+      setValue("client_id", selectedOption.value);
+    }
+  }
+
+  const handleFile = ({ target: { name, files } }) => {
     setOffer({
       ...offer,
-      fileName: e.target.files[0],
+      [name]: files[0],
     });
   };
 
-  const handleModali = (e) => {
-    e.preventDefault();
-    try{
-      dispatch(handleModalOffer)
-    }catch(e){
-      console.error(e);
-    }
-  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmitForm = async (data) => {
     try {
-      const { project_name, fileName, final_client, activity_resumen, client_id } = e.target.elements;
-  
-      const formData = {
-        project_name: project_name.value,
-        fileName: fileName.files[0], // use the first file in the FileList
-        final_client: final_client.value,
-        activity_resumen: activity_resumen.value,
-        client_id: client_id.value
-      };
-       dispatch(addOffer(formData));
-       dispatch(fetchOffers())
-       dispatch(handleModalOffer());
+      dispatch(addOffer(data));
+      dispatch(fetchOffers());
+      dispatch(handleModalOffer());
+      toast.success("Oferta agregada exitosamente");
 
-      handleModalOffer(); 
-      toast.success('Oferta creada con éxito');
     } catch (error) {
-      console.log(error);
+      toast.error("Error al agregar oferta");
     }
   }
+
+  const isDisabled = !watch("client_id");
 
   return (
     <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden ">
@@ -109,23 +123,23 @@ const AddOffer = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={
+        handleSubmit(handleSubmitForm)
+      } encType="multipart/form-data">
         <div className="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="project-name"
-              >
-                Nombre del proyecto
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                id="project-name"
+              <InputField
+                label="Nombre del proyecto"
                 name="project_name"
-                type="text"
+                register={register}
+                errors={errors}
                 onChange={handleChange}
+                required
               />
+              {
+                errors.project_name && <span className="text-red-500 text-sm">Este campo es requerido</span>
+              }
             </div>
           </div>
           <div className="-mx-3 md:flex mb-6">
@@ -136,54 +150,51 @@ const AddOffer = () => {
               >
                 Cliente
               </label>
-              <select
-                onChange={handleChange}
-                name="client_id"
-                className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
-                defaultValue={1}
-              >
-                {
-                  // Aqui va el map de los clientes
-                  dataFiltered?.map((client) => (
-                    <option key={client.id} value={client.id}>
-                      {client.name}
-                    </option>
-                  ))
-                }
-              </select>
+              <Select
+                key={dataFiltered.id}
+                styles={customStyles}
+                placeholder=""
+                {...register("client_id", {
+                  required: true,
+                })} // Register 'client_id' field with react-hook-form
+                onChange={handleClient}
+                options={dataFiltered.map((client) => {
+                  return { value: client.id, label: client.name };
+                })}
+              />
+              {
+                errors.client_id && <span className="text-red-500 text-sm">Este campo es requerido</span>
+              }
+
             </div>
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="final-client"
-              >
-                Cliente final
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                id="final-client"
+              <InputField
+                label="Cliente final"
                 name="final_client"
+                register={register}
+                errors={errors}
                 onChange={handleChange}
-                type="text"
+                required
               />
+              {
+                errors.final_client && <span className="text-red-500 text-sm">Este campo es requerido</span>
+              }
             </div>
           </div>
 
           <div className=" md:flex mb-3  items-center justify-center">
             <div className="md:w-1/2 px-3 m-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-client"
-              >
-                Resumen de Actividad
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                id="final-client"
+              <InputField
+                label="Resumen de la actividad"
                 name="activity_resumen"
+                register={register}
+                errors={errors}
                 onChange={handleChange}
-                type="text"
+                required
               />
+              {
+                errors.activity_resumen && <span className="text-red-500 text-sm">Este campo es requerido</span>
+              }
             </div>
           </div>
 
@@ -210,7 +221,7 @@ const AddOffer = () => {
                 </svg>
                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                   <span className="font-semibold">
-                    Click para reemplazar archivo
+                    Click para agregar archivo
                   </span>{" "}
                   o arrastra y suelta
                 </p>
@@ -221,25 +232,33 @@ const AddOffer = () => {
               <input
                 id="dropzone-file"
                 onChange={handleFile}
+                {
+                ...register("fileName", {
+                  required: true,
+                })
+                }
                 type="file"
                 className="hidden"
-                name="fileName"
               />
+
+
             </label>
+
           </div>
+          {
+            errors.fileName && <span className="text-red-500 text-sm">Favor de subir el archivo correspondiente</span>
+          }
 
           <div className=" md:flex mt-3 justify-end ">
             <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
-            <button className="shadow-md shadow-teal-500/10 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
-                Agregar
-              </button>
-              <button 
-              onClick={
-                ()=>{
-                  dispatch(handleModalOffer())
+            <ActionsButtons isDisabled={isDisabled}/>
+              <button
+                onClick={
+                  () => {
+                    dispatch(handleModalOffer())
+                  }
                 }
-              }
-              className="shadow-md shadow-red-500/10 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                className="shadow-md shadow-red-500/10 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
                 Cancelar
               </button>
             </div>

@@ -184,7 +184,7 @@ const OffersT = () => {
                           className="text-blue-600 hover:text-blue-800 "
                         >
                           {
-                            offer.id + "-" + offer.project_name.slice(0, 3).toUpperCase() + "-" + offer.activity_resumen.slice(0, 3).toUpperCase() + "-" + offer.final_client.slice(0, 3).toUpperCase() + "-" + offer.date.slice(0, 4)
+                            offer.fileName
                           }
                         </a>
                       </td>
