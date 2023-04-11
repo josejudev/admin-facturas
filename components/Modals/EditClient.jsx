@@ -1,8 +1,15 @@
-import { useState, useEffect, useRouter, axios, toast, useDispatch, updateClient, handleModalClientEdit, } from '../../exports/commonExports';
+import {
+  useState, useEffect, useRouter,
+  axios, toast, useDispatch,
+  updateClient, handleModalClientEdit,
+  Input, InputField, useForm
+} from '../../exports/commonExports';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-phone-number-input/style.css'
 
 
-const EditClient = ({clientId}) => {
+
+const EditClient = ({ clientId }) => {
   const status = [
     { id: 1, name: "Activo" },
     { id: 2, name: "Inactivo" },
@@ -10,18 +17,23 @@ const EditClient = ({clientId}) => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const [phoneValue, setPhoneValue] = useState()
+  const { register, handleSubmit, formState: { errors }, watch } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
 
   const [editClient, setEditClient] = useState(
     {
-      name: "",
-      status: "",
-      rfc: "",
-      fiscal_address: "",
-      email: "",
-      address: "",
-      contact_phone: "",
-      contact_name: "",
-      contact_email: "",
+      name: "loading...",
+      status: "loading...",
+      rfc: "loading...",
+      fiscal_address: "loading...",
+      email: "loading...",
+      address: "loading...",
+      contact_phone: "loading...",
+      contact_name: "loading...",
+      contact_email: "loading...",
 
     }
   );
@@ -31,7 +43,6 @@ const EditClient = ({clientId}) => {
       ...editClient,
       [name]: value,
     });
-
   };
 
 
@@ -39,6 +50,13 @@ const EditClient = ({clientId}) => {
     setEditClient({
       ...editClient,
       [name]: value,
+    });
+  }
+
+  const handlePhone = (e) => {
+    setEditClient({
+      ...editClient,
+      contact_phone: e,
     });
   }
 
@@ -50,18 +68,12 @@ const EditClient = ({clientId}) => {
       setEditClient(data);
     };
     getClient();
-  },[clientId])
+  }, [clientId])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     try {
-      dispatch(
-        updateClient(editClient, editClient.id)
-      )
-      router.push("/clientes");
-      dispatch(
-        handleModalClientEdit()
-      )
+      dispatch(updateClient(editClient, editClient.id))
+      dispatch(handleModalClientEdit())
       toast.success("Client edited successfully");
 
     } catch (err) {
@@ -69,10 +81,12 @@ const EditClient = ({clientId}) => {
     }
   }
 
+
+
   return (
     <div className="w-[900px] flex flex-col">
       <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-blue-700">Editar Cliente</h1>
+        <h1 className="text-4xl font-bold text-teal-500">Editar Cliente</h1>
         <div className="flex justify-end">
           <button
             onClick={
@@ -105,117 +119,123 @@ const EditClient = ({clientId}) => {
 
         </div>
       </div>
-      <form method="POST" onSubmit={handleSubmit}>
+      <form method="POST" onSubmit={handleSubmit(
+        onSubmit
+      )}>
         <div className=" rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-first-name"
-              >
-                Nombre / Razón Social
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-first-name"
-                name="name"
-                value={editClient?.name}
-                type="text"
+              <InputField
+              label="Nombre / Razón Social"
+              name="name"
+              register={register}
+              errors={errors}
+              value={editClient?.name}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.name && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
             <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-rfc"
-              >
-                RFC
-              </label>
-              <input
-                maxLength={15}
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-rfc"
-                name="rfc"
-                type="text"
-                value={editClient?.rfc}
+              <InputField
+              label="RFC"
+              name="rfc"
+              register={register}
+              errors={errors}
+              value={editClient?.rfc}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.rfc && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
           </div>
 
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-dirfis"
-              >
-                Direccion Fiscal
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-dirfis"
-                type="text"
-                name="fiscal_address"
-                value={editClient?.fiscal_address}
+              <InputField
+              label="Dirección Fiscal"
+              name="fiscal_address"
+              register={register}
+              errors={errors}
+              value={editClient?.fiscal_address}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.fiscal_address && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
             <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-email"
-              >
-                Email
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-email"
-                name="email"
-                value={editClient?.email}
-                type="text"
+              <InputField
+              label="Correo Electrónico"
+              name="email"
+              register={register}
+              errors={errors}
+              value={editClient?.email}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.email && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
           </div>
 
           <div className="-mx-3 md:flex mb-6">
             <div className="md:w-full px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-direccion"
-              >
-                Dirección
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-                onChange={handleChange}
-                id="grid-direccion"
-                name="address"
-                value={editClient?.address}
-                type="text"
+            <InputField
+              label="Dirección"
+              name="address"
+              register={register}
+              errors={errors}
+              value={editClient?.address}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.address && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
           </div>
 
           <p className="text-gray-700 text-xl font-bold mb-2">
             Persona de contacto
           </p>
+
           <div className="-mx-3 md:flex mb-2">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-phone"
-              >
-                Nombre
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-phone"
-                name="contact_name"
-                value={editClient?.contact_name}
-                type="text"
+              <InputField
+              label="Nombre"
+              name="contact_name"
+              register={register}
+              errors={errors}
+              value={editClient?.contact_name}
+              onChange={handleChange}
+              required
               />
+              {
+                errors.contact_name && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
+            </div>
+
+
+            <div className="md:w-1/2 px-3">
+              <InputField
+              label="Email"
+              name="contact_email"
+              register={register}
+              errors={errors}
+              value={editClient?.contact_email}
+              onChange={handleChange}
+              required
+              />
+              {
+                errors.contact_email && (<span className="text-red-500 text-xs italic">Este campo es requerido</span>)
+              }
             </div>
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
               <label
@@ -224,31 +244,17 @@ const EditClient = ({clientId}) => {
               >
                 Telefono
               </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-phone"
-                name="contact_phone"
+              <Input
+                {...register("contact_phone")}
                 value={editClient?.contact_phone}
-                type="text"
+                onChange={handlePhone}
+                className={
+                  errors.contact_phone ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border border-red-300 appearance-none block w-full bg-grey-lighter text-grey-darker border-grey-lighter rounded py-3 px-4" : "appearance-none block w-full bg-grey-lighter text-grey-darker border border-red-500-lighter rounded py-3 px-4 mb-3"
+                }
               />
-            </div>
-
-            <div className="md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                htmlFor="grid-email"
-              >
-                Email
-              </label>
-              <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                onChange={handleChange}
-                id="grid-email"
-                name="contact_email"
-                value={editClient?.contact_email}
-                type="text"
-              />
+              {
+                errors.contact_phone && <span className="text-red-500 text-xs italic">Este campo es requerido</span>
+              }
             </div>
 
           </div>
@@ -275,12 +281,19 @@ const EditClient = ({clientId}) => {
             </select>
           </div>
 
-          <div className="-mx-3 md:flex mt-3 justify-center ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex justify-center">
-
-              <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Actualizar Datos
+          <div className=" md:flex mt-3 justify-end ">
+            <div className="md:1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
+              <button className="shadow-md shadow-teal-500/10 border border-teal-500 text-teal-500 hover:bg-teal-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Guardar
               </button>
+              <button
+                onClick={() => {
+                  dispatch(handleModalClientEdit())
+                }}
+                className="shadow-md shadow-red-500/10 border border-red-500 text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-semibold rounded-lg text-sm px-16 py-2.5 mb-3 text-center inline-flex items-center w-1/2 justify-center">
+                Cancelar
+              </button>
+
             </div>
           </div>
         </div>

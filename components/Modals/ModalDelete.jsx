@@ -60,7 +60,7 @@ const ModalDelete = ({ children, title = '',idProp }) => {
   return (
     <>
       <form onSubmit={handleDelete}>
-        <div className="w-[900px] flex flex-col">
+        <div className="w-[650px] flex flex-col">
           <div className="grid grid-cols-2  px-8 pt-6">
             <h1 className="text-4xl font-bold text-red-500">
 
@@ -98,9 +98,9 @@ const ModalDelete = ({ children, title = '',idProp }) => {
             <h1 className="text-xl font-semibold">¿Estas seguro que quieres eliminar {
               router.pathname === "/clientes" ? "el cliente" : "la oferta"
             }?</h1>
-            <div className="flex flex-col items-center gap-4">
+            <div className="md:flex mt-3 justify-end ">
               <button className="text-white bg-red-500 hover:bg-red-600 border  focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-sm px-5 py-2.5 text-center items-center mr-2 w-1/3">Aceptar</button>
-              <button onClick={handleModalDelete} className="text-white bg-blue-500 hover:bg-blue-600 border  focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-sm px-5 py-2.5 text-center items-center mr-2 w-1/3 ">Cancelar</button>
+              <button onClick={handleModal} className="text-white bg-gray-400 hover:bg-gray-500 border  focus:outline-none focus:ring-gray-100 font-semibold rounded-lg text-sm px-5 py-2.5 text-center items-center mr-2 w-1/3 ">Cancelar</button>
             </div>
           </div>
         </div>

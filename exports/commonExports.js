@@ -5,6 +5,8 @@ import ReactPaginate from "react-paginate";
 import axios from "axios";
 import { toast,ToastContainer } from "react-toastify";
 import Modal from "react-modal";
+import Input from 'react-phone-number-input/input'
+import {useForm} from 'react-hook-form'
 
 
 /**
@@ -12,7 +14,7 @@ import Modal from "react-modal";
  */
 import { useDispatch, useSelector } from 'react-redux';
 //Client Slice
-import { fetchClients, updateClient,deleteClient } from '../redux/clients/clientSlice';
+import { fetchClients, updateClient,deleteClient,addClient } from '../redux/clients/clientSlice';
 //Modal Slice
 import {handleModalOrderEdit,selectModalOrderEdit, handleModalClientEdit, handleModalClient,handleModalOffer,handleModalOfferEdit,selectModalClient, selectModalClientEdit, handleModalDelete,selectModalDelete, selectModalOffer,selectModalOfferEdit } from "../redux/modals/modalSlice";
 //offers Slice
@@ -42,8 +44,13 @@ import EditMilestone from "../components/Modals/EditMilestone";
 import ModalDelete from "../components/Modals/ModalDelete";
 import Loader from "./../components/Loader";
 import SkeletonLoader from "./../components/SkeletonLoader";
+import InputField from "../components/InputFields";
 
 export {
+    addClient,
+    useForm,
+    Input,
+    InputField,
     useState,
     useEffect,
     ReactPaginate,

@@ -179,7 +179,9 @@ const Form_Order = ({ offers }) => {
         milestone: inputFields,
         
       }
-      console.log(formData);
+      dispatch(addOrder(formData));
+      router.push("/pedidos");
+      toast.success("Pedido creado correctamente");
 
     } catch (error) {
       toast.error("Hubo un error " + error);
@@ -280,17 +282,17 @@ const Form_Order = ({ offers }) => {
                 {/**
                  * Segundo contenedor
                  */}
-                <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md">
+                <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md ">
                   {inputFields.map((x, i) => {
                     return (
                       <div key={i}>
-                        <div className="mb-4 md:flex md:flex-wrap md:justify-between">
-                          <div className="flex flex-col  md:w-1/4 justify-center items-center ">
+                        <div className=" flex justify-center items-center p-2 md:flex-row sm:flex-col">
+                          <div className="">
                             <h1 className=" font-bold text-blue-500 text-center text-3xl">
                               Hito {i + 1}
                             </h1>
                           </div>
-                          <div className="flex flex-col mb-4 md:w-1/4">
+                          <div className="">
                             <label className="block px-3 text-grey-darkest md:ml-2">
                               <span className=" block text-sm font-medium text-slate-700">
                                 Concepto
@@ -304,7 +306,7 @@ const Form_Order = ({ offers }) => {
                             </label>
                           </div>
 
-                          <div className="flex flex-col mb-4 md:w-28">
+                          <div className="">
                             <label className="block px-3 text-grey-darkest md:ml-2">
                               <span className=" block text-sm font-medium text-slate-700">
                                 Porcentaje
@@ -321,7 +323,7 @@ const Form_Order = ({ offers }) => {
                             </label>
                           </div>
 
-                          <div className="flex flex-col mb-4 md:w-40">
+                          <div className="">
                             <label className="block px-3 text-grey-darkest md:ml-2">
                               <span className=" block text-sm font-medium text-slate-700">
                                 Valor
@@ -338,11 +340,11 @@ const Form_Order = ({ offers }) => {
                             </label>
                           </div>
 
-                          <div className="flex flex-col md:w-1/4 items-center ">
+                          <div className=" ">
                             {inputFields.length - 1 === i && sum < 100 && (
-                              <div className="mx-auto w-full flex items-center justify-center  gap-1">
+                              <div className="flex gap-3">
                                 <button
-                                  className="mx-auto mt-6 w-1/2 rounded-md border border-blue-500 py-2 font-medium text-md text-blue-500 hover:bg-blue-400 hover:text-white items-center justify-center flex"
+                                  className="mx-auto mt-6  rounded-md border border-blue-500 p-2 w-full font-medium text-base text-blue-500 hover:bg-blue-400 hover:text-white items-center justify-center flex"
                                   onClick={handleAddClick}
                                 >
                                   <svg
@@ -363,7 +365,7 @@ const Form_Order = ({ offers }) => {
                                 </button>
                                 {inputFields.length !== 1 && (
                                   <button
-                                    className="mx-auto mt-6 w-1/2 rounded-md py-2 font-medium text-md text-red-500 border border-red-500 hover:bg-red-600 hover:text-white items-center justify-center flex"
+                                    className="mx-auto mt-6 rounded-md py-2 w-full font-medium text-md text-red-500 border border-red-500 hover:bg-red-600 hover:text-white items-center justify-center flex"
                                     onClick={() => handleremove(i)}
                                   >
                                     <svg

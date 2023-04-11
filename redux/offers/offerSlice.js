@@ -117,13 +117,29 @@ export const addOffer = (offer) => {
       try {
         dispatch(addOfferRequest());
         const { project_name, fileName, final_client, activity_resumen, client_id } = offer;
+        const currentDate = new Date();
   
+        // Extract year, month, and day from the current date
+        const year = currentDate.getFullYear();
+        const day = currentDate.getDate();
+        const monthWithZero = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 });
+
+        const allDay = day + "" + monthWithZero + "" + year;
+        
+  
+        // Extract the uploaded file object
+        const file = fileName[0];
+        // Modify the file name as needed
+
+        const union =allDay +"-"+ offer.project_name.substring(0, 2) + "-" + offer.final_client.substring(0, 2) + "-" + offer.activity_resumen.substring(0, 2)+".jpg"
+
+        // Create a new FormData object
         const formData = new FormData();
         formData.append('project_name', project_name);
-        formData.append('fileName', fileName[0]);
+        formData.append('fileName', new File([file], union, { type: file.type }));
         formData.append('final_client', final_client);
         formData.append('activity_resumen', activity_resumen);
-        formData.append('client_id', client_id);
+        formData.append('client_id', client_id)
   
         const response = await axios.post('api/offers', formData, {
           headers: {

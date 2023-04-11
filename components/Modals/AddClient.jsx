@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from 'react-toastify';
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { addClient } from '../../redux/clients/clientSlice';
-import { handleModalClient } from "../../redux/modals/modalSlice";
-import 'react-phone-number-input/style.css'
-import Input from 'react-phone-number-input/input'
+import {
+  useState,
+  useRouter,
+  toast,
+  useForm,
+  useDispatch,
+  addClient,
+  handleModalClient,
+  Input,
+  InputField,
+} from '../../exports/commonExports';
 
-import InputField from "../InputFields";
+import 'react-phone-number-input/style.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddClient = () => {
@@ -63,7 +65,7 @@ const AddClient = () => {
   return (
     <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
       <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-blue-700">Agregar Cliente</h1>
+        <h1 className="text-4xl font-bold text-teal-500">Agregar Cliente</h1>
         <div className="flex justify-end">
           <button
             onClick={
@@ -108,7 +110,7 @@ const AddClient = () => {
                 required
               />
               {
-                errors.name && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.name && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
             <div className="md:w-1/2 px-3">
@@ -116,11 +118,16 @@ const AddClient = () => {
                 label="RFC"
                 name="rfc"
                 register={register}
+                minLength={12}
+                maxLength={13}
                 errors={errors}
                 onChange={handleChange}
+                pattern={/^[a-zA-Z0-9]+$/}
                 required />
               {
-                errors.rfc && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.rfc?.type === "maxLength" || errors.rfc?.type === "minLength" ? <span className="text-red-500 text-xs italic">
+                  El RFC debe tener 12 o 13 caracteres
+                </span> : errors.rfc?.type === "pattern" ? <span className="text-red-500 text-xs italic"> El RFC no debe contener espacios ni caracteres especiales</span> : errors.rfc && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
           </div>
@@ -135,7 +142,7 @@ const AddClient = () => {
                 onChange={handleChange}
                 required />
               {
-                errors.fiscal_address && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.fiscal_address && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
             <div className="md:w-1/2 px-3">
@@ -146,10 +153,11 @@ const AddClient = () => {
                 errors={errors}
                 onChange={handleChange}
                 type="email"
+                pattern={/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/}
                 required />
-              {
-                errors.email && <span className="text-red-500 text-sm">Campo obligatorio</span>
-              }
+                {
+                errors.email?.type === "pattern" ? <span className="text-red-500 text-xs italic">El email no es válido</span> : errors.email && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
+                }
             </div>
           </div>
 
@@ -163,7 +171,7 @@ const AddClient = () => {
                 onChange={handleChange}
                 required />
               {
-                errors.address && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.address && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
           </div>
@@ -181,7 +189,7 @@ const AddClient = () => {
                 onChange={handleChange}
                 required />
               {
-                errors.contact_name && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.contact_name && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
 
@@ -193,9 +201,10 @@ const AddClient = () => {
                 errors={errors}
                 onChange={handleChange}
                 type="email"
+                pattern={/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/}
                 required />
               {
-                errors.contact_email && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.contact_email?.type === "pattern" ? <span className="text-red-500 text-xs italic">El email no es válido</span> : errors.contact_email && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
 
             </div>
@@ -220,7 +229,7 @@ const AddClient = () => {
                 
               />
               {
-                errors.contact_phone && <span className="text-red-500 text-sm">Campo obligatorio</span>
+                errors.contact_phone && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
 

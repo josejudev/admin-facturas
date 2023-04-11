@@ -45,6 +45,7 @@ const EditOffer = ({
   const status = [
     { id: 1, name: "Pendiente" },
     { id: 2, name: "Rechazado" },
+    { id: 3, name: "Aceptado" },
   ];
 
   const handleChange = ({ target: { name, value } }) => {
@@ -209,10 +210,14 @@ const EditOffer = ({
                 Estado
               </label>
               <select
-                className="text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
+                className={
+                  editOffer?.status === "Aceptado" ? "text-center appearance-none bg-white border border-green-200 text-green-500 font-bold  shadow-lg shadow-green-300/10 text-sm rounded-lg focus:ring-green-500 w-full  px-4 focus:border-green-500 block py-3.5 mb-3 disabled:opacity-100 " : "text-center appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-full  px-4 focus:border-blue-500 block py-3.5 mb-3 "
+                }
                 onChange={handleStatus}
                 value={editOffer?.status}
-                name="status"
+                name="status" 
+                {...(editOffer?.status === "Aceptado" ? { disabled: true } : {})}
+                
               >
                 {status.map((state) => (
                   <option key={state.id} value={state.name}>

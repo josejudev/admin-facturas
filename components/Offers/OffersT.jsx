@@ -9,7 +9,10 @@ import {
   fetchOffers,
   handleModalOfferEdit,
   handleModalDelete,
+  toast
 } from '../../exports/commonExports';
+import XLSX from 'xlsx';
+import {ItemsPage, XlsxExport} from '../Buttons/HeaderTable';
 
 
 const OffersT = () => {
@@ -55,7 +58,7 @@ const OffersT = () => {
       dispatch(fetchOffers());
     } else {
       const filteredOffers = data.filter((offer) =>
-        (search === "" || ["project_name", "date", "final_client", "activity_resumen", "status"].some((key) => offer[key].toLowerCase().includes(search.toLowerCase()))
+        (search === "" || ["project_name", "date", "final_client", "activity_resumen", "status", "fileName"].some((key) => offer[key].toLowerCase().includes(search.toLowerCase()))
           || offer.client.name.toLowerCase().includes(search.toLowerCase())
         ) &&
         (dataFiltered.status_filtered === "Todos" || offer.status === dataFiltered.status_filtered)
@@ -64,22 +67,52 @@ const OffersT = () => {
       setCurrentItems(filteredOffers.slice(itemOffset, endOffset));
       setPageCount(Math.ceil(filteredOffers.length / itemsPerPage));
 
+      if (filteredOffers.length === 0) {
+        // Mostrar el mensaje de error o el mensaje que deseas
+        console.log("No hay ofertas que coincidan con tu búsqueda");
+      }
+
     }
 
   }, [dispatch, data, search, itemsPerPage, dataFiltered, itemOffset]);
 
+  const XLSX = require('xlsx');
+  const exportToExcel = () => {
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
 
-  if (data.length === 0) return <Loader table="ofertas registradas"/>;
+    // Add column titles
+    const columnTitles = [
+      'Fecha',
+      'Nombre del Proyecto',
+      'Cliente Final',
+      'Resumen de Actividad',
+      'Estado',
+      'Nombre del cliente',
+    ];
+    const sheetData = [columnTitles]; // Include column titles as the first row
+    sheetData.push(...currentItems.map(offer => [
+      offer.date,
+      offer.project_name,
+      offer.final_client,
+      offer.activity_resumen,
+      offer.status,
+      offer.client.name
+    ]));
+
+    // Create a worksheet from the sheet data
+    const sheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Hoja 1');
+
+    // Save the workbook as an Excel file
+    XLSX.writeFile(workbook, 'ofertas.xlsx');
+  };
+
+  if (data.length === 0) return <Loader table="ofertas registradas" />;
   if (error) return <div>Error: {error}</div>;
-  if (loading) return <SkeletonLoader/>;
-
-  
-
-  
-
-
-
-
+  if (loading) return <SkeletonLoader />;
 
   return (
     <>
@@ -100,31 +133,8 @@ const OffersT = () => {
                 status.name
               }</option>))}
           </select>
-          <select
-                    value={perPage} onChange={(e) => setPerPage(Number(e.target.value))}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-34">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">Todos</option>
-                </select>
-
-          <button className="border-solid border-2 border-gray-300 bg-white p-2.5 bg flex justify-center items-center text-green-400 rounded-lg h-11">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-              />
-            </svg>
-          </button>
+          <ItemsPage perPage={perPage} setPerPage={setPerPage} />
+          <XlsxExport exportToExcel={exportToExcel} />
         </div>
       </div>
       <div className="flex flex-col">
@@ -225,7 +235,7 @@ const OffersT = () => {
                                         handleModalOfferEdit(
                                           offer.id
                                         )
-                                        )
+                                      )
                                     }}
                                     type="button"
                                     className="block px-4 py-2 hover:bg-gray-100 text-cyan-600 w-full"
@@ -240,8 +250,8 @@ const OffersT = () => {
                                         handleModalDelete(
                                           offer.id
                                         )
-                                        )
-                                        console.log(offer.id)
+                                      )
+                                      console.log(offer.id)
                                     }}
                                     type="button"
                                     className="block px-4 py-2 hover:bg-gray-100 text-red-600 w-full"

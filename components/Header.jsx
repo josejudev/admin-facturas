@@ -78,7 +78,7 @@ const Header = () => {
               </li>
               <li>
                 <div className='items-center container justify-center flex'>
-                  <div class="text-center relative inline-block">
+                  <div className="text-center relative inline-block">
                     <a
                       onClick={toggle}
                       className=
@@ -92,7 +92,7 @@ const Header = () => {
                     </a>
                     {
                       isOpen && (
-                        <div class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg border">
+                        <div className="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg border">
                           <a href="#" className="hover:text-teal-700  hover:transition hover:ease-in-out  block w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Admininistración de cuenta</a>
                           <button type="submit" className="hover:text-teal-700   hover:transition hover:ease-in-out  block w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem"
                             onClick={logoutSession}
