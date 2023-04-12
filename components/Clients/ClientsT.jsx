@@ -1,4 +1,7 @@
 import { useState, useEffect, Loader, ReactPaginate, SkeletonLoader, useDispatch, useSelector, fetchClients, handleModalClientEdit, handleModalDelete } from '../../exports/commonExports';
+import XLSX from 'xlsx';
+import { ItemsPage, XlsxExport } from '../Buttons/HeaderTable';
+
 
 const ClientsT = () => {
     const statusFiltered = [
@@ -56,6 +59,46 @@ const ClientsT = () => {
         }
     }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
 
+    const XLSX = require('xlsx');
+
+    const exportToExcel = () => {
+        // Create a new workbook
+        const workbook = XLSX.utils.book_new();
+        const columnTitles = [
+            "Nombre/Razón Social",
+            "RFC",
+            "Dirección Fiscal",
+            "Dirección",
+            "Correo",
+            "Nombre de Contacto",
+            "Teléfono de Contacto",
+            "Correo de Contacto",
+            "Estatus",
+        ]
+
+        const sheetData = [columnTitles]
+        sheetData.push(...currentItems.map((client) => [
+            client.name,
+            client.rfc,
+            client.fiscal_address,
+            client.address,
+            client.email,
+            client.contact_name,
+            client.contact_phone,
+            client.contact_email,
+            client.status,
+        ]))
+
+        const sheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+        // Append the worksheet to the workbook
+        XLSX.utils.book_append_sheet(workbook, sheet, 'Hoja 1');
+        // Save the workbook as an Excel file
+        XLSX.writeFile(workbook, 'Clientes.xlsx');
+    
+    
+    }
+
 
 
     if (data.length === 0) return <Loader table={"clientes registrados"} />;
@@ -86,34 +129,8 @@ const ClientsT = () => {
                                 status.name
                             }</option>))}
                     </select>
-
-
-                    <select
-                        value={perPage} onChange={(e) => setPerPage(Number(e.target.value))}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-34">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">Todos</option>
-                    </select>
-
-
-                    <button className="border-solid border-2 border-gray-300 bg-white p-2.5 bg flex justify-center items-center text-green-400 rounded-lg h-11 w-[80px]">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-8 h-8"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                            />
-                        </svg>
-                    </button>
+                    <ItemsPage perPage={perPage} setPerPage={setPerPage} />
+                    <XlsxExport exportToExcel={exportToExcel} />
                 </div>
             </div>
             <div className="flex flex-col">

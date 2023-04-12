@@ -46,7 +46,7 @@ model offer {
   fileName         String?
   final_client     String?
   activity_resumen String?
-  date             DateTime @default(now())
+  date             String   @db.VarChar(20) 
   status           String?  @default("Pendiente") @db.VarChar(50)
   client_id        Int
   client           client   @relation(fields: [client_id], references: [id])

@@ -180,9 +180,8 @@ const Form_Order = ({ offers }) => {
         
       }
       dispatch(addOrder(formData));
-      router.push("/pedidos");
-      toast.success("Pedido creado correctamente");
 
+      
     } catch (error) {
       toast.error("Hubo un error " + error);
     }
@@ -445,7 +444,7 @@ const Form_Order = ({ offers }) => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
                           {typeClass.map((item) => (
-                            <option key={item.id} value={item.id}>
+                            <option key={item.id} value={item.name}>
                               {item.name}
                             </option>
                           ))}
@@ -461,7 +460,7 @@ const Form_Order = ({ offers }) => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
                           {typeEntity.map((item) => (
-                            <option key={item.id} value={item.id}>
+                            <option key={item.id} value={item.name}>
                               {item.name}
                             </option>
                           ))}

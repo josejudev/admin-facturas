@@ -33,7 +33,13 @@ export default async function handler(req, res) {
 }
 
 const listClients = async (req, res) => {
-    const clients = await prisma.client.findMany()
+    const clients = await prisma.client.findMany(
+        {
+            orderBy: {
+                name: "asc"
+            }
+        }
+    )
     return res.json(clients)
 }
 

@@ -22,6 +22,7 @@ const OrdersT = () => {
   const dispatch = useDispatch()
 
   const { data, loading, error } = useSelector((state) => state.orders)
+  console.log(data)
 
   const [currentItems, setCurrentItems] = useState([]);
   const [dataFiltered, setDataFiltered] = useState({
@@ -177,13 +178,13 @@ const OrdersT = () => {
                       <td className="border-b-2 p-4">{order.offer_id}</td>
                       <td className="border-b-2 p-4">
                         <a
-                          href={`/uploads/${order.offer.fileName}`}
+                          href={`/uploads/${order.offer?.fileName}`}
                           alt="alt text"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800 "
                         >
-                          {order.offer.project_name}
+                          {order.offer?.project_name}
                         </a>
                       </td>
 

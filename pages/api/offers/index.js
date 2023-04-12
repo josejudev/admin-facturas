@@ -1,13 +1,9 @@
-const express = require("express");
 const path = require("path");
 const multer = require("multer");
 const { PrismaClient } = require("@prisma/client");
 
-
 const prisma = new PrismaClient();
-const app = express();
 
-app.use(express.json());
 
 export const config = {
   api: {
@@ -37,23 +33,33 @@ const listOffers = async (req, res) => {
     include: {
       client: true,
     },
+    orderBy: {
+      project_name: "asc",
+    }
   });
   return res.json(offers);
 };
 
 const createOffer = async (req, res) => {
+
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const day = currentDate.getDate();
+  const monthWithZero = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 });
+  const allDay = day + "-" + monthWithZero + "-" + year;
+
   upload.single("fileName")(req, res, async (err) => {
     if (err) {
       console.log("Error uploading file: ", err);
     }
     const  {
+      date,
       project_name,
       fileName,
       final_client,
       client_id,
       activity_resumen,
     } = req.body;
-    console.log(req.body);
     const offer = await prisma.offer.create({
       data: {
         project_name,
@@ -61,6 +67,7 @@ const createOffer = async (req, res) => {
         final_client,
         client_id: parseInt(client_id),
         activity_resumen,
+        date: allDay,
       },
     });
 
