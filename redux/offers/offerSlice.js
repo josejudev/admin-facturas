@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {fetchClients} from '../clients/clientSlice';
+import { fetchOrders } from '../orders/orderSlice';
 
 export const offerSlice = createSlice({
     name: 'offers',
@@ -173,7 +173,7 @@ export const addOffer = (offer) => {
             dispatch(updateOfferRequest())
             const response = await axios.put(`/api/offers/${id}`, offer);
             dispatch(updateOfferSuccess(response.data));
-            dispatch(fetchOffers());
+            dispatch(fetchOrders());
 
         }catch (error){
             dispatch(updateOfferError(error.message))
@@ -190,7 +190,6 @@ export const addOffer = (offer) => {
             dispatch(getofferByIdSuccess(response.data));
         } catch (error) {
             dispatch(getofferByIdError(error.message));
-            console.log(error.message+ "-------------------")
         }
     }
   }

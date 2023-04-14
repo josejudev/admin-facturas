@@ -180,6 +180,7 @@ const Form_Order = ({ offers }) => {
         
       }
       dispatch(addOrder(formData));
+      router.push("/pedidos");
 
       
     } catch (error) {

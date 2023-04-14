@@ -22,7 +22,6 @@ const OrdersT = () => {
   const dispatch = useDispatch()
 
   const { data, loading, error } = useSelector((state) => state.orders)
-  console.log(data)
 
   const [currentItems, setCurrentItems] = useState([]);
   const [dataFiltered, setDataFiltered] = useState({

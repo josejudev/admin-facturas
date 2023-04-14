@@ -120,7 +120,7 @@ const createOrder = async (req, res) => {
         data: milestones,
       });
 
-      return res.json({ order, createdMilestones });
+      return res.json( order );
     });
   } catch (error) {
     console.log("La orden no se pudo crear");

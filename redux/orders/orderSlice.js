@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 export const orderSlice = createSlice({
     name: 'orders',
     initialState: {
@@ -86,6 +87,7 @@ export const fetchOrders = () => {
             dispatch(getOrderSuccess(response.data));
         } catch (error) {
             dispatch(getOrderError(error));
+
         }
     }
 }
@@ -109,16 +111,15 @@ export const addOrder = (order) => {
             formData.append('order_balance', order_balance);
             formData.append('milestone', JSON.stringify(milestone));
             formData.append('fileName', fileName);
-            console.log(formData.get('milestone'));
             const response = await axios.post('/api/orders', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
             dispatch(addOrderSuccess(response.data));
+            dispatch(fetchOrders());
         } catch (error) {
             dispatch(addOrderError(error));
-            console.error( error);
         }
         
     }

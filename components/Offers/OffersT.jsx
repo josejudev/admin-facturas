@@ -247,8 +247,7 @@ const OffersT = () => {
                                   </button>
                                 </li>
                                 <li>
-                                  {
-                                    offer.status !== "Aceptado" && (
+                                  {offer.status !== "Aceptado" && (
                                       <button
                                       onClick={() => {
                                         dispatch(
