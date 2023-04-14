@@ -131,7 +131,7 @@ export const addOffer = (offer) => {
         const file = fileName[0];
         // Modify the file name as needed
 
-        const union =allDay +"-"+ offer.project_name.substring(0, 2) + "-" + offer.final_client.substring(0, 2) + "-" + offer.activity_resumen.substring(0, 2)+".jpg"
+        const union =allDay +"-"+ offer.project_name.substring(0, 2) + "-" + offer.final_client.substring(0, 2) + "-" + offer.activity_resumen.substring(0, 2)+".pdf"
 
         // Create a new FormData object
         const formData = new FormData();
