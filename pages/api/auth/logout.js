@@ -8,7 +8,7 @@ export default function logoutHandler(req, res) {
 
   const serialized = serialize("Mytoken", null, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     sameSite: "strict",
     maxAge: 0,
     path: "/",

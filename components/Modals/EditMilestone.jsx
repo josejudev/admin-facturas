@@ -25,7 +25,6 @@ const EditOffer = ({
     getMilestone();
   }, [orderId])
 
-  console.log(editMilestone)
 
 
 

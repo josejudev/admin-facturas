@@ -60,7 +60,7 @@ const findUser = async (req, res) => {
 
   const serialized = serialize("Mytoken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     sameSite: "strict",
     maxAge: 1000 * 60 * 60 * 24 * 30,
     path: "/",

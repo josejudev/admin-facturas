@@ -67,10 +67,7 @@ const OffersT = () => {
       setCurrentItems(filteredOffers.slice(itemOffset, endOffset));
       setPageCount(Math.ceil(filteredOffers.length / itemsPerPage));
 
-      if (filteredOffers.length === 0) {
-        // Mostrar el mensaje de error o el mensaje que deseas
-        console.log("No hay ofertas que coincidan con tu búsqueda");
-      }
+
 
     }
 

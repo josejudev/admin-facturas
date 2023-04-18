@@ -53,11 +53,10 @@ const AddClient = () => {
       dispatch(addClient(client));
       dispatch(handleModalClient());
       router.push('/clientes')
-      toast.success("Client added successfully");
-      console.log(client);
+      toast.success("Cliente agregado con éxito");
     } catch (err) {
-      console.log(err);
-    }
+      toast.error("Error al agregar cliente");
+        }
   };
 
   const isDisabled = !watch("name") || !watch("rfc") || !watch("fiscal_address") || !watch("address") || !watch("email") || !watch("contact_email") || !watch("contact_name");

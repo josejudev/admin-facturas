@@ -53,7 +53,7 @@ const ModalDelete = ({ children, title = '',idProp }) => {
       }
 
     } catch (err) {
-      console.log(err);
+      toast.error("Error al eliminar el registro")
     }
   };
 
