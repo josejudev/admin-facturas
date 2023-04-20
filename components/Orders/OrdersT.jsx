@@ -10,6 +10,8 @@ import {
   handleModalDelete,
   handleModalOrderEdit
 } from '../../exports/commonExports'
+import XLSX from 'xlsx';
+import { ItemsPage, XlsxExport } from '../Buttons/HeaderTable';
 
 const OrdersT = () => {
 
@@ -52,8 +54,9 @@ const OrdersT = () => {
       // Filter data based on search value
       const filteredOrders = data.filter((order) =>
         (
-          search === "" || ['entity'
-          ].some((key) => order[key].toLowerCase().includes(search.toLowerCase()))
+          search === "" || ['date', 'name', 'amount', 'final_amount', 'order_balance', 'type', 'concept', 'class_type', 'entity', 'status', 'fileName'].some(key => order[key].toString().toLowerCase().includes(search.toLowerCase())
+          || order.offer.project_name.toLowerCase().includes(search.toLowerCase())
+          )
 
         ) && (dataFiltered.status_filtered === "Todos" || order.status === dataFiltered.status_filtered)
       );
@@ -67,6 +70,52 @@ const OrdersT = () => {
     }
   }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
 
+  const XLSX = require('xlsx');
+  const exportToExcel = () => {
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Add column titles
+    const columnTitles = [
+      'Fecha del pedido',
+      'Nombre',
+      'Cantidad',
+      'Valor en pesos',
+      'Saldo',
+      'Tipo',
+      'Concepto',
+      'Clase',
+      'Entidad',
+      'Estado',
+
+
+    ];
+    const sheetData = [columnTitles]; // Include column titles as the first row
+    sheetData.push(...currentItems.map(order => [
+      order.date,
+      order.name,
+      order.amount,
+      order.final_amount,
+      order.order_balance,
+      order.type,
+      order.concept,
+      order.class_type,
+      order.entity,
+      order.status,
+      
+    ]));
+
+    // Create a worksheet from the sheet data
+    const sheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Hoja 1');
+
+    // Save the workbook as an Excel file
+    XLSX.writeFile(workbook, 'Pedidos.xlsx');
+  };
+
+
   if (data.length === 0) return <Loader table="pedidos registrados" />;
   if (loading) return <SkeletonLoader />;
   if (error) return <div>Error: {error}</div>;
@@ -76,17 +125,8 @@ const OrdersT = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 flex-wrap items-center mx-auto">
-        <select
-          name="status_filtered"
-          onChange={handleFilter}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64">
-          {statusFiltered.map((status) => (
-            <option key={status.id} value={status.name}> {
-              status.name
-            }</option>))}
-        </select>
-        <div className="col-span-1 grid grid-cols-3 gap-2">
+      <div className="flex items-center mx-auto justify-center w-full">
+        <div className="flex justify-center items-center gap-2 flex-col sm:flex-row">
           <input
             type="text"
             name="search"
@@ -94,27 +134,18 @@ const OrdersT = () => {
             onChange={(e) => setSearch(e.target.value)}
             className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
           />
-          <input
-            type="date"
-            className="text-center border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 p-2.5 bg-white rounded-lg h-11"
-          />
+          <select
+            name="status_filtered"
+            onChange={handleFilter}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 w-30">
+            {statusFiltered.map((status) => (
+              <option key={status.id} value={status.name}> {
+                status.name
+              }</option>))}
+          </select>
+          <ItemsPage perPage={perPage} setPerPage={setPerPage} />
+          <XlsxExport exportToExcel={exportToExcel} />
 
-          <button className="border-solid border-2 border-gray-300 bg-white p-2.5 bg flex justify-center items-center text-green-400 rounded-lg h-11">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-              />
-            </svg>
-          </button>
         </div>
       </div>
       <div className="flex flex-col">
@@ -130,7 +161,6 @@ const OrdersT = () => {
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                       Nombre
                     </th>
-
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                       Cantidad
                     </th>
@@ -138,13 +168,16 @@ const OrdersT = () => {
                       Valor en pesos
                     </th>
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Saldo
+                    </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                       Tipo
                     </th>
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-                      Clase
+                      Concepto
                     </th>
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-                      N° de Pagos
+                      Clase
                     </th>
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                       Oferta
@@ -168,13 +201,12 @@ const OrdersT = () => {
                     <tr key={order.id}>
                       <td className="border-b-2 p-4">{order.date}</td>
                       <td className="border-b-2 p-4">{order.name}</td>
-                      <td className="border-b-2 p-4">
-                        {order.currency === "US" ? "$" + order.amount : "€" + order.amount}
-                      </td>
-                      <td className="border-b-2 p-4">{order.final_amount}</td>
+                      <td className="border-b-2 p-4">{order.currency +" "+ order.amount}</td>
+                      <td className="border-b-2 p-4">{`MXN ${order.final_amount}`}</td>
+                      <td className="border-b-2 p-4">{order.order_balance}</td>
                       <td className="border-b-2 p-4">{order.type}</td>
+                      <td className="border-b-2 p-4">{order.concept}</td>
                       <td className="border-b-2 p-4">{order.class_type}</td>
-                      <td className="border-b-2 p-4">{order.offer_id}</td>
                       <td className="border-b-2 p-4">
                         <a
                           href={`/uploads/${order.offer?.fileName}`}

@@ -45,7 +45,6 @@ const EditOffer = ({
   const status = [
     { id: 1, name: "Pendiente" },
     { id: 2, name: "Rechazado" },
-    { id: 3, name: "Aceptado" },
   ];
 
   const handleChange = ({ target: { name, value } }) => {

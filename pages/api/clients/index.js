@@ -48,7 +48,7 @@ const createClient = async (req, res) => {
     const client = await prisma.client.create({
         data: {
             name,
-            rfc,
+            rfc: rfc.toUpperCase(),
             fiscal_address,
             email,
             address,

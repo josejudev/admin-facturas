@@ -104,7 +104,7 @@ export const fetchOffers = () => {
     return async (dispatch) => {
         dispatch(getOfferRequest());
         try {
-            const response = await axios.get('api/offers');
+            const response = await axios.get('/api/offers');
             dispatch(getOfferSuccess(response.data));
         } catch (error) {
             dispatch(getOfferError(error.message));

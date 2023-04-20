@@ -83,7 +83,7 @@ export const fetchOrders = () => {
     return async (dispatch) => {
         try {
             dispatch(getOrderRequest());
-            const response = await axios.get('api/orders');
+            const response = await axios.get('/api/orders');
             dispatch(getOrderSuccess(response.data));
         } catch (error) {
             dispatch(getOrderError(error));
@@ -97,6 +97,19 @@ export const addOrder = (order) => {
         try {
             dispatch(addOrderRequest());
             const {date,fileName, name, concept, type, class_type, entity, offer_id, amount, final_amount, currency, order_balance,milestone} = order;
+
+            const currentDate = new Date();
+  
+            // Extract year, month, and day from the current date
+            const year = currentDate.getFullYear();
+            const day = currentDate.getDate();
+            const monthWithZero = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 });
+    
+            const allDay = day + "" + monthWithZero + "" + year;
+            const file = fileName[0];
+
+            const union =allDay +"-"+ order.name.substring(0, 2) + "-" + order.concept.substring(0, 2) + "-" + order.entity.substring(0, 2)+".pdf"
+
             const formData = new FormData();
             formData.append('date', date);
             formData.append('name', name);
@@ -110,7 +123,7 @@ export const addOrder = (order) => {
             formData.append('currency', currency);
             formData.append('order_balance', order_balance);
             formData.append('milestone', JSON.stringify(milestone));
-            formData.append('fileName', fileName);
+            formData.append('fileName', new File([file], union, { type: file.type }));
             const response = await axios.post('/api/orders', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

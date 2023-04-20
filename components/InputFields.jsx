@@ -2,7 +2,7 @@ const InputField = (props) => {
     return (
       <>
         <label
-          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          className="block text-grey-darker text-sm font-bold mb-2 text-slate-700"
           htmlFor={props.name}
         >
           {props.label}

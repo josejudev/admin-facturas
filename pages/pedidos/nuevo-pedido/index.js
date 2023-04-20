@@ -1,29 +1,37 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import Layout from "../../../components/Layout";
-import { useDispatch } from "react-redux";
-import { addOrder } from "../../../redux/orders/orderSlice";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 import {
   fetchOffers,
   useSelector,
-}from "../../../exports/commonExports"
+  useState,
+  useEffect,
+  useDispatch,
+  addOrder,
+  useRouter,
+  toast,
+  useForm,
+} from "../../../exports/commonExports";
+import InputFieldsOrder from "../../../components/InputFieldsOrder";
 
 const NuevoPedido = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const {data } = useSelector((state) => state.offers);
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
+  const { data:ofertas } = useSelector((state) => state.offers);
 
   useEffect(() => {
     dispatch(fetchOffers());
-  }, [
-    dispatch,
-  ]);
+  }, [dispatch]);
 
-  const pendingOffers = data.filter((offer) => offer.status === "Pendiente");
-
+  const pendingOffers = ofertas.filter((offer) => offer.status === "Pendiente");
 
   const typeCurrency = [
     { id: 1, name: "USD" },
@@ -98,9 +106,9 @@ const NuevoPedido = () => {
 
   const [inputFields, setInputFields] = useState([
     {
-      milestone: 0,
-      percentage_milestone: 0,
-      value_milestone: 0,
+      milestone: "",
+      percentage_milestone: "",
+      value_milestone: "",
       concept_milestone: "",
     },
   ]);
@@ -156,40 +164,25 @@ const NuevoPedido = () => {
     setInputFields(list);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmitForm = async (data) => {
     try {
-      const {date, name,fileName, concept, type, class_type, entity, offer_id, amount, final_amount, currency, order_balance,milestone } = e.target.elements;
-      const formData = {
-        date: date.value,
-        name: name.value,
-        fileName: fileName.files[0],
-        concept: concept.value,
-        type: type.value,
-        class_type: class_type.value,
-        entity: entity.value,
-        offer_id: offer_id.value,
-        amount: amount.value,
-        final_amount: final_amount.value,
-        currency: currency.value,
-        order_balance: order_balance.value,
-        milestone: inputFields,
-        
-      }
-      dispatch(addOrder(formData));
+      dispatch(addOrder(data));
       router.push("/pedidos");
-
-      
+      setTimeout(() => {
+        toast.success("Pedido agregado correctamente");
+      }, 1000);
     } catch (error) {
-      toast.error("Hubo un error " + error);
+      toast.error("Hubo un error al agregar el pedido" + error);
     }
-
   };
 
   return (
     <>
       <Layout title={"Nuevo Pedido"}>
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form
+          onSubmit={handleSubmit(handleSubmitForm)}
+          encType="multipart/form-data"
+        >
           {/*
         Primer container
          */}
@@ -202,77 +195,75 @@ const NuevoPedido = () => {
                 <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
                   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                     <div className="md:flex-row  flex flex-wrap items-center justify-center mx-auto bg-white rounded-xl mt-5 gap-8">
-                      <label className="block">
-                        <span className="block text-sm font-medium text-slate-700">
-                          Fecha del pedido
-                        </span>
-                        <input
-                          type="date"
-                          name="date"
-                          onChange={handleChange}
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Nombre del pedido
-                        </span>
-                        <input
-                          type="text"
-                          name="name"
-                          onChange={handleChange}
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Cantidad
-                        </span>
-                        <input
-                          onChange={handleChange}
-                          type="text"
-                          name="amount"
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Divisa
-                        </span>
-                        <select
-                          name="currency"
-                          onChange={handleChange}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 w-64 focus:border-blue-500 block p-2.5 "
-                        >
-                          {typeCurrency.map((item) => (
-                            <option key={item.id} value={item.name}>
-                              {item.name}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Valor en pesos
-                        </span>
-                        <input
-                          name="final_amount"
-                          value={order.final_amount}
-                          onChange={handleFinalAmountChange}
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Saldo
-                        </span>
-                        <input
-                          type="text"
-                          name="order_balance"
-                          onChange={handleChange}
-                          className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
-                        />
-                      </label>
+                      <InputFieldsOrder
+                        label="Fecha"
+                        name="date"
+                        type="date"
+                        register={register}
+                        errors={errors}
+                        onChange={handleChange}
+                        required
+                      />
+                      <InputFieldsOrder
+                        label="Nombre del pedido"
+                        name="name"
+                        register={register}
+                        errors={errors}
+                        onChange={handleChange}
+                        required
+                      />
+                      <InputFieldsOrder
+                        label="Cantidad del pedido"
+                        name="amount"
+                        type="number"
+                        register={register}
+                        errors={errors}
+                        onChange={handleChange}
+                        required
+                      />
+
+
+                      <div className="-mx-3 md:flex mb-3">
+                        <div className="md:w-full px-3 mb-6 md:mb-0">
+                          <label className="block text-grey-darker text-sm font-bold mb-2 text-slate-700">
+                              Divisa
+                            <select
+                            {...register("currency",{
+                                required: true,
+                            })}
+                              onChange={handleChange}
+                              className={
+                                errors.currency ? "transition duration-300 focus:border-transparent focus:outline-none focus:ring-4 focus:ring-red-200 border-red-300 appearance-none mt-1 px-3 py-2 border block w-64 rounded-md sm:text-sm " : "mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1 "
+                              }
+                            >
+                              {typeCurrency.map((item) => (
+                                <option key={item.id} value={item.name}>
+                                  {item.name}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        </div>
+                      </div>
+
+                      <InputFieldsOrder
+                        label="Valor en pesos"
+                        name="final_amount"
+                        type="number"
+                        register={register}
+                        errors={errors}
+                        onChange={handleChange}
+                        required
+                      />
+                      <InputFieldsOrder
+                        label="Saldo"
+                        name="order_balance"
+                        type="number"
+                        register={register}
+                        errors={errors}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -296,7 +287,11 @@ const NuevoPedido = () => {
                               </span>
                               <input
                                 type="text"
-                                name="concept_milestone"
+                                {
+                                  ...register(`milestone[${i}].concept_milestone`, {
+                                    required: true,
+                                  })
+                                }
                                 onChange={(e) => handleinputchange(e, i)}
                                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                               />
@@ -310,7 +305,11 @@ const NuevoPedido = () => {
                               </span>
                               <input
                                 type="number"
-                                name={`percentage_milestone_${i}`}
+                                {
+                                  ...register(`milestone[${i}].percentage_milestone`, {
+                                    required: true,
+                                  })
+                                }
                                 value={x.percentage_milestone}
                                 onChange={(event) =>
                                   handlePercentageChange(event, i)
@@ -327,7 +326,11 @@ const NuevoPedido = () => {
                               </span>
                               <input
                                 type="number"
-                                name={`value_milestone_${i}`}
+                                {
+                                  ...register(`milestone[${i}].value_milestone`, {
+                                    required: true,
+                                  })
+                                }
                                 value={x.value_milestone}
                                 onChange={(event) =>
                                   handleinputchange(event, i)
@@ -410,7 +413,11 @@ const NuevoPedido = () => {
                           Oferta
                         </span>
                         <select
-                          name="offer_id"
+                        {
+                          ...register("offer_id", {
+                            required: true,
+                          })
+                        }
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
@@ -421,23 +428,25 @@ const NuevoPedido = () => {
                           ))}
                         </select>
                       </label>
-                      <label className="block">
-                        <span className=" block text-sm font-medium text-slate-700">
-                          Concepto
-                        </span>
-                        <input
-                          type="text"
-                          name="concept"
-                          onChange={handleChange}
-                          className=" px-3 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-64 rounded-md sm:text-sm focus:ring-1"
+                      <InputFieldsOrder
+                        label="Concepto"
+                        name="concept"
+                        register={register}
+                        onChange={handleChange}
+                        errors={errors}
+                        required
                         />
-                      </label>
+
                       <label className="block">
                         <span className=" block text-sm font-medium text-slate-700">
                           Clase
                         </span>
                         <select
-                          name="class_type"
+                        {
+                          ...register("class_type", {
+                            required: true,
+                          })
+                        }
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
@@ -453,7 +462,11 @@ const NuevoPedido = () => {
                           Tipo
                         </span>
                         <select
-                          name="type"
+                          {
+                            ...register("type", {
+                              required: true,
+                            })
+                          }
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64"
                         >
@@ -470,7 +483,11 @@ const NuevoPedido = () => {
                           Entidad
                         </span>
                         <select
-                          name="entity"
+                        {
+                          ...register("entity", {
+                            required: true,
+                          })
+                        }
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-64 "
                         >
@@ -517,9 +534,14 @@ const NuevoPedido = () => {
                       </span>
                       <input
                         type="file"
-                        name="fileName"
-                        className="hidden"
                         onChange={handleFile}
+                        {
+                          ...register("fileName", {
+                            required: true,
+                          })
+                        }
+                        accept="application/pdf"
+                        className="hidden"
                       />
                     </label>
                   </div>
@@ -583,6 +605,5 @@ const NuevoPedido = () => {
     </>
   );
 };
-
 
 export default NuevoPedido;
