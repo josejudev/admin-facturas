@@ -24,6 +24,9 @@ import { fetchOrders,addOrder,deleteOrder } from '../redux/orders/orderSlice'
 //milestones Slice
 import { fetchMilestones } from '../redux/milestones/milestoneSlice'
 
+//users Slice
+import { fetchUser } from '../redux/users/userSlice'
+
 
 /**
  * @React imports
@@ -47,6 +50,7 @@ import SkeletonLoader from "./../components/SkeletonLoader";
 import InputField from "../components/InputFields";
 
 export {
+    fetchUser,
     addClient,
     useForm,
     Input,

@@ -2,6 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from 'next/image'
+import {
+  fetchUser,
+  useDispatch,
+
+} from "../exports/commonExports";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,6 +31,9 @@ const Login = () => {
     try {
       const data = await axios.post("/api/auth/login", credentials);
       router.push("/");
+
+      
+
     } catch (error) {
       toast.error("Error al iniciar sesión, por favor verifique sus credenciales",);
     }
