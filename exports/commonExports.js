@@ -22,7 +22,7 @@ import { fetchOffers, addOffer,deleteOffer, updateOffer,fetchOfferById } from ".
 //orders Slice
 import { fetchOrders,addOrder,deleteOrder } from '../redux/orders/orderSlice'
 //milestones Slice
-import { fetchMilestones } from '../redux/milestones/milestoneSlice'
+import { fetchMilestoneById,fetchAllMilestones } from '../redux/milestones/milestoneSlice'
 
 //users Slice
 import { fetchUser } from '../redux/users/userSlice'
@@ -50,6 +50,7 @@ import SkeletonLoader from "./../components/SkeletonLoader";
 import InputField from "../components/InputFields";
 
 export {
+    fetchAllMilestones,
     fetchUser,
     addClient,
     useForm,
@@ -96,5 +97,5 @@ export {
     handleModalOrderEdit,
     selectModalOrderEdit,
     EditMilestone,
-    fetchMilestones
+    fetchMilestoneById
 }

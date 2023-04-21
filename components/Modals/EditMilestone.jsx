@@ -4,7 +4,7 @@ import {
   useEffect,
   useState,
   axios,
-  fetchMilestones,
+  fetchMilestoneById,
 } from '../../exports/commonExports'
 
 

@@ -21,6 +21,19 @@ export const milestoneSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        getAllMilestonesRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getAllMilestonesSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        getAllMilestonesError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }
+
     }
 });
 
@@ -28,10 +41,14 @@ export const {
     getMilestoneRequest,
     getMilestoneSuccess,
     getMilestoneError,
+    getAllMilestonesRequest,
+    getAllMilestonesSuccess,
+    getAllMilestonesError
+    
 
 } = milestoneSlice.actions;
 
-export const fetchMilestones = (orderId) => {
+export const fetchMilestoneById = (orderId) => {
     return async (dispatch) => {
         dispatch(getMilestoneRequest());
         try {
@@ -39,6 +56,18 @@ export const fetchMilestones = (orderId) => {
             dispatch(getMilestoneSuccess(response.data));
         } catch (error) {
             dispatch(getMilestoneError(error.message));
+        }
+    };
+}
+
+export const fetchAllMilestones = () => {
+    return async (dispatch) => {
+        dispatch(getAllMilestonesRequest());
+        try {
+            const response = await axios.get(`/api/milestones`);
+            dispatch(getAllMilestonesSuccess(response.data));
+        } catch (error) {
+            dispatch(getAllMilestonesError(error.message));
         }
     };
 }

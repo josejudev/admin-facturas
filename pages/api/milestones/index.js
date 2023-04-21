@@ -18,6 +18,12 @@ export default async function handler(req, res) {
 }
 
 const getMilestone = async (req, res) => {
-    const milestones = await prisma.milestone.findMany()
+    const milestones = await prisma.milestone.findMany(
+        {
+            include: {
+                order: true,
+            },
+        }
+    )
     return res.json(milestones)
 }

@@ -9,7 +9,9 @@ import {
   fetchOrders,
   handleModalDelete,
   handleModalOrderEdit,
-  fetchUser
+  fetchUser,
+  fetchMilestoneById,
+  fetchAllMilestones
 } from '../../exports/commonExports'
 import XLSX from 'xlsx';
 import { ItemsPage, XlsxExport } from '../Buttons/HeaderTable';
@@ -27,13 +29,22 @@ const OrdersT = () => {
   useEffect(() => {
     // dispatch the fetchUser action creator on page load
     dispatch(fetchUser());
+    dispatch(fetchAllMilestones());
   }, [dispatch]);
 
 
 
 
 
+
+
   const { data, loading, error } = useSelector((state) => state.orders)
+  const { data: milestones } = useSelector((state) => state.milestones)
+
+
+
+
+
   const user = useSelector((state) => state.users.data);
   const admin = user.role_id === 1 ? true : false;
 
@@ -81,6 +92,8 @@ const OrdersT = () => {
       setPageCount(Math.ceil(filteredOrders.length / itemsPerPage));
     }
   }, [data, itemOffset, itemsPerPage, search, dispatch, dataFiltered]);
+
+
 
   const XLSX = require('xlsx');
   const exportToExcel = () => {
@@ -203,6 +216,9 @@ const OrdersT = () => {
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
                       Estado
                     </th>
+                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                      Hitos
+                    </th>
                     <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900 text">
                       Acciones
                     </th>
@@ -254,6 +270,31 @@ const OrdersT = () => {
                             {order.status}
                           </span>
                         ) : null}
+                      </td>
+                      <td className="border-b-2 p-4">
+                        {milestones.map((milestone) => {
+                          if (milestone.order_id === order.id) {
+                            return (
+                              <tr key={milestone.id}>
+                                <td className="border-b-2 p-4">
+                                {
+                                  milestone.concept_milestone
+                                }
+                                </td>
+                                <td className="border-b-2 p-4">
+                                {
+                                  milestone.percentage_milestone
+                                }
+                                </td>
+                                <td className="border-b-2 p-4">
+                                {
+                                  milestone.value_milestone
+                                  }
+                                  </td>
+                              </tr>
+                            );
+                          }
+                        })}
                       </td>
                       <td className="border-b-2 p-4">
                         {/*
