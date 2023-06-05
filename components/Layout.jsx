@@ -2,6 +2,8 @@ import {Modal,AddOffer,AddClient,EditOffer,ModalDelete,EditClient,ToastContainer
 import Head from "next/head";
 import Header from "./Header";
 import 'react-toastify/dist/ReactToastify.css';
+import EditOfertita from './Modals/EditMilestone';
+
 
 const customStyles = {
   content: {
@@ -26,6 +28,10 @@ Modal.setAppElement("#__next");
 
 
 function Layout({ children, title = "", description = "",  }) {
+  const handleDataFromChild = (data) => {
+    console.log('Datos recibidos en layout:', data);
+    // Haz algo con los datos recibidos del componente hijo
+  };
 
 
   
@@ -85,7 +91,7 @@ function Layout({ children, title = "", description = "",  }) {
       )}
       {modalOrderEdit.modal && (
         <Modal isOpen={true} style={customStyles}>
-          <EditMilestone orderId={modalOrderEdit.id}/>
+          <EditMilestone orderId={modalOrderEdit.id} sendDataToParent={handleDataFromChild} handleDataFromChild={handleDataFromChild} />
         </Modal>
       )}
 

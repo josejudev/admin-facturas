@@ -8,12 +8,16 @@ import {
 } from '../../exports/commonExports'
 
 
-const EditOffer = ({
-  orderId,
-}) => {
+const EditOffer = ({orderId, sendDataToParent}) => {
+
+  const handleClicki = () => {
+    const data = 'Hola desde editMilestone';
+    sendDataToParent(data);
+  };
   const dispatch = useDispatch();
 
   const [editMilestone, setEditMilestone] = useState([])
+  const [selectedMilestones, setSelectedMilestones] = useState([]);
 
   useEffect(() => {
     const getMilestone = async () => {
@@ -24,6 +28,37 @@ const EditOffer = ({
     };
     getMilestone();
   }, [orderId])
+
+
+  const handleMilestoneSelection = (milestoneId) => {
+    setSelectedMilestones((prevSelectedMilestones) => {
+      if (prevSelectedMilestones.includes(milestoneId)) {
+        // Deselect the milestone
+        return prevSelectedMilestones.filter((id) => id !== milestoneId);
+      } else {
+        // Select the milestone
+        return [...prevSelectedMilestones, milestoneId];
+      }
+    });
+  };
+  
+
+  const handleMilestoneEdit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.put(
+        `/api/milestones/${orderId}`,
+        {
+          milestones: selectedMilestones,
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.log("there was an error");
+    }
+  };
+
 
 
 
@@ -68,34 +103,51 @@ const EditOffer = ({
           </button>
         </div>
       </div>
+      <button onClick={handleClicki}>Enviar datos al padre</button>
 
-      <form>
+      <form onSubmit={
+        handleMilestoneEdit
+      }>
         <div className="rounded pb-8 mb-4 flex flex-col my-2">
-        <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
-                <thead>
-                  <tr>
-                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-                      Concepto
-                    </th>
-                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-                      Porcentage
-                    </th>
-                    <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
-                      Valor
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  {editMilestone.map((milestone) => (
-                    <tr key={milestone.id} className="text-gray-700hover:bg-gray-50 hover:transition-all">
+          <table className="table p-4 mt-10 bg-white rounded-lg shadow table-auto w-full">
+            <thead>
+              <tr>
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                  Concepto
+                </th>
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                  Porcentage
+                </th>
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                  Valor
+                </th>
+                <th className="border-b-2 p-4 whitespace-nowrap font-bold text-gray-900">
+                  Prefacturar
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {editMilestone.map((milestone) => (
+                <tr key={milestone.id} className="text-gray-700hover:bg-gray-50 hover:transition-all">
 
-                      <td className="border-b-2 p-4">{milestone.concept_milestone}</td>
-                      <td className="border-b-2 p-4">{milestone.percentage_milestone}%</td>
-                      <td className="border-b-2 p-4">${milestone.value_milestone}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                  <td className="border-b-2 p-4">{milestone.concept_milestone}</td>
+                  <td className="border-b-2 p-4">{milestone.percentage_milestone}%</td>
+                  <td className="border-b-2 p-4">${milestone.value_milestone}</td>
+                  <td className="border-b-2 p-4">
+                    <input
+                      id="default-checkbox"
+                      type="checkbox"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 "
+                      onChange={() => handleMilestoneSelection(milestone.id)}
+                      value={milestone.id}
+                      name="isCheck"
+                      
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
           <div className=" md:flex mt-3 justify-end ">
             <div className="md:1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">

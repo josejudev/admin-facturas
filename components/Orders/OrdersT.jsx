@@ -12,11 +12,14 @@ import {
   fetchUser,
   fetchMilestoneById,
   fetchAllMilestones
+
 } from '../../exports/commonExports'
 import XLSX from 'xlsx';
 import { ItemsPage, XlsxExport } from '../Buttons/HeaderTable';
 
 const OrdersT = () => {
+
+
 
   const statusFiltered = [
     { id: 1, name: "Todos" },
@@ -271,31 +274,52 @@ const OrdersT = () => {
                           </span>
                         ) : null}
                       </td>
-                      <td className="border-b-2 p-4">
-                        {milestones.map((milestone) => {
-                          if (milestone.order_id === order.id) {
-                            return (
-                              <tr key={milestone.id}>
-                                <td className="border-b-2 p-4">
-                                {
-                                  milestone.concept_milestone
-                                }
-                                </td>
-                                <td className="border-b-2 p-4">
-                                {
-                                  milestone.percentage_milestone
-                                }
-                                </td>
-                                <td className="border-b-2 p-4">
-                                {
-                                  milestone.value_milestone
-                                  }
-                                  </td>
-                              </tr>
-                            );
-                          }
-                        })}
-                      </td>
+                      <div className="overflow-x-auto align-middle">
+                        <table class="table table-auto">
+                          <thead>
+                            <tr>
+                              <th class="border-b-2 px-4 py-2">Concepto</th>
+                              <th class="border-b-2 px-4 py-2">Porcentaje</th>
+                              <th class="border-b-2 px-4 py-2">Valor</th>
+                              <th class="border-b-2 px-4 py-2">Prefacturar</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {milestones.map((milestone) => {
+                              if (milestone.order_id === order.id) {
+                                return (
+                                  <tr key={milestone.id}>
+                                    <td className="border-b-2 p-4">
+                                      {
+                                        milestone.concept_milestone
+                                      }
+                                    </td>
+                                    <td className="border-b-2 p-4">
+                                      {
+                                        milestone.percentage_milestone
+                                      }
+                                    </td>
+                                    <td className="border-b-2 p-4">
+                                      {
+                                        milestone.value_milestone
+                                      }
+                                    </td>
+                                    <td className="border-b-2 p-4">
+                                      <input
+                                        id="default-checkbox"
+                                        type="checkbox"
+
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 "
+                                      />
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
                       <td className="border-b-2 p-4">
                         {/*
             action button
@@ -326,6 +350,11 @@ const OrdersT = () => {
                             >
                               <ul>
                                 <li>
+                                  {
+                                    /**
+                                     * edit button
+                                      */
+                                  }
                                   <button
                                     type="button"
                                     className="px-4 py-2 hover:bg-cyan-50 text-cyan-600 w-full flex justify-center"
@@ -340,6 +369,8 @@ const OrdersT = () => {
                                     </svg>
                                   </button>
                                 </li>
+                                <li>
+                                  </li>
                                 {
                                   admin && (
                                     <li>
@@ -357,6 +388,7 @@ const OrdersT = () => {
                                         </svg>
                                       </button>
                                     </li>
+                                    
                                   )
                                 }
                               </ul>

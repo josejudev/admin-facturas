@@ -13,7 +13,7 @@ export default async function handler(req, res) {
             return await deleteMilestone(req, res);
             break;
         default:
-            return res.status(200).json('Nothing')    
+            return res.status(200).json('There is a problem')    
     }
 }
 
@@ -25,4 +25,24 @@ const getMilestone = async (req, res) => {
         }
     })
     return res.json(milestone)
+    
+}
+
+const updateMilestone = async function (req, res) {
+    try {
+        const { id } = req.query
+        const { isCheck } = req.body
+        const milestone = await prisma.milestone.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                isCheck: isCheck
+            }
+        })
+        return res.json(milestone)
+    }catch (error) {
+        console.log(error)
+        return res.status(500).json({error: error.message})
+    }
 }

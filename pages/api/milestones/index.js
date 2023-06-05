@@ -27,3 +27,14 @@ const getMilestone = async (req, res) => {
     )
     return res.json(milestones)
 }
+
+const updateMilestone = async (req, res) => {
+    const {id, isCheck} = req.body
+    const result = await prisma.milestone.update({
+        where: {id: id},
+        data: {
+            isCheck: isCheck
+        }
+    })
+    return res.json(result)
+}
