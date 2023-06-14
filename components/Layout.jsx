@@ -7,12 +7,16 @@ import EditOfertita from './Modals/EditMilestone';
 
 const customStyles = {
   content: {
-    top: "50%",
+    top: "52%",
     left: "50%",
+    maxWidth: "100%",
     right: "auto",
     bottom: "auto",
+    maxWidth: "100%",
+    maxHeight: "100%",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    overflow: "auto",
     backgroundColor: "none",
     border: "none",
   },

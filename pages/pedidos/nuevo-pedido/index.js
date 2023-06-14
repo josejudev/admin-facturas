@@ -182,6 +182,7 @@ const NuevoPedido = () => {
         <form
           onSubmit={handleSubmit(handleSubmitForm)}
           encType="multipart/form-data"
+          
         >
           {/*
         Primer container
@@ -191,10 +192,10 @@ const NuevoPedido = () => {
               Agregar nuevo pedido
             </h1>
             <div className="mx-auto max-w-full justify-center px-6 md:flex md:space-x-6 xl:px-0">
-              <div className="rounded-lg md:w-2/3">
+              <div className="rounded-lg md:w-2/1">
                 <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
                   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                    <div className="md:flex-row  flex flex-wrap items-center justify-center mx-auto bg-white rounded-xl mt-5 gap-8">
+                    <div className="md:flex-row flex flex-wrap items-center justify-center mx-auto bg-white rounded-xl mt-5 gap-1 sm:gap-8">
                       <InputFieldsOrder
                         label="Fecha"
                         name="date"
@@ -274,7 +275,7 @@ const NuevoPedido = () => {
                   {inputFields.map((x, i) => {
                     return (
                       <div key={i}>
-                        <div className=" flex justify-center items-center p-2 md:flex-row sm:flex-col">
+                        <div className=" flex justify-center items-center p-2 flex-col md:flex-row sm:flex-col">
                           <div className="">
                             <h1 className=" font-bold text-blue-500 text-center text-3xl">
                               Hito {i + 1}

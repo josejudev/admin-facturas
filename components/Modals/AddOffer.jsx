@@ -8,10 +8,13 @@ import { useForm } from 'react-hook-form';
 const customStyles = {
 
 
+  /*
+  *Estilos del input search del cliente
+  */
   control: (provided, state) => ({
     ...provided,
     borderRadius: 5,
-    height: 51,
+    height: 62,
     borderColor: state.isFocused ? 'black' : '#d1d5db',
     boxShadow: state.isFocused ? '0 0 0 1px #aaa' : null,
     '&:hover': {
@@ -93,7 +96,7 @@ const AddOffer = () => {
 
   return (
     <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden ">
-      <div className="grid grid-cols-2  px-8 pt-6">
+      <div className="flex justify-between px-8">
         <h1 className="md:text-4xl text-2xl font-bold text-teal-500">Agregar oferta</h1>
         <div className="flex justify-end">
           <button
@@ -126,9 +129,9 @@ const AddOffer = () => {
       <form onSubmit={
         handleSubmit(handleSubmitForm)
       } encType="multipart/form-data">
-        <div className="rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-          <div className="-mx-3 md:flex mb-6">
-            <div className="md:w-full px-3 mb-6 md:mb-0">
+        <div className="rounded px-8 pt-6  flex flex-col ">
+          <div className="-mx-3 md:flex ">
+            <div className="md:w-full px-3">
               <InputField
                 label="Nombre del proyecto"
                 name="project_name"
@@ -142,8 +145,8 @@ const AddOffer = () => {
               }
             </div>
           </div>
-          <div className="-mx-3 md:flex mb-6">
-            <div className="md:w-1/2 px-3 mb-6">
+          <div className="-mx-3 md:flex ">
+            <div className="md:w-1/2 px-3 ">
               <label
                 className="block text-grey-darker text-sm font-bold mb-2 text-slate-700"
                 htmlFor="grid-client"
@@ -167,7 +170,7 @@ const AddOffer = () => {
               }
 
             </div>
-            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="md:w-1/2 px-3">
               <InputField
                 label="Cliente final"
                 name="final_client"
@@ -251,7 +254,7 @@ const AddOffer = () => {
           }
 
           <div className=" md:flex mt-3 justify-end ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
+            <div className="md:w-1/2 px-3  md:mb-0 flex flex-row items-center justify-center gap-5">
             <ActionsButtons isDisabled={isDisabled}/>
               <button
                 onClick={

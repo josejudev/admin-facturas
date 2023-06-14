@@ -62,9 +62,9 @@ const AddClient = () => {
   const isDisabled = !watch("name") || !watch("rfc") || !watch("fiscal_address") || !watch("address") || !watch("email") || !watch("contact_email") || !watch("contact_name");
 
   return (
-    <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
-      <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-teal-500">Agregar Cliente</h1>
+    <div className=" flex flex-col sm:overflow-hidden xl:w-full md:w-[750px] sm:w-[480px] ">
+      <div className="flex justify-between  px-8 ">
+        <h1 className="sm:text-2xl text-4xl md:text-4xl font-bold text-teal-500">Agregar Cliente</h1>
         <div className="flex justify-end">
           <button
             onClick={
@@ -97,22 +97,24 @@ const AddClient = () => {
         </div>
       </div>
       <form method="POST" onSubmit={handleSubmit(onSubmit)}>
-        <div className=" rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-          <div className="-mx-3 md:flex mb-6">
-            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+        <div className=" rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2 ">
+          <div className="-mx-3 sm:flex flex md:flex ">
+            <div className="sm:w-1/2 w-1/2 md:w-1/2 px-3">
               <InputField
-                label="Nombre / Razón Social"
+                label="Razón Social"
                 name="name"
                 register={register}
                 errors={errors}
                 onChange={handleChange}
                 required
               />
+              
               {
                 errors.name && <span className="text-red-500 text-xs italic">Campo obligatorio</span>
               }
             </div>
-            <div className="md:w-1/2 px-3">
+       
+            <div className="sm:w-1/2 w-1/2 px-3">
               <InputField
                 label="RFC"
                 name="rfc"
@@ -131,8 +133,8 @@ const AddClient = () => {
             </div>
           </div>
 
-          <div className="-mx-3 md:flex mb-6">
-            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+          <div className="-mx-3 md:flex flex">
+            <div className="md:w-1/2 px-3">
               <InputField
                 label="Dirección Fiscal"
                 name="fiscal_address"
@@ -160,7 +162,7 @@ const AddClient = () => {
             </div>
           </div>
 
-          <div className="-mx-3 md:flex mb-6">
+          <div className="-mx-3 md:flex ">
             <div className="md:w-full px-3">
               <InputField
                 label="Dirección"
@@ -178,7 +180,7 @@ const AddClient = () => {
           <p className="text-gray-700 text-xl font-bold mb-2">
             Persona de contacto
           </p>
-          <div className="-mx-3 md:flex mb-2">
+          <div className="-mx-3 md:flex">
             <div className="md:w-1/2 px-3 mb-6 md:mb-0">
               <InputField
                 label="Nombre"
@@ -235,7 +237,7 @@ const AddClient = () => {
 
           </div>
           <div className=" md:flex mt-3 justify-end ">
-            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex flex-row items-center justify-center gap-5">
+            <div className="md:w-1/2 px-3 mt-3 md:mb-0 flex md:flex-row sm:flex-col items-center justify-center gap-5">
               <button 
               disabled={
                 isDisabled
