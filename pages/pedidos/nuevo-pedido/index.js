@@ -205,6 +205,7 @@ const NuevoPedido = () => {
                         onChange={handleChange}
                         required
                       />
+                      
                       <InputFieldsOrder
                         label="Nombre del pedido"
                         name="name"
