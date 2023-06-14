@@ -84,11 +84,11 @@ const EditOffer = ({
   };
 
   return (
-    <div className="w-[900px] flex flex-col">
+    <div className="md:w-[750px] flex flex-col sm:w-[550px] sm:overflow-hidden">
 
-      <div className="grid grid-cols-2  px-8 pt-6">
+      <div className="flex justify-between px-8">
 
-        <h1 className="text-4xl font-bold text-teal-500">Editar oferta</h1>
+        <h1 className="md:text-4xl text-2xl font-bold text-teal-500">Editar oferta</h1>
         <div className="flex justify-end">
 
           <button

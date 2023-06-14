@@ -84,9 +84,9 @@ const EditClient = ({ clientId }) => {
 
 
   return (
-    <div className="w-[900px] flex flex-col">
-      <div className="grid grid-cols-2  px-8 pt-6">
-        <h1 className="text-4xl font-bold text-teal-500">Editar Cliente</h1>
+    <div className=" flex flex-col sm:overflow-hidden xl:w-full md:w-[750px] sm:w-[480px]">
+      <div className="flex justify-between  px-8 ">
+        <h1 className="sm:text-2xl text-4xl md:text-4xl font-bold text-teal-500">Editar Cliente</h1>
         <div className="flex justify-end">
           <button
             onClick={
