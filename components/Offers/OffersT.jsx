@@ -125,7 +125,7 @@ const OffersT = () => {
   return (
     <>
       <div className="flex items-center mx-auto justify-center w-full">
-        <div className="flex justify-center items-center gap-2 flex-col sm:flex-row">
+        <div className="flex justify-center items-center gap-2 flex-row md:flex-row">
           <input
             className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1 w-full"
             type="text"

@@ -13,7 +13,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Layout title={"Ofertas"} description="This is the offert page">
+        <Layout title={"Ofertas"} description="This is the offers page">
           <Header_Table title="Ofertas"/>
           <div className="px-2 sm:px-4 py-2.5">
             <div className=" mx-auto bg-white h-full p-5 rounded-lg">

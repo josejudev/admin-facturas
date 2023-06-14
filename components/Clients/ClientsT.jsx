@@ -128,7 +128,7 @@ const ClientsT = () => {
     return (
         <>
             <div className="flex items-center mx-auto justify-center w-full gap-2">
-                <div className="flex justify-center items-center gap-2 flex-col sm:flex-row">
+                <div className="flex justify-center items-center gap-2 flex-row md:flex-row">
 
                     <input
                         type="text"
@@ -136,7 +136,7 @@ const ClientsT = () => {
                         onChange={(e) => setSearch(e.target.value)}
 
                         placeholder="Buscar"
-                        className=" placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1"
+                        className="placeholder-gray-500 border-solid border-2 border-gray-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 bg-white rounded-lg h-11 p-1 w-full"
                     />
                     <select name="status_filtered" onChange={
                         handleFilter

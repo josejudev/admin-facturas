@@ -154,7 +154,7 @@ const OrdersT = () => {
   return (
     <>
       <div className="flex items-center mx-auto justify-center w-full">
-        <div className="flex justify-center items-center gap-2 flex-col sm:flex-row">
+        <div className="flex justify-center items-center gap-2 flex-row md:flex-row">
           <input
             type="text"
             name="search"
