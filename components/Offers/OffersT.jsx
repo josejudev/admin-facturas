@@ -29,6 +29,8 @@ const OffersT = () => {
 
   const user = useSelector((state) => state.users.data);
   const admin = user.role_id === 1 ? true : false;
+  const mailuser = user.user_email;
+  console.log(mailuser);
 
   const [currentItems, setCurrentItems] = useState([]);
 

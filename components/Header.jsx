@@ -224,7 +224,7 @@ const Header = () => {
                       onClick={toggle}
                       className=
                       {
-                        isOpen ? 'text-teal-700 border-b-2 border-teal-500 cursor-pointer' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out cursor-pointer'
+                        isOpen ? 'text-teal-700 border-b-2 border-teal-500 cursor-pointer' : router.pathname === '/admin'?  'text-teal-700 border-b-2 border-teal-500' : 'text-gray-700 hover:text-teal-700  hover:border-b-2 hover:border-teal-500 hover:transition hover:ease-in-out cursor-pointer' 
                       }
 
                     >
@@ -234,7 +234,13 @@ const Header = () => {
                     {
                       isOpen && (
                         <div className="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg border">
-                          <a href="#" className="hover:text-teal-700  hover:transition hover:ease-in-out  block w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Admininistración de cuenta</a>
+                          <Link
+                          href={"/admin"}
+                          className="hover:text-teal-700  hover:transition hover:ease-in-out  block w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                          >
+                            Administracion de cuenta
+                          
+                          </Link>
                           <button type="submit" className="hover:text-teal-700   hover:transition hover:ease-in-out  block w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem"
                             onClick={logoutSession}
                           >Cerrar Sesión</button>

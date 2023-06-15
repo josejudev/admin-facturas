@@ -29,6 +29,7 @@ const findUser = async (req, res) => {
       user_email,
       role_id, // add role_id to the where clause
       user_name,
+
     }
   });
 
@@ -54,6 +55,7 @@ const findUser = async (req, res) => {
       user_email: user_email,
       role_id: user[0].role_id, // add role_id to the token payload
       user_name: user[0].user_name,
+      id: user[0].id
     },
     "secret"
   );
